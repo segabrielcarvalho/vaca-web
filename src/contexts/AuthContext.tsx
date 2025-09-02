@@ -1,0 +1,170 @@
+import { useRouter } from "next/navigation";
+import nookies from "nookies";
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import settings from "@/config/settings";
+import useToastHook from "@/hooks/useToastHook";
+import getRoutes from "@/routes";
+import { LoginMutationVariables } from "@generated/documents";
+import { MeQuery, useLoginMutation, useMeLazyQuery } from "@generated/hooks";
+
+export type User = MeQuery["me"];
+
+type AuthProviderProps = {
+  children: ReactNode;
+};
+
+type AuthContextData = {
+  signIn(
+    credentials: LoginMutationVariables & { redirectPath?: string }
+  ): Promise<void>;
+  signOut(redirect?: boolean): void;
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+};
+
+const maxAge = 60 * 60 * 24 * 30;
+
+export const AuthContext = createContext<AuthContextData>(
+  {} as AuthContextData
+);
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [fetchMe, { data: meData, loading: meLoading }] = useMeLazyQuery({
+    fetchPolicy: "network-only",
+    errorPolicy: "all",
+  });
+
+  const [Login] = useLoginMutation();
+  const router = useRouter();
+  const { error: toastError } = useToastHook();
+
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const broadcast = useRef<BroadcastChannel | null>(null);
+
+  const isAuthenticated = !!user;
+
+  const signOut = useCallback(
+    (redirect = true) => {
+      setUser(null);
+      nookies.destroy(null, settings.tokenKey);
+      nookies.destroy(null, settings.refreshTokenKey);
+      broadcast.current?.postMessage("signOut");
+      if (redirect) router.push(getRoutes().auth.login.path());
+    },
+    [router]
+  );
+
+  useEffect(() => {
+    broadcast.current = new BroadcastChannel("auth");
+    broadcast.current.onmessage = async (msg) => {
+      if (msg.data === "signOut") {
+        setUser(null);
+        router.push(getRoutes().auth.login.path());
+      }
+      if (msg.data === "signIn") {
+        const { data } = await fetchMe();
+        if (data?.me) setUser(data.me);
+      }
+    };
+    return () => broadcast.current?.close();
+  }, [fetchMe, router]);
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      setIsLoading(true);
+      try {
+        const cookies = nookies.get(null);
+        if (cookies[settings.tokenKey]) {
+          const { data } = await fetchMe();
+          if (data?.me) setUser(data.me);
+        }
+      } catch {
+        signOut(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    initializeAuth();
+  }, [fetchMe, signOut]);
+
+  useEffect(() => {
+    if (meData?.me) setUser(meData.me);
+  }, [meData]);
+
+  const signIn = useCallback(
+    async ({
+      email,
+      password,
+      redirectPath,
+    }: LoginMutationVariables & { redirectPath?: string }) => {
+      setIsLoading(true);
+      try {
+        const { data, errors } = await Login({
+          variables: { email, password },
+        });
+
+        const accessToken = data?.login?.token;
+
+        if (!accessToken) {
+          const message =
+            errors?.[0]?.message ||
+            "E-mail ou senha inválidos. Tente novamente.";
+          throw new Error(message);
+        }
+
+        nookies.set(null, settings.tokenKey, accessToken, {
+          maxAge,
+          path: "/",
+          sameSite: "Strict",
+          secure: process.env.NODE_ENV === "production",
+        });
+
+        const me = await fetchMe();
+        if (me.data?.me) setUser(me.data.me);
+
+        broadcast.current?.postMessage("signIn");
+        router.push(redirectPath || getRoutes().home.path());
+      } catch (e) {
+        if (e instanceof Error) toastError({ message: e.message });
+        throw e;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [Login, fetchMe, router, toastError]
+  );
+
+  return (
+    <AuthContext.Provider
+      value={{
+        signIn,
+        signOut,
+        user,
+        isAuthenticated,
+        isLoading: isLoading || meLoading,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuthContext() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuthContext must be used within an AuthProvider");
+  }
+  return context;
+}
