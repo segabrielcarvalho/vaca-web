@@ -1,0 +1,33 @@
+{
+  "cSpell.ignoreRegExpList": ["klass(es)*", "upsert"],
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit",
+    "source.sortMembers": "explicit",
+    "quickfix.biome": "explicit"
+  },
+  "material-icon-theme.activeIconPack": "react",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "cSpell.words": [
+    "Codegen",
+    "headlessui",
+    "hrefs",
+    "vacaweb",
+    "libc",
+    "Mentee",
+    "qdrant",
+    "toastify"
+  ],
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-containers"
+  }
+}

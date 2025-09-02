@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@plugin "tailwind-scrollbar";
+
+@custom-variant dark (&:where(.dark, .dark *));
+:root {
+  color-scheme: only dark;
+}
+
+:root {
+  --background: var(--color-brand-200);
+  --foreground: #fafafa;
+  --font-sans: var(--font-inter);
+  --font-mono: var(
+    --font-geist-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    monospace
+  );
+  --toastify-color-dark: #52525c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--color-brand-800);
+    --foreground: var(--color-brand-100);
+  }
+}
+
+html {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+body {
+  @apply overflow-x-hidden antialiased;
+}
+
+@layer utilities {
+  .scrollbar-default {
+    @apply scrollbar-thin scrollbar-thumb-brand-600 scrollbar-track-transparent;
+  }
+}
+
+@theme {
+  --color-brand-50: oklch(0.985 0 89.9);
+  --color-brand-100: oklch(0.967 0.001 286.4);
+  --color-brand-200: oklch(0.92 0.004 286.3);
+  --color-brand-300: oklch(0.871 0.005 286.3);
+  --color-brand-400: oklch(0.712 0.013 286.1);
+  --color-brand-500: oklch(0.552 0.014 285.9);
+  --color-brand-600: oklch(0.442 0.016 285.7);
+  --color-brand-700: oklch(0.31 0.005 286.1);
+  --color-brand-800: oklch(0.226 0.002 247.9);
+  --color-brand-900: oklch(0.183 0.004 286);
+  --color-brand-950: oklch(0.141 0.004 285.8);
+}
