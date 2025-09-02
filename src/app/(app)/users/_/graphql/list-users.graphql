@@ -1,0 +1,23 @@
+query ListUsers(
+  $orderBy: ListDefaultInput
+  $skip: Int
+  $take: Int
+  $where: ListUsersInput
+) {
+  listUsers(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
+    count
+    rows {
+      name
+      role
+      isTest
+      id
+      isActive
+      gender
+      email
+      createdAt
+      updatedAt
+      avatarUrl
+      lastSession
+    }
+  }
+}

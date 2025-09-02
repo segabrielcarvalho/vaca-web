@@ -1,0 +1,22 @@
+query GetUser($getUserId: String!) {
+  getUser(id: $getUserId) {
+    id
+    email
+    name
+    role
+    gender
+    avatarUrl
+    isActive
+    isTest
+    lastSession
+    verifiedEmail
+    createdAt
+    updatedAt
+    Mentee {
+      id
+      type
+      createdAt
+      updatedAt
+    }
+  }
+}
