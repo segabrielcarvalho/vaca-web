@@ -40,7 +40,7 @@ function NavItem({
       href={href}
       aria-current={active ? "page" : undefined}
       className={[
-        "inline-flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-medium transition",
+        "inline-flex items-center gap-2 rounded-lg px-3 sm:px-4 md:px-5 py-2 text-sm font-medium transition",
         active
           ? "bg-yellow-500 text-black dark:bg-yellow-500 dark:text-black"
           : "text-zinc-700 hover:bg-yellow-500 hover:text-black dark:text-zinc-300 dark:hover:bg-yellow-500 dark:hover:text-black",
@@ -72,15 +72,15 @@ function HorizontalNavbar() {
 
   return (
     <div className="w-full">
-      <div className="w-full items-center gap-4 px-4 sm:px-6 lg:px-8 flex flex-row py-2 justify-between">
-        <div className="justify-self-start shrink-0">
-          <Logo className="h-16 w-auto" />
+      <div className="w-full flex items-center gap-3 px-4 sm:px-6 lg:px-8 py-2 flex-col sm:flex-row">
+        <div className="shrink-0">
+          <Logo className="h-10 sm:h-12 w-auto" />
         </div>
 
-        <nav className="justify-self-center">
-          <div className="flex flex-nowrap items-center gap-1 whitespace-nowrap">
+        <nav className="flex-1">
+          <div className="flex flex-wrap justify-center items-center gap-x-1 sm:gap-x-2 gap-y-2">
             <NavItem href="/home" active={norm("/home") === activeHref}>
-              <HomeIcon className="size-5" />
+              <HomeIcon className="size-4 sm:size-5" />
               <span>Home</span>
             </NavItem>
 
@@ -88,27 +88,28 @@ function HorizontalNavbar() {
               href="/broadcasts"
               active={norm("/broadcasts") === activeHref}
             >
-              <MegaphoneIcon className="size-5" />
+              <MegaphoneIcon className="size-4 sm:size-5" />
               <span>Sala de Aula</span>
             </NavItem>
 
             <NavItem href="/events" active={norm("/events") === activeHref}>
-              <Square2StackIcon className="size-5" />
+              <Square2StackIcon className="size-4 sm:size-5" />
               <span>Estudantes</span>
             </NavItem>
+
             <NavItem href="/orders" active={norm("/orders") === activeHref}>
-              <TicketIcon className="size-5" />
+              <TicketIcon className="size-4 sm:size-5" />
               <span>Provas</span>
             </NavItem>
 
             <NavItem href="/settings" active={norm("/settings") === activeHref}>
-              <Cog6ToothIcon className="size-5" />
+              <Cog6ToothIcon className="size-4 sm:size-5" />
               <span>Configurações</span>
             </NavItem>
           </div>
         </nav>
 
-        <div className="justify-self-end shrink-0">
+        <div className="shrink-0">
           <Dropdown
             anchor="bottom end"
             button={
