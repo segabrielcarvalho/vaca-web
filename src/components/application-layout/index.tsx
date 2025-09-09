@@ -1,55 +1,23 @@
 "use client";
 
 import { Avatar } from "@/components/avatar";
-import {
-  Dropdown,
-  DropdownButton,
-  DropdownItem,
-  DropdownLabel,
-  DropdownMenu,
-  DropdownRoot,
-} from "@/components/dropdown";
-import {
-  Navbar,
-  NavbarItem,
-  NavbarSection,
-  NavbarSpacer,
-} from "@/components/navbar";
-import {
-  Sidebar,
-  SidebarBody,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarItem,
-  SidebarLabel,
-  SidebarSection,
-  SidebarSpacer,
-} from "@/components/sidebar";
-import { SidebarLayout } from "@/components/sidebar-layout";
+import { Dropdown } from "@/components/dropdown";
 import {
   Cog6ToothIcon,
   HomeIcon,
   MegaphoneIcon,
-  QuestionMarkCircleIcon,
-  SparklesIcon,
   Square2StackIcon,
   TicketIcon,
 } from "@heroicons/react/20/solid";
-import {
-  ArrowRightStartOnRectangleIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  Cog8ToothIcon,
-  LightBulbIcon,
-  ShieldCheckIcon,
-  UserIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { FaPlus, FaSchool } from "react-icons/fa";
 import { useAuthContext } from "../../contexts/AuthContext";
 import getRoutes from "../../routes";
-import { sidebarItems } from "./constants";
+import { Logo } from "../logo";
+import { StackedLayout } from "../stacked-layout";
 
 const norm = (p: string) => p.split("?")[0].replace(/\/+$/, "") || "/";
 const pickActiveHref = (pathname: string, hrefs: string[]) => {
@@ -58,23 +26,43 @@ const pickActiveHref = (pathname: string, hrefs: string[]) => {
   return list.find((b) => a === b || a.startsWith(b + "/")) || "";
 };
 
-function AccountDropdown({ anchor }: { anchor: "top start" | "bottom end" }) {
-  const { signOut } = useAuthContext();
+function NavItem({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <DropdownMenu className="min-w-56 sm:min-w-64" anchor={anchor}>
-      <DropdownItem onClick={() => signOut()}>
-        <DropdownLabel>Sair</DropdownLabel>
-      </DropdownItem>
-    </DropdownMenu>
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={[
+        "inline-flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-medium transition",
+        active
+          ? "bg-yellow-500 text-black dark:bg-yellow-500 dark:text-black"
+          : "text-zinc-700 hover:bg-yellow-500 hover:text-black dark:text-zinc-300 dark:hover:bg-yellow-500 dark:hover:text-black",
+      ].join(" ")}
+    >
+      {children}
+    </Link>
   );
 }
 
-export function ApplicationLayout({ children }: { children: React.ReactNode }) {
+function HorizontalNavbar() {
   const pathname = usePathname() || "";
-  const { user } = useAuthContext();
-
   const allHrefs = useMemo(
-    () => [getRoutes().home.path(), ...sidebarItems.map((i) => i.href)],
+    () => [
+      getRoutes().home.path(),
+      "/events",
+      "/orders",
+      "/broadcasts",
+      "/settings",
+      "/support",
+      "/changelog",
+    ],
     []
   );
   const activeHref = useMemo(
@@ -83,163 +71,83 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <SidebarLayout
-      navbar={
-        <Navbar>
-          <NavbarSpacer />
-          <NavbarSection>
-            <DropdownRoot>
-              <DropdownButton as={NavbarItem}>
+    <div className="w-full">
+      <div className="w-full items-center gap-4 px-4 sm:px-6 lg:px-8 flex flex-row py-2 justify-between">
+        <div className="justify-self-start shrink-0">
+          <Logo className="h-16 w-auto" />
+        </div>
+
+        <nav className="justify-self-center">
+          <div className="flex flex-nowrap items-center gap-1 whitespace-nowrap">
+            <NavItem href="/home" active={norm("/home") === activeHref}>
+              <HomeIcon className="size-5" />
+              <span>Home</span>
+            </NavItem>
+
+            <NavItem
+              href="/broadcasts"
+              active={norm("/broadcasts") === activeHref}
+            >
+              <MegaphoneIcon className="size-5" />
+              <span>Sala de Aula</span>
+            </NavItem>
+
+            <NavItem href="/events" active={norm("/events") === activeHref}>
+              <Square2StackIcon className="size-5" />
+              <span>Estudantes</span>
+            </NavItem>
+            <NavItem href="/orders" active={norm("/orders") === activeHref}>
+              <TicketIcon className="size-5" />
+              <span>Provas</span>
+            </NavItem>
+
+            <NavItem href="/settings" active={norm("/settings") === activeHref}>
+              <Cog6ToothIcon className="size-5" />
+              <span>Configurações</span>
+            </NavItem>
+          </div>
+        </nav>
+
+        <div className="justify-self-end shrink-0">
+          <Dropdown
+            anchor="bottom end"
+            button={
+              <button className="inline-flex items-center gap-3 rounded-lg px-2 py-1.5 text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:text-white dark:hover:bg-zinc-700/50">
                 <Avatar
-                  src={user?.avatarUrl}
-                  className="size-6 sm:size-8 md:size-9"
-                  square
+                  className="size-8"
+                  alt="UniEvangélica"
+                  src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                 />
-              </DropdownButton>
-              <AccountDropdown anchor="bottom end" />
-            </DropdownRoot>
-          </NavbarSection>
-        </Navbar>
-      }
-      sidebar={
-        <Sidebar>
-          <SidebarHeader>
-            <Dropdown
-              anchor="bottom end"
-              button={
-                <SidebarItem className="flex min-w-0 items-center gap-3 ">
-                  <div>
-                    <Avatar
-                      className="size-8"
-                      alt="Erica"
-                      src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    />
-                  </div>
+                <span className="hidden sm:block text-sm font-medium">
+                  UniEvangélica
+                </span>
+                <ChevronDownIcon className="size-4" />
+              </button>
+            }
+            items={[
+              {
+                href: "/my-profile",
+                icon: <FaSchool />,
+                label: "Colégio Delta - Anápolis",
+              },
+              {
+                href: "/settings",
+                icon: <FaSchool />,
+                label: "CPMG Senador Onefre Quinan",
+              },
+              "divider",
+              { href: "/new-school", icon: <FaPlus />, label: "Nova Escola" },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm/5 font-medium group-hover:text-zinc-900 ">
-                      UniEvangélica
-                    </span>
-                  </span>
-                  <ChevronDownIcon className="ml-auto size-4" />
-                </SidebarItem>
-              }
-              items={[
-                {
-                  href: "/my-profile",
-                  icon: <FaSchool />,
-                  label: "Colégio Delta - Anápolis",
-                },
-                {
-                  href: "/settings",
-                  icon: <FaSchool />,
-                  label: "CPMG Senador Onefre Quinan",
-                },
-                "divider",
-                {
-                  href: "/logout",
-                  icon: <FaPlus />,
-                  label: "Nova Escola",
-                },
-              ]}
-              className="w-full"
-            />
-          </SidebarHeader>
-          <SidebarBody>
-            <SidebarSection>
-              <SidebarItem current={norm("/home") === activeHref} href="/home">
-                <HomeIcon />
-                <SidebarLabel>Home</SidebarLabel>
-              </SidebarItem>
-              <SidebarItem href="/events">
-                <Square2StackIcon />
-                <SidebarLabel>Estudantes</SidebarLabel>
-              </SidebarItem>
-              <SidebarItem href="/orders">
-                <TicketIcon />
-                <SidebarLabel>Provas</SidebarLabel>
-              </SidebarItem>
-              <SidebarItem href="/broadcasts">
-                <MegaphoneIcon />
-                <SidebarLabel>Sala de Aula</SidebarLabel>
-              </SidebarItem>
-              <SidebarItem href="/settings">
-                <Cog6ToothIcon />
-                <SidebarLabel>Configurações</SidebarLabel>
-              </SidebarItem>
-            </SidebarSection>
-            <SidebarSpacer />
-            <SidebarSection>
-              <SidebarItem href="/support">
-                <QuestionMarkCircleIcon />
-                <SidebarLabel>Suporte</SidebarLabel>
-              </SidebarItem>
-              <SidebarItem href="/changelog">
-                <SparklesIcon />
-                <SidebarLabel>Changelog</SidebarLabel>
-              </SidebarItem>
-            </SidebarSection>
-          </SidebarBody>
-          <SidebarFooter>
-            <Dropdown
-              anchor="top start"
-              button={
-                <SidebarItem className="flex min-w-0 items-center gap-3 ">
-                  <div>
-                    <Avatar
-                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=500&h=500&q=80"
-                      className="size-10"
-                      alt="Erica"
-                    />
-                  </div>
-
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm/5 font-medium group-hover:text-zinc-900 ">
-                      Erica
-                    </span>
-                    <span className="block truncate text-xs/5 font-normal group-hover:text-zinc-700">
-                      erica@example.com
-                    </span>
-                  </span>
-                  <ChevronUpIcon className="ml-auto size-4" />
-                </SidebarItem>
-              }
-              items={[
-                {
-                  href: "/my-profile",
-                  icon: <UserIcon />,
-                  label: "Meu Perfil",
-                },
-                {
-                  href: "/settings",
-                  icon: <Cog8ToothIcon />,
-                  label: "Configurações",
-                },
-                "divider",
-                {
-                  href: "/privacy-policy",
-                  icon: <ShieldCheckIcon />,
-                  label: "Política de Privacidade",
-                },
-                {
-                  href: "/share-feedback",
-                  icon: <LightBulbIcon />,
-                  label: "Compartilhar Feedback",
-                },
-                "divider",
-                {
-                  href: "/logout",
-                  icon: <ArrowRightStartOnRectangleIcon />,
-                  label: "Sair",
-                },
-              ]}
-              className="w-full"
-            />
-          </SidebarFooter>
-        </Sidebar>
-      }
-    >
-      {children}
-    </SidebarLayout>
+export function ApplicationLayout({ children }: { children: React.ReactNode }) {
+  const { user } = useAuthContext();
+  return (
+    <StackedLayout navbar={<HorizontalNavbar />}>{children}</StackedLayout>
   );
 }
