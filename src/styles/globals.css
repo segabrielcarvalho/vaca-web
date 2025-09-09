@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @plugin "tailwind-scrollbar";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
 :root {
-  color-scheme: only dark;
+  color-scheme: only light;
 }
 
 :root {
@@ -20,10 +20,10 @@
     "Liberation Mono",
     monospace
   );
-  --toastify-color-dark: #52525c;
+  --toastify-color-lighth: #52525c;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: lighth) {
   :root {
     --background: var(--color-brand-800);
     --foreground: var(--color-brand-100);

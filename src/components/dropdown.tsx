@@ -60,7 +60,10 @@ export function Dropdown({
                 {...(item.href && { href: item.href })}
                 onClick={item.onClick}
                 disabled={item.disabled}
-                className={item.className}
+                className={
+                  (clsx(item.className),
+                  "items-center flex gap-3 flex-row justify-start")
+                }
               >
                 {item.icon && <span data-slot="icon">{item.icon}</span>}
                 <DropdownLabel>{item.label}</DropdownLabel>
@@ -88,7 +91,7 @@ export function DropdownButton<T extends React.ElementType = typeof Button>({
     <Headless.MenuButton
       as={as}
       {...props}
-      className={clsx(className, "data-focus:outline-purple-500")}
+      className={clsx(className, "data-focus:outline-yellow-500")}
     />
   );
 }
@@ -109,8 +112,8 @@ export function DropdownMenu({
         "isolate w-max rounded-xl p-1",
         "outline outline-transparent focus:outline-hidden",
         "overflow-y-auto",
-        "bg-white/75 backdrop-blur-xl dark:bg-zinc-800/75",
-        "shadow-lg ring-1 ring-zinc-950/10 dark:ring-white/10 dark:ring-inset",
+        "bg-slate-700/60 backdrop-blur-md ",
+        "shadow-lg ring-1 ring-zinc-950/10 ",
         "supports-[grid-template-columns:subgrid]:grid supports-[grid-template-columns:subgrid]:grid-cols-[auto_1fr_1.5rem_0.5rem_auto]",
         "transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0"
       )}
@@ -127,10 +130,9 @@ export function DropdownItem({ className, ...props }: ItemBaseProps) {
   const classes = clsx(
     className,
     "group cursor-pointer rounded-lg px-3.5 py-2.5 focus:outline-hidden sm:px-3 sm:py-1.5",
-    "text-left text-base/6 text-zinc-950 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]",
-    "hover:bg-purple-500 hover:text-white",
-    "data-focus:bg-purple-500 data-focus:text-white",
-    "dark:hover:bg-purple-500 dark:data-focus:bg-purple-500",
+    "text-left text-base/6 sm:text-sm/6 text-white forced-colors:text-[CanvasText]",
+    "hover:bg-yellow-500",
+    "data-focus:bg-yellow-500 data-focus:text-white",
     "data-disabled:opacity-50",
     "forced-color-adjust-none forced-colors:data-focus:bg-[Highlight] forced-colors:data-focus:text-[HighlightText] forced-colors:data-focus:*:data-[slot=icon]:text-[HighlightText]",
     "col-span-full grid grid-cols-[auto_1fr_1.5rem_0.5rem_auto] items-center supports-[grid-template-columns:subgrid]:grid-cols-subgrid",
@@ -225,7 +227,10 @@ export function DropdownLabel({
     <div
       {...props}
       data-slot="label"
-      className={clsx(className, "col-start-2 row-start-1")}
+      className={clsx(
+        className,
+        "col-start-2 row-start-1 group-hover:text-zinc-950"
+      )}
     />
   );
 }

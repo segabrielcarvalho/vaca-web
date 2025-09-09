@@ -36,30 +36,30 @@ const clearCookies = (res: NextResponse) => {
 };
 
 export default async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  const token = req.cookies.get(settings.tokenKey)?.value;
+  // const { pathname } = req.nextUrl;
+  // const token = req.cookies.get(settings.tokenKey)?.value;
 
-  if (!token && !isPublicRoute(pathname)) {
-    return NextResponse.redirect(
-      new URL(getRoutes().auth.login.path(), req.nextUrl)
-    );
-  }
+  // if (!token && !isPublicRoute(pathname)) {
+  //   return NextResponse.redirect(
+  //     new URL(getRoutes().auth.login.path(), req.nextUrl)
+  //   );
+  // }
 
-  if (token) {
-    const { valid, expired } = await validateToken(token);
-    if (!valid) {
-      const url = new URL(getRoutes().auth.login.path(), req.nextUrl);
-      url.searchParams.set("reason", expired ? "expired" : "invalid");
-      const res = NextResponse.redirect(url);
-      clearCookies(res);
-      return res;
-    }
-    if (isPublicRoute(pathname)) {
-      return NextResponse.redirect(
-        new URL(getRoutes().home.path(), req.nextUrl)
-      );
-    }
-  }
+  // if (token) {
+  //   const { valid, expired } = await validateToken(token);
+  //   if (!valid) {
+  //     const url = new URL(getRoutes().auth.login.path(), req.nextUrl);
+  //     url.searchParams.set("reason", expired ? "expired" : "invalid");
+  //     const res = NextResponse.redirect(url);
+  //     clearCookies(res);
+  //     return res;
+  //   }
+  //   if (isPublicRoute(pathname)) {
+  //     return NextResponse.redirect(
+  //       new URL(getRoutes().home.path(), req.nextUrl)
+  //     );
+  //   }
+  // }
 
   return NextResponse.next();
 }

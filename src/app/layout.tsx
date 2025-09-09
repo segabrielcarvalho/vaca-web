@@ -11,22 +11,22 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Vaca-Web | Admin",
+  title: "VACA - Ambiente Virtual de Correção de Avaliações",
   description:
-    "Painel de administração da Vaca-Web: gerencie, crie e analise provas e gabaritos em tempo real.",
+    "Painel administrativo da Vaca-Web: crie, gerencie e acompanhe provas e gabaritos em tempo real.",
   authors: [{ name: "Equipe Vaca-Web", url: "https://vaca-web.com.br" }],
   openGraph: {
-    title: "Vaca-Web Admin • Admin",
+    title: "Vaca-Web • Painel Administrativo",
     description:
-      "Painel de controle para gerenciar provas e gabaritos da Vaca-Web: crie avaliações, acompanhe métricas e performance em tempo real.",
+      "Gerencie avaliações, gabaritos e métricas em tempo real com o painel administrativo da Vaca-Web.",
     url: "https://admin.vaca-web.com.br",
-    siteName: "Vaca-Web Admin",
+    siteName: "Vaca-Web",
     images: [
       {
         url: "/og-image-admin.png",
         width: 1200,
         height: 630,
-        alt: "Vaca-Web Admin Dashboard",
+        alt: "Dashboard administrativo da Vaca-Web",
       },
     ],
     locale: "pt_BR",
@@ -45,17 +45,16 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  colorScheme: "dark",
-  themeColor: "black",
+  colorScheme: "light",
 };
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="pt-br"
-      className={`${inter.variable} dark antialiased h-full w-full bg-brand-800 overflow-x-hidden`}
+      className={`${inter.variable} light antialiased h-full w-full overflow-x-hidden`}
     >
-      <meta name="color-scheme" content="dark" />
-      <body className="min-w-0 h-full w-full overflow-x-hidden scrollbar-thin scrollbar-thumb-brand-600 scrollbar-track-transparent">
+      <meta name="color-scheme" content="light" />
+      <body className="min-w-0 h-full w-full overflow-x-hidden scrollbar-thin scrollbar-thumb-brand-600 scrollbar-track-transparent text-zinc-950">
         <Providers>{children}</Providers>
       </body>
     </html>

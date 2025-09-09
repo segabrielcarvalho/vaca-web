@@ -88,10 +88,7 @@ export function SidebarDivider({
   return (
     <hr
       {...props}
-      className={clsx(
-        className,
-        "my-4 border-t border-zinc-950/5 lg:-mx-4 dark:border-white/5"
-      )}
+      className={clsx(className, "my-4 border-t border-zinc-950/5 lg:-mx-4 ")}
     />
   );
 }
@@ -118,7 +115,7 @@ export function SidebarHeading({
       {...props}
       className={clsx(
         className,
-        "mb-1 px-2 text-xs/6 font-medium text-zinc-500 dark:text-zinc-400"
+        "mb-1 px-2 text-xs/6 font-medium text-zinc-100 "
       )}
     />
   );
@@ -138,10 +135,10 @@ export const SidebarItem = forwardRef(function SidebarItem(
 ) {
   const classes = clsx(
     // Base
-    "flex w-full items-center gap-3 rounded-full px-4 py-3 text-left text-base/6 font-medium text-zinc-950 dark:text-zinc-200 sm:py-3 sm:text-sm/5",
+    "flex w-full items-center gap-3 rounded-full px-4 py-3 text-left text-base/6 font-medium text-zinc-100  sm:py-3 sm:text-sm/5",
 
     // Leading icon / icon-only
-    "*:data-[slot=icon]:size-6 *:data-[slot=icon]:shrink-0 dark:*:data-[slot=icon]:text-zinc-400 sm:*:data-[slot=icon]:size-5",
+    "*:data-[slot=icon]:size-6 *:data-[slot=icon]:shrink-0  sm:*:data-[slot=icon]:size-5",
 
     // Trailing icon
     "*:last:data-[slot=icon]:ml-auto *:last:data-[slot=icon]:size-5 sm:*:last:data-[slot=icon]:size-4",
@@ -150,16 +147,13 @@ export const SidebarItem = forwardRef(function SidebarItem(
     "*:data-[slot=avatar]:-m-0.5 *:data-[slot=avatar]:size-7 sm:*:data-[slot=avatar]:size-6",
 
     // hover
-    "data-hover:bg-purple-600/10 data-hover:text-purple-700/80 data-hover:*:data-[slot=icon]:text-purple-500 data-hover:*:data-[slot=chat]:text-purple-500",
-    "dark:data-hover:bg-purple-300/10 dark:data-hover:text-purple-200 dark:data-hover:*:data-[slot=icon]:text-purple-400 dark:data-hover:*:data-[slot=chat]:text-purple-400",
+    "data-hover:bg-yellow-400 data-hover:text-zinc-950 data-hover:*:data-[slot=icon]:text-zinc-950 data-hover:*:data-[slot=chat]:text-yellow-500",
 
     // active
-    "data-active:bg-zinc-950/10 data-active:*:data-[slot=icon]:text-zinc-950",
-    "dark:data-active:bg-white/10 dark:data-active:*:data-[slot=icon]:text-zinc-200",
+    "data-active:bg-zinc-950/10 data-active:*:data-[slot=icon]:text-zinc-100",
 
     // current
-    "data-current:bg-purple-600/10 data-current:text-purple-800/80 data-current:*:data-[slot=icon]:text-purple-500 data-current:*:data-[slot=chat]:text-purple-500",
-    "dark:data-current:bg-purple-400/10 dark:data-current:text-purple-200 dark:data-current:*:data-[slot=icon]:text-purple-400 dark:data-current:*:data-[slot=chat]:text-purple-400"
+    "data-current:bg-yellow-500 data-current:text-zinc-950 data-current:*:data-[slot=icon]:text-zinc-950 data-current:*:data-[slot=chat]:text-yellow-500"
   );
 
   return (
@@ -167,7 +161,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
       {current && (
         <motion.span
           layoutId="current-indicator"
-          className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-purple-500 dark:bg-purple-500 "
+          className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-yellow-500  "
         />
       )}
       {"href" in props ? (

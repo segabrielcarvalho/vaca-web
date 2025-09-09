@@ -25,6 +25,14 @@ export const pickActiveHref = (pathname: string, hrefs: string[]) => {
 };
 
 const getRoutes = () => ({
+  auth: {
+    name: "Autenticação",
+    login: { path: (params?: Params) => buildPath("/auth/login", params) },
+    forgotPassword: {
+      path: (params?: Params) => buildPath("/auth/forgot-password", params),
+    },
+  },
+
   home: {
     name: "Home",
     path: (params?: Params) => buildPath("/home", params),
@@ -41,7 +49,6 @@ const getRoutes = () => ({
       },
     },
   },
-
 });
 
 export default getRoutes;
