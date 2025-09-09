@@ -44,7 +44,7 @@ export function Dropdown({
     >
       <DropdownButton
         as="div"
-        className="w-full items-start focus:outline-none data-focus:outline-none"
+        className="w-full items-start focus:outline-none data-focus:outline-none cursor-pointer"
       >
         {button}
       </DropdownButton>
@@ -65,8 +65,20 @@ export function Dropdown({
                   "items-center flex gap-3 flex-row justify-start")
                 }
               >
-                {item.icon && <span data-slot="icon">{item.icon}</span>}
-                <DropdownLabel>{item.label}</DropdownLabel>
+                {item.icon && (
+                  <span
+                    className="text-zinc-400 group-hover:text-zinc-950"
+                    data-slot="icon"
+                  >
+                    {item.icon}
+                  </span>
+                )}
+                <DropdownLabel className="flex items-center flex-wrap gap-2">
+                  <span className="break-words whitespace-normal">
+                    {item.label}
+                  </span>
+                </DropdownLabel>
+
                 {item.description && (
                   <DropdownDescription>{item.description}</DropdownDescription>
                 )}
@@ -137,7 +149,6 @@ export function DropdownItem({ className, ...props }: ItemBaseProps) {
     "forced-color-adjust-none forced-colors:data-focus:bg-[Highlight] forced-colors:data-focus:text-[HighlightText] forced-colors:data-focus:*:data-[slot=icon]:text-[HighlightText]",
     "col-span-full grid grid-cols-[auto_1fr_1.5rem_0.5rem_auto] items-center supports-[grid-template-columns:subgrid]:grid-cols-subgrid",
     "*:data-[slot=icon]:col-start-1 *:data-[slot=icon]:row-start-1 *:data-[slot=icon]:mr-2.5 *:data-[slot=icon]:-ml-0.5 *:data-[slot=icon]:size-5 sm:*:data-[slot=icon]:mr-2 sm:*:data-[slot=icon]:size-4",
-    "*:data-[slot=icon]:text-zinc-500 group-hover:*:data-[slot=icon]:text-white group-data-focus:*:data-[slot=icon]:text-white dark:*:data-[slot=icon]:text-zinc-400 dark:group-data-focus:*:data-[slot=icon]:text-white",
     "*:data-[slot=avatar]:mr-2.5 *:data-[slot=avatar]:-ml-1 *:data-[slot=avatar]:size-6 sm:*:data-[slot=avatar]:mr-2 sm:*:data-[slot=avatar]:size-5"
   );
 

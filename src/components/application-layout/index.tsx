@@ -41,12 +41,12 @@ import {
   ChevronUpIcon,
   Cog8ToothIcon,
   LightBulbIcon,
-  PlusIcon,
   ShieldCheckIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import { FaPlus, FaSchool } from "react-icons/fa";
 import { useAuthContext } from "../../contexts/AuthContext";
 import getRoutes from "../../routes";
 import { sidebarItems } from "./constants";
@@ -107,41 +107,38 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
             <Dropdown
               anchor="bottom end"
               button={
-                <SidebarItem>
-                  <Avatar src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" />
-                  <SidebarLabel>UniEvangelica</SidebarLabel>
+                <SidebarItem className="flex min-w-0 items-center gap-3 ">
+                  <div>
+                    <Avatar
+                      className="size-8"
+                      alt="Erica"
+                      src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    />
+                  </div>
+
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm/5 font-medium group-hover:text-zinc-900 ">
+                      UniEvangélica
+                    </span>
+                  </span>
                   <ChevronDownIcon className="ml-auto size-4" />
                 </SidebarItem>
               }
               items={[
                 {
-                  href: "/teams/1",
-                  className: "items-center flex gap-3 flex-row justify-center",
-                  icon: (
-                    <Avatar
-                      initials="UNI"
-                      className="bg-purple-500 text-white size-6"
-                    />
-                  ),
-                  label: "UniEvangelica",
+                  href: "/my-profile",
+                  icon: <FaSchool />,
+                  label: "Colégio Delta - Anápolis",
                 },
                 {
-                  href: "/teams/2",
-                  className: "items-center flex gap-3 flex-row justify-center",
-                  icon: (
-                    <div>
-                      <Avatar
-                        initials="CC"
-                        className="bg-purple-500 text-white size-6"
-                      />
-                    </div>
-                  ),
-                  label: "Colegio Colto",
+                  href: "/settings",
+                  icon: <FaSchool />,
+                  label: "CPMG Senador Onefre Quinan",
                 },
                 "divider",
                 {
-                  href: "/teams/create",
-                  icon: <PlusIcon />,
+                  href: "/logout",
+                  icon: <FaPlus />,
                   label: "Nova Escola",
                 },
               ]}
@@ -156,26 +153,26 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
               </SidebarItem>
               <SidebarItem href="/events">
                 <Square2StackIcon />
-                <SidebarLabel>Events</SidebarLabel>
+                <SidebarLabel>Estudantes</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/orders">
                 <TicketIcon />
-                <SidebarLabel>Orders</SidebarLabel>
+                <SidebarLabel>Provas</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/broadcasts">
                 <MegaphoneIcon />
-                <SidebarLabel>Broadcasts</SidebarLabel>
+                <SidebarLabel>Sala de Aula</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/settings">
                 <Cog6ToothIcon />
-                <SidebarLabel>Settings</SidebarLabel>
+                <SidebarLabel>Configurações</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
             <SidebarSpacer />
             <SidebarSection>
               <SidebarItem href="/support">
                 <QuestionMarkCircleIcon />
-                <SidebarLabel>Support</SidebarLabel>
+                <SidebarLabel>Suporte</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/changelog">
                 <SparklesIcon />
@@ -187,21 +184,20 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
             <Dropdown
               anchor="top start"
               button={
-                <SidebarItem className="flex min-w-0 items-center gap-3">
+                <SidebarItem className="flex min-w-0 items-center gap-3 ">
                   <div>
                     <Avatar
                       src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=500&h=500&q=80"
-                      square
                       className="size-10"
                       alt="Erica"
                     />
                   </div>
 
                   <span className="min-w-0">
-                    <span className="block truncate text-sm/5 font-medium text-zinc-100 ">
+                    <span className="block truncate text-sm/5 font-medium group-hover:text-zinc-900 ">
                       Erica
                     </span>
-                    <span className="block truncate text-xs/5 font-normal text-zinc-500">
+                    <span className="block truncate text-xs/5 font-normal group-hover:text-zinc-700">
                       erica@example.com
                     </span>
                   </span>
@@ -212,29 +208,29 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
                 {
                   href: "/my-profile",
                   icon: <UserIcon />,
-                  label: "My profile",
+                  label: "Meu Perfil",
                 },
                 {
                   href: "/settings",
                   icon: <Cog8ToothIcon />,
-                  label: "Settings",
+                  label: "Configurações",
                 },
                 "divider",
                 {
                   href: "/privacy-policy",
                   icon: <ShieldCheckIcon />,
-                  label: "Privacy policy",
+                  label: "Política de Privacidade",
                 },
                 {
                   href: "/share-feedback",
                   icon: <LightBulbIcon />,
-                  label: "Share feedback",
+                  label: "Compartilhar Feedback",
                 },
                 "divider",
                 {
                   href: "/logout",
                   icon: <ArrowRightStartOnRectangleIcon />,
-                  label: "Sign out",
+                  label: "Sair",
                 },
               ]}
               className="w-full"

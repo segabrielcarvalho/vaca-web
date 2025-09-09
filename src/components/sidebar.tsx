@@ -135,7 +135,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
 ) {
   const classes = clsx(
     // Base
-    "flex w-full items-center gap-3 rounded-full px-4 py-3 text-left text-base/6 font-medium text-zinc-100  sm:py-3 sm:text-sm/5",
+    "flex w-full items-center gap-3 rounded-full px-4 py-3 text-left text-base/6 font-medium text-zinc-100  sm:py-3 sm:text-sm/5 cursor-pointer",
 
     // Leading icon / icon-only
     "*:data-[slot=icon]:size-6 *:data-[slot=icon]:shrink-0  sm:*:data-[slot=icon]:size-5",
@@ -177,7 +177,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
       ) : (
         <Headless.Button
           {...props}
-          className={clsx("cursor-default", classes)}
+          className={clsx("cursor-pointer", classes)}
           data-current={current ? "true" : undefined}
           ref={ref}
         >
