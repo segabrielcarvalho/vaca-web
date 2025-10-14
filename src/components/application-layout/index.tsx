@@ -6,25 +6,15 @@ import {
   Cog6ToothIcon,
   HomeIcon,
   MegaphoneIcon,
-  Square2StackIcon,
-  TicketIcon,
 } from "@heroicons/react/20/solid";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
 import { FaPlus, FaSchool } from "react-icons/fa";
-import { useAuthContext } from "../../contexts/AuthContext";
-import getRoutes from "../../routes";
+import getRoutes, { isPathActive } from "../../routes";
 import { Logo } from "../logo";
 import { StackedLayout } from "../stacked-layout";
-
-const norm = (p: string) => p.split("?")[0].replace(/\/+$/, "") || "/";
-const pickActiveHref = (pathname: string, hrefs: string[]) => {
-  const a = norm(pathname);
-  const list = hrefs.map(norm).sort((x, y) => y.length - x.length);
-  return list.find((b) => a === b || a.startsWith(b + "/")) || "";
-};
 
 function NavItem({
   href,
@@ -39,81 +29,61 @@ function NavItem({
     <Link
       href={href}
       aria-current={active ? "page" : undefined}
-      className={[
-        "inline-flex items-center gap-2 rounded-lg px-3 sm:px-4 md:px-5 py-2 text-sm font-medium transition",
+      className={clsx(
+        "inline-flex items-center gap-2 rounded-lg border border-transparent px-3 py-2 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 sm:px-4 md:px-5",
         active
-          ? "bg-yellow-500 text-black dark:bg-yellow-500 dark:text-black"
-          : "text-zinc-700 hover:bg-yellow-500 hover:text-black dark:text-zinc-300 dark:hover:bg-yellow-500 dark:hover:text-black",
-      ].join(" ")}
+          ? "bg-yellow-400 text-zinc-900 shadow-[0_25px_65px_-40px_rgba(250,204,21,0.75)]"
+          : "text-white hover:bg-yellow-400 hover:text-zinc-900"
+      )}
     >
       {children}
     </Link>
   );
 }
-
 function HorizontalNavbar() {
-  const pathname = usePathname() || "";
-  const allHrefs = useMemo(
-    () => [
-      getRoutes().home.path(),
-      "/events",
-      "/orders",
-      "/broadcasts",
-      "/settings",
-      "/support",
-      "/changelog",
-    ],
-    []
-  );
-  const activeHref = useMemo(
-    () => pickActiveHref(pathname, allHrefs),
-    [pathname, allHrefs]
-  );
+  const pathname = usePathname();
+  const routes = getRoutes();
+  const homeHref = routes.home.path();
+  const classesHref = "/classes";
+  const settingsHref = "/settings";
 
   return (
-    <div className="w-full">
-      <div className="w-full flex items-center gap-3 px-4 sm:px-6 lg:px-8 py-2 flex-col sm:flex-row">
+    <div className="w-full ">
+      <div className="w-full flex items-center gap-3 px-4 sm:px-6 lg:px-8 py-2 flex-col sm:flex-row ">
         <div className="shrink-0">
-          <Logo className="h-10 sm:h-12 w-auto" />
+          <Logo className="h-10 sm:h-14 w-auto" />
         </div>
 
         <nav className="flex-1">
           <div className="flex flex-wrap justify-center items-center gap-x-1 sm:gap-x-2 gap-y-2">
-            <NavItem href="/home" active={norm("/home") === activeHref}>
+            <NavItem href={homeHref} active={isPathActive(pathname, homeHref)}>
               <HomeIcon className="size-4 sm:size-5" />
               <span>Home</span>
             </NavItem>
 
             <NavItem
-              href="/broadcasts"
-              active={norm("/broadcasts") === activeHref}
+              href={classesHref}
+              active={isPathActive(pathname, classesHref)}
             >
               <MegaphoneIcon className="size-4 sm:size-5" />
-              <span>Sala de Aula</span>
+              <span>Salas de Aula</span>
             </NavItem>
 
-            <NavItem href="/events" active={norm("/events") === activeHref}>
-              <Square2StackIcon className="size-4 sm:size-5" />
-              <span>Estudantes</span>
-            </NavItem>
-
-            <NavItem href="/orders" active={norm("/orders") === activeHref}>
-              <TicketIcon className="size-4 sm:size-5" />
-              <span>Provas</span>
-            </NavItem>
-
-            <NavItem href="/settings" active={norm("/settings") === activeHref}>
+            <NavItem
+              href={settingsHref}
+              active={isPathActive(pathname, settingsHref)}
+            >
               <Cog6ToothIcon className="size-4 sm:size-5" />
               <span>Configurações</span>
             </NavItem>
           </div>
         </nav>
 
-        <div className="shrink-0">
+        <div className="flex shrink-0 items-center gap-3">
           <Dropdown
             anchor="bottom end"
             button={
-              <button className="inline-flex items-center gap-3 rounded-lg px-2 py-1.5 text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:text-white dark:hover:bg-zinc-700/50">
+              <button className="cursor-pointer inline-flex items-center gap-3 rounded-lg px-2 py-1.5 text-white transition hover:border-yellow-200 hover:bg-yellow-50 hover:text-zinc-900">
                 <Avatar
                   className="size-8"
                   alt="UniEvangélica"
@@ -147,7 +117,6 @@ function HorizontalNavbar() {
 }
 
 export function ApplicationLayout({ children }: { children: React.ReactNode }) {
-  const { user } = useAuthContext();
   return (
     <StackedLayout navbar={<HorizontalNavbar />}>{children}</StackedLayout>
   );

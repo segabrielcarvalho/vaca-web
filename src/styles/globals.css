@@ -4,11 +4,8 @@
 @custom-variant light (&:where(.light, .light *));
 :root {
   color-scheme: only light;
-}
-
-:root {
-  --background: var(--color-brand-200);
-  --foreground: #fafafa;
+  --background: #f9fafb;
+  --foreground: #1c1917;
   --font-sans: var(--font-inter);
   --font-mono: var(
     --font-geist-mono,
@@ -20,14 +17,7 @@
     "Liberation Mono",
     monospace
   );
-  --toastify-color-lighth: #52525c;
-}
-
-@media (prefers-color-scheme: lighth) {
-  :root {
-    --background: var(--color-brand-800);
-    --foreground: var(--color-brand-100);
-  }
+  --toastify-color-lighth: #27272a;
 }
 
 html {

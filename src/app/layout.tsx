@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${inter.variable} light antialiased h-full w-full overflow-x-hidden`}
     >
       <meta name="color-scheme" content="light" />
-      <body className="min-w-0 h-full w-full overflow-x-hidden scrollbar-thin scrollbar-thumb-brand-600 scrollbar-track-transparent text-zinc-950">
+      <body className="min-w-0 h-full w-full overflow-x-hidden bg-white text-zinc-900 scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-transparent">
         <Providers>{children}</Providers>
       </body>
     </html>
