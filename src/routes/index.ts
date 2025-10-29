@@ -28,6 +28,9 @@ const getRoutes = () => ({
   auth: {
     name: "Autenticação",
     login: { path: (params?: Params) => buildPath("/auth/login", params) },
+    googleCallback: {
+      path: (params?: Params) => buildPath("/auth/google/callback", params),
+    },
     forgotPassword: {
       path: (params?: Params) => buildPath("/auth/forgot-password", params),
     },

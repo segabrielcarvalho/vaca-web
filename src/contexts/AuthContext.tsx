@@ -26,6 +26,7 @@ type AuthContextData = {
   signIn(
     credentials: LoginMutationVariables & { redirectPath?: string }
   ): Promise<void>;
+  signInWithToken(token: string, redirectPath?: string): Promise<void>;
   signOut(redirect?: boolean): void;
   user: User | null;
   isAuthenticated: boolean;
@@ -103,6 +104,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (meData?.me) setUser(meData.me);
   }, [meData]);
 
+  const finalizeSignIn = useCallback(
+    async (token: string, redirectPath?: string) => {
+      nookies.set(null, settings.tokenKey, token, {
+        maxAge,
+        path: "/",
+        sameSite: "Strict",
+        secure: process.env.NODE_ENV === "production",
+      });
+
+      const me = await fetchMe();
+      if (me.data?.me) setUser(me.data.me);
+
+      broadcast.current?.postMessage("signIn");
+      router.push(redirectPath || getRoutes().home.path());
+    },
+    [fetchMe, router]
+  );
+
+  const signInWithToken = useCallback(
+    async (token: string, redirectPath?: string) => {
+      setIsLoading(true);
+      try {
+        await finalizeSignIn(token, redirectPath);
+      } catch (e) {
+        if (e instanceof Error) toastError({ message: e.message });
+        throw e;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [finalizeSignIn, toastError]
+  );
+
   const signIn = useCallback(
     async ({
       email,
@@ -124,18 +158,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           throw new Error(message);
         }
 
-        nookies.set(null, settings.tokenKey, accessToken, {
-          maxAge,
-          path: "/",
-          sameSite: "Strict",
-          secure: process.env.NODE_ENV === "production",
-        });
-
-        const me = await fetchMe();
-        if (me.data?.me) setUser(me.data.me);
-
-        broadcast.current?.postMessage("signIn");
-        router.push(redirectPath || getRoutes().home.path());
+        await finalizeSignIn(accessToken, redirectPath);
       } catch (e) {
         if (e instanceof Error) toastError({ message: e.message });
         throw e;
@@ -143,13 +166,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoading(false);
       }
     },
-    [Login, fetchMe, router, toastError]
+    [Login, finalizeSignIn, toastError]
   );
 
   return (
     <AuthContext.Provider
       value={{
         signIn,
+        signInWithToken,
         signOut,
         user,
         isAuthenticated,

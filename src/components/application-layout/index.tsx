@@ -1,17 +1,16 @@
 "use client";
 
 import { Avatar } from "@/components/avatar";
-import { Dropdown } from "@/components/dropdown";
+import { Button } from "@/components/button";
+import { useAuthContext } from "@/contexts/AuthContext";
 import {
   Cog6ToothIcon,
   HomeIcon,
   MegaphoneIcon,
 } from "@heroicons/react/20/solid";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaPlus, FaSchool } from "react-icons/fa";
 import getRoutes, { isPathActive } from "../../routes";
 import { Logo } from "../logo";
 import { StackedLayout } from "../stacked-layout";
@@ -46,6 +45,23 @@ function HorizontalNavbar() {
   const homeHref = routes.home.path();
   const classesHref = "/classes";
   const settingsHref = "/settings";
+  const { user, signOut, isLoading } = useAuthContext();
+
+  console.log("User in Navbar:", user);
+
+  const displayName = user?.name || "Usuário";
+  const displayEmail = user?.email || "";
+  const avatarUrl = user?.avatarUrl || undefined;
+  const initials =
+    !avatarUrl && displayName
+      ? displayName
+          .split(/\s+/)
+          .map((part) => part[0])
+          .filter(Boolean)
+          .join("")
+          .slice(0, 2)
+          .toUpperCase()
+      : undefined;
 
   return (
     <div className="w-full ">
@@ -79,37 +95,38 @@ function HorizontalNavbar() {
           </div>
         </nav>
 
-        <div className="flex shrink-0 items-center gap-3">
-          <Dropdown
-            anchor="bottom end"
-            button={
-              <button className="cursor-pointer inline-flex items-center gap-3 rounded-lg px-2 py-1.5 text-white transition hover:border-yellow-200 hover:bg-yellow-50 hover:text-zinc-900">
-                <Avatar
-                  className="size-8"
-                  alt="UniEvangélica"
-                  src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                />
-                <span className="hidden sm:block text-sm font-medium">
-                  UniEvangélica
+        <div className="flex w-full sm:w-auto shrink-0 items-stretch justify-center sm:justify-end">
+          <div className="flex w-full max-w-sm items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-white shadow-sm backdrop-blur">
+            <Avatar
+              className="size-10 bg-yellow-400 text-zinc-900"
+              alt={displayName}
+              src={avatarUrl}
+              initials={initials}
+            />
+            <div className="min-w-0 flex-1">
+              <span className="block text-xs font-semibold uppercase tracking-wide text-yellow-200">
+                Perfil
+              </span>
+              <span className="block truncate text-sm font-medium">
+                {displayName}
+              </span>
+              {displayEmail && (
+                <span className="block truncate text-xs text-zinc-200">
+                  {displayEmail}
                 </span>
-                <ChevronDownIcon className="size-4" />
-              </button>
-            }
-            items={[
-              {
-                href: "/my-profile",
-                icon: <FaSchool />,
-                label: "Colégio Delta - Anápolis",
-              },
-              {
-                href: "/settings",
-                icon: <FaSchool />,
-                label: "CPMG Senador Onefre Quinan",
-              },
-              "divider",
-              { href: "/new-school", icon: <FaPlus />, label: "Nova Escola" },
-            ]}
-          />
+              )}
+            </div>
+            <Button
+              type="button"
+              size="sm"
+              plain
+              className="border border-yellow-400/60 bg-white/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:border-yellow-400 hover:bg-yellow-400 hover:text-zinc-900"
+              onClick={() => signOut()}
+              disabled={isLoading}
+            >
+              Sair
+            </Button>
+          </div>
         </div>
       </div>
     </div>

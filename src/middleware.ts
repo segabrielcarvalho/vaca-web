@@ -8,6 +8,7 @@ import { makeServerApolloClient } from "./services/apollo/rscClient";
 const PUBLIC_ROUTES = [
   getRoutes().auth.login.path(),
   getRoutes().auth.forgotPassword.path(),
+  getRoutes().auth.googleCallback.path(),
 ];
 
 const isPublicRoute = (p: string) => PUBLIC_ROUTES.includes(p);
@@ -36,30 +37,30 @@ const clearCookies = (res: NextResponse) => {
 };
 
 export default async function middleware(req: NextRequest) {
-  // const { pathname } = req.nextUrl;
-  // const token = req.cookies.get(settings.tokenKey)?.value;
+  const { pathname, search } = req.nextUrl;
+  const token = req.cookies.get(settings.tokenKey)?.value;
 
-  // if (!token && !isPublicRoute(pathname)) {
-  //   return NextResponse.redirect(
-  //     new URL(getRoutes().auth.login.path(), req.nextUrl)
-  //   );
-  // }
+  if (!token) {
+    if (isPublicRoute(pathname)) return NextResponse.next();
+    const url = new URL(getRoutes().auth.login.path(), req.nextUrl);
+    if (pathname !== getRoutes().auth.login.path()) {
+      url.searchParams.set("redirect", `${pathname}${search}`);
+    }
+    return NextResponse.redirect(url);
+  }
 
-  // if (token) {
-  //   const { valid, expired } = await validateToken(token);
-  //   if (!valid) {
-  //     const url = new URL(getRoutes().auth.login.path(), req.nextUrl);
-  //     url.searchParams.set("reason", expired ? "expired" : "invalid");
-  //     const res = NextResponse.redirect(url);
-  //     clearCookies(res);
-  //     return res;
-  //   }
-  //   if (isPublicRoute(pathname)) {
-  //     return NextResponse.redirect(
-  //       new URL(getRoutes().home.path(), req.nextUrl)
-  //     );
-  //   }
-  // }
+  const { valid, expired } = await validateToken(token);
+  if (!valid) {
+    const url = new URL(getRoutes().auth.login.path(), req.nextUrl);
+    url.searchParams.set("reason", expired ? "expired" : "invalid");
+    const res = NextResponse.redirect(url);
+    clearCookies(res);
+    return res;
+  }
+
+  if (isPublicRoute(pathname)) {
+    return NextResponse.redirect(new URL(getRoutes().home.path(), req.nextUrl));
+  }
 
   return NextResponse.next();
 }
