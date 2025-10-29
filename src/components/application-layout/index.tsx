@@ -47,8 +47,6 @@ function HorizontalNavbar() {
   const settingsHref = "/settings";
   const { user, signOut, isLoading } = useAuthContext();
 
-  console.log("User in Navbar:", user);
-
   const displayName = user?.name || "Usuário";
   const displayEmail = user?.email || "";
   const avatarUrl = user?.avatarUrl || undefined;
@@ -121,7 +119,9 @@ function HorizontalNavbar() {
               size="sm"
               plain
               className="border border-yellow-400/60 bg-white/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:border-yellow-400 hover:bg-yellow-400 hover:text-zinc-900"
-              onClick={() => signOut()}
+              onClick={() => {
+                void signOut();
+              }}
               disabled={isLoading}
             >
               Sair

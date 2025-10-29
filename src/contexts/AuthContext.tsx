@@ -27,7 +27,7 @@ type AuthContextData = {
     credentials: LoginMutationVariables & { redirectPath?: string }
   ): Promise<void>;
   signInWithToken(token: string, redirectPath?: string): Promise<void>;
-  signOut(redirect?: boolean): void;
+  signOut(redirect?: boolean): Promise<void>;
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -56,23 +56,41 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const isAuthenticated = !!user;
 
-  const signOut = useCallback(
-    (redirect = true) => {
-      setUser(null);
-      nookies.destroy(null, settings.tokenKey);
-      nookies.destroy(null, settings.refreshTokenKey);
-      broadcast.current?.postMessage("signOut");
-      if (redirect) router.push(getRoutes().auth.login.path());
+  const performLocalSignOut = useCallback(() => {
+    setUser(null);
+    nookies.destroy(null, settings.tokenKey, { path: "/" });
+    nookies.destroy(null, settings.refreshTokenKey, { path: "/" });
+  }, []);
+
+  const redirectToLogin = useCallback(
+    async () => {
+      const loginPath = getRoutes().auth.login.path();
+      await router.push(loginPath);
+      router.refresh();
     },
     [router]
+  );
+
+  const signOut = useCallback(
+    async (redirect = true) => {
+      setIsLoading(true);
+      try {
+        performLocalSignOut();
+        broadcast.current?.postMessage("signOut");
+        if (redirect) await redirectToLogin();
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [performLocalSignOut, redirectToLogin]
   );
 
   useEffect(() => {
     broadcast.current = new BroadcastChannel("auth");
     broadcast.current.onmessage = async (msg) => {
       if (msg.data === "signOut") {
-        setUser(null);
-        router.push(getRoutes().auth.login.path());
+        performLocalSignOut();
+        await redirectToLogin();
       }
       if (msg.data === "signIn") {
         const { data } = await fetchMe();
@@ -80,7 +98,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     };
     return () => broadcast.current?.close();
-  }, [fetchMe, router]);
+  }, [fetchMe, performLocalSignOut, redirectToLogin]);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -92,7 +110,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           if (data?.me) setUser(data.me);
         }
       } catch {
-        signOut(false);
+        await signOut(false);
       } finally {
         setIsLoading(false);
       }
