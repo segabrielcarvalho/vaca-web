@@ -137,17 +137,19 @@ export function StackedLayout({ navbar, children }: StackedLayoutProps) {
 
   return (
     <LayoutSidebarContext.Provider value={sidebarControls}>
-      <div className="relative isolate flex min-h-svh w-full flex-col bg-slate-50 text-zinc-900">
+      <div className="relative isolate flex h-svh min-h-svh w-full flex-col overflow-hidden bg-slate-50 text-zinc-900">
         <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/90 backdrop-blur">
-          <div className="flex items-center justify-between px-4 py-3 sm:px-6 lg:px-8 bg-blue-950 text-white">
+          <div className="flex items-center justify-between bg-blue-950 px-4 py-3 text-white sm:px-6 lg:px-8">
             {navbar}
           </div>
         </header>
 
-        <main className="relative flex flex-1 items-stretch overflow-visible">
+        <main className="relative flex flex-1 items-stretch overflow-hidden">
           <div className="relative z-10 flex flex-1 flex-col px-4 pb-6 pt-4 transition-all duration-300 sm:px-6 lg:px-8">
-            <div className="w-full rounded-2xl bg-white p-6 shadow-[0_32px_90px_-50px_rgba(15,23,42,0.35)] ring-1 ring-zinc-100">
-              {children}
+            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-300/70 hover:scrollbar-thumb-yellow-300/80">
+              <div className="w-full rounded-2xl bg-white p-6 shadow-[0_32px_90px_-50px_rgba(15,23,42,0.35)] ring-1 ring-zinc-100">
+                {children}
+              </div>
             </div>
           </div>
 

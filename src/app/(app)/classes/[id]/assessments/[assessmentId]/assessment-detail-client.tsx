@@ -1,7 +1,6 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import clsx from "clsx";
 import Image from "next/image";
 import { Fragment, useState } from "react";
 
@@ -29,14 +28,34 @@ const correctedStudents = [
   },
 ];
 
-const highlightedResponse = [
-  { number: "01", answer: "A", correct: true },
-  { number: "02", answer: "C", correct: false, expected: "D" },
-  { number: "03", answer: "B", correct: true },
-  { number: "04", answer: "E", correct: true },
-  { number: "05", answer: "B", correct: true },
-  { number: "06", answer: "A", correct: false, expected: "C" },
+const difficultyBreakdown = [
+  { id: "easy", label: "Questões fáceis", questions: 18, accuracy: 94 },
+  { id: "medium", label: "Questões medianas", questions: 12, accuracy: 81 },
+  { id: "hard", label: "Questões desafiadoras", questions: 8, accuracy: 63 },
 ];
+
+const summaryStats = [
+  {
+    id: "objective",
+    label: "Itens objetivos",
+    value: "38 questões",
+    detail: "Tempo médio de 45s por questão",
+  },
+  {
+    id: "case-study",
+    label: "Estudos de caso",
+    value: "2 narrativas",
+    detail: "Correção manual com rubrica",
+  },
+  {
+    id: "incidents",
+    label: "Ajustes realizados",
+    value: "17 ocorrências",
+    detail: "Rasuras e dupla marcação tratadas",
+  },
+];
+
+const consistencyTrend = [72, 78, 83, 87, 91, 94];
 
 const correctionSteps = [
   {
@@ -100,6 +119,17 @@ export function AssessmentDetailClient({
   assessmentId,
 }: AssessmentDetailClientProps) {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+
+  const trendPoints = consistencyTrend
+    .map((value, index) => {
+      const x = (index / (consistencyTrend.length - 1)) * 220;
+      const y = 80 - (value / 100) * 60;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+  const trendDiff =
+    consistencyTrend[consistencyTrend.length - 1] - consistencyTrend[0];
+  const trendDiffLabel = `${trendDiff >= 0 ? "+" : ""}${trendDiff.toFixed(0)} pp`;
 
   const openReviewDialog = () => setIsReviewOpen(true);
   const closeReviewDialog = () => setIsReviewOpen(false);
@@ -200,86 +230,96 @@ export function AssessmentDetailClient({
       <section className="grid gap-6 lg:grid-cols-3">
         <article className="lg:col-span-2 rounded-2xl border border-zinc-200 bg-white p-6 shadow-[0_22px_70px_-45px_rgba(15,23,42,0.25)]">
           <h2 className="text-lg font-semibold text-zinc-900">
-            Folha destacada (Davi Nogueira)
+            Resumo da correção
           </h2>
           <p className="text-sm text-zinc-500">
-            Resultado da leitura óptica com alternativas marcadas.
+            Indicadores consolidados da leitura óptica deste exame.
           </p>
 
-          <div className="mt-4 flex flex-col gap-6 lg:flex-row">
-            <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50">
-              <Image
-                src="https://images.unsplash.com/photo-1517520287167-4bbf64a00d66?auto=format&fit=crop&w=700&q=80"
-                alt="Folha OMR digitalizada"
-                width={360}
-                height={480}
-                className="h-full w-full object-cover"
-              />
+          <div className="mt-4 space-y-6">
+            <div className="grid gap-3 sm:grid-cols-3">
+              {summaryStats.map((stat) => (
+                <div
+                  key={stat.id}
+                  className="rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm shadow-sm"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+                    {stat.label}
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-blue-900">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs text-blue-700/70">{stat.detail}</p>
+                </div>
+              ))}
             </div>
 
-            <div className="flex-1 space-y-4">
-              <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
-                <h3 className="text-sm font-semibold text-zinc-900">
-                  Resumo da leitura
-                </h3>
-                <dl className="mt-3 grid gap-3 sm:grid-cols-2 text-sm">
-                  <div>
-                    <dt className="text-xs uppercase tracking-wide text-zinc-500">
-                      Tempo de leitura
-                    </dt>
-                    <dd className="font-medium text-zinc-800">48 segundos</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs uppercase tracking-wide text-zinc-500">
-                      Confiabilidade
-                    </dt>
-                    <dd className="font-medium text-zinc-800">99,2%</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs uppercase tracking-wide text-zinc-500">
-                      Riscos detectados
-                    </dt>
-                    <dd className="font-medium text-zinc-800">
-                      2 rasuras sinalizadas
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs uppercase tracking-wide text-zinc-500">
-                      Ajustes manuais
-                    </dt>
-                    <dd className="font-medium text-zinc-800">
-                      Questões 02 e 06 pendentes
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-
-              <div className="rounded-xl border border-zinc-200 bg-white p-4">
-                <h3 className="text-sm font-semibold text-zinc-900">
-                  Gabarito de destaque
-                </h3>
-                <ul className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                  {highlightedResponse.map((question) => (
-                    <li
-                      key={question.number}
-                      className={clsx(
-                        "flex items-center justify-between rounded-lg border px-3 py-2",
-                        question.correct
-                          ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                          : "border-orange-200 bg-orange-50 text-orange-700"
-                      )}
-                    >
-                      <span>
-                        Questão {question.number} • {question.answer}
+            <div>
+              <h3 className="text-sm font-semibold text-zinc-900">
+                Desempenho por nível de dificuldade
+              </h3>
+              <div className="mt-3 space-y-3">
+                {difficultyBreakdown.map((item) => (
+                  <div key={item.id}>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium text-zinc-800">
+                        {item.label} • {item.questions} itens
                       </span>
-                      {!question.correct && (
-                        <span className="text-xs font-medium text-orange-700">
-                          Correto: {question.expected}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                      <span className="text-xs font-medium text-emerald-600">
+                        {item.accuracy}% de acerto
+                      </span>
+                    </div>
+                    <div className="mt-2 h-2 rounded-full bg-zinc-100">
+                      <div
+                        className="h-full rounded-full bg-yellow-400"
+                        style={{ width: `${item.accuracy}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-sm font-semibold text-zinc-900">
+                  Consistência das leituras OMR
+                </h3>
+                <span className="text-xs font-semibold text-emerald-600">
+                  {trendDiffLabel}
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-zinc-500">
+                Taxa de confiança das últimas digitalizações.
+              </p>
+              <svg
+                viewBox="0 0 220 80"
+                className="mt-3 h-20 w-full text-yellow-400"
+                role="presentation"
+              >
+                <defs>
+                  <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor="rgba(250,204,21,0.4)" />
+                    <stop offset="100%" stopColor="rgba(250,204,21,0)" />
+                  </linearGradient>
+                </defs>
+                <polygon
+                  points={`${trendPoints} 220,80 0,80`}
+                  fill="url(#trendFill)"
+                />
+                <polyline
+                  points={trendPoints}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="drop-shadow-[0_2px_4px_rgba(250,204,21,0.35)]"
+                />
+              </svg>
+              <div className="mt-2 flex items-center justify-between text-xs text-zinc-400">
+                <span>Início do período</span>
+                <span>Correções recentes</span>
               </div>
             </div>
           </div>

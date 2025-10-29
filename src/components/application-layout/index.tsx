@@ -49,9 +49,9 @@ function HorizontalNavbar() {
 
   return (
     <div className="w-full ">
-      <div className="w-full flex items-center gap-3 px-4 sm:px-6 lg:px-8 py-2 flex-col sm:flex-row ">
+      <div className="w-full flex items-center gap-3 px-4 sm:px-6 lg:px-8 flex-col sm:flex-row ">
         <div className="shrink-0">
-          <Logo className="h-10 sm:h-14 w-auto" />
+          <Logo className="h-10 sm:h-18 w-auto" />
         </div>
 
         <nav className="flex-1">

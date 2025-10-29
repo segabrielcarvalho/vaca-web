@@ -73,7 +73,7 @@ function ExpandedSidebarContent({
   onClose: () => void;
 }) {
   return (
-    <div className="flex h-full flex-1 flex-col divide-y divide-zinc-100 lg:overflow-hidden">
+    <div className="flex h-full flex-1 flex-col divide-y divide-zinc-100 lg:overflow-hidden mt-5">
       <header className="flex items-center justify-between px-5 py-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
@@ -100,7 +100,7 @@ function ExpandedSidebarContent({
 
 function CollapsedSidebarRail({ onOpen }: { onOpen: () => void }) {
   return (
-    <div className="hidden h-full w-full flex-col items-center justify-start lg:flex">
+    <div className="hidden h-full w-full flex-col items-center justify-start lg:flex mt-3">
       <div className="bg-yellow-500 mt-4 p-3 rounded-l-full cursor-pointer shadow-[0_20px_65px_-40px_rgba(250,204,21,0.75)] hover:shadow-[0_25px_65px_-40px_rgba(250,204,21,0.85)] transition">
         <IoIosArrowBack className="size-5" onClick={onOpen} />
       </div>

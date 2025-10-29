@@ -62,7 +62,13 @@ const rubric = [
   },
 ];
 
-export default function ClassAssessmentsPage() {
+export default function ClassAssessmentsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const basePath = `/classes/${params.id}/assessments`;
+
   return (
     <div className="space-y-8">
       <section>
@@ -139,7 +145,7 @@ export default function ClassAssessmentsPage() {
                   Baixar relatórios
                 </button>
                 <Link
-                  href={`${assessment.id}`}
+                  href={`${basePath}/${assessment.id}`}
                   className="inline-flex items-center rounded-lg bg-yellow-400 px-3 py-2 text-sm font-semibold text-zinc-900 shadow-[0_14px_45px_-30px_rgba(250,204,21,0.9)] transition hover:bg-yellow-300"
                 >
                   Ver detalhes

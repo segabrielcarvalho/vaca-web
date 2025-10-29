@@ -92,7 +92,7 @@ export function DetailHeader({ classId }: DetailHeaderProps) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
-            Turma ENEM Intensivo ({classId.toUpperCase()})
+            Arquitetura e Projeto de Software ({classId.toUpperCase()})
           </h1>
           <p className="text-sm text-zinc-500">
             Correção automática de avaliações objetivas com OMR, geração de
