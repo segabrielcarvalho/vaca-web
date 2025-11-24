@@ -1,0 +1,13 @@
+mutation CreateCourse($data: CreateCourseInput!) {
+  createCourse(data: $data) {
+    id
+    name
+    description
+    isActive
+    bannerPath
+    schoolId
+    coordinatorId
+    createdAt
+    updatedAt
+  }
+}
