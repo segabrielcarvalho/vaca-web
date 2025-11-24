@@ -145,9 +145,9 @@ export function StackedLayout({ navbar, children }: StackedLayoutProps) {
         </header>
 
         <main className="relative flex flex-1 items-stretch overflow-hidden">
-          <div className="relative z-10 flex flex-1 flex-col px-4 pb-6 pt-4 transition-all duration-300 sm:px-6 lg:px-8">
+          <div className="relative z-10 flex flex-1 flex-col px-4 pb-24 pt-4 transition-all duration-300 sm:px-6 sm:pb-6 lg:px-8 lg:pb-6">
             <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-300/70 hover:scrollbar-thumb-yellow-300/80">
-              <div className="w-full rounded-2xl bg-white p-6 shadow-[0_32px_90px_-50px_rgba(15,23,42,0.35)] ring-1 ring-zinc-100">
+              <div className="w-full rounded-2xl bg-white p-6 ring-1 ring-zinc-100">
                 {children}
               </div>
             </div>

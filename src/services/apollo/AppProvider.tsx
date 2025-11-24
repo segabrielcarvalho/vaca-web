@@ -5,20 +5,33 @@ import {
   ApolloNextAppProvider,
   InMemoryCache,
 } from "@apollo/client-integration-nextjs";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 import { typePolicies } from "./cache";
-import { browserLink } from "./links";
+import { browserLink, createServerLink } from "./links";
 
-function makeClient() {
+function makeClient(initialToken?: string) {
+  const isServer = typeof window === "undefined";
+
   return new ApolloClient({
-    link: browserLink,
+    link: isServer ? createServerLink(initialToken) : browserLink,
     cache: new InMemoryCache({ typePolicies }),
   });
 }
 
-export function ApolloWrapper({ children }: { children: ReactNode }) {
+export function ApolloWrapper({
+  children,
+  initialToken,
+}: {
+  children: ReactNode;
+  initialToken?: string;
+}) {
+  const makeClientWithToken = useCallback(
+    () => makeClient(initialToken),
+    [initialToken]
+  );
+
   return (
-    <ApolloNextAppProvider makeClient={makeClient}>
+    <ApolloNextAppProvider makeClient={makeClientWithToken}>
       {children}
     </ApolloNextAppProvider>
   );

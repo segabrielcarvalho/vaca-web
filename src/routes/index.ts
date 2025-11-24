@@ -41,6 +41,19 @@ const getRoutes = () => ({
     path: (params?: Params) => buildPath("/home", params),
   },
 
+  schools: {
+    name: "Escolas",
+    path: (params?: Params) => buildPath("/schools", params),
+    show: {
+      path: (schoolId: string, params?: Params) =>
+        buildPath(`/schools/${schoolId}`, params),
+      courses: {
+        path: (schoolId: string, params?: Params) =>
+          buildPath(`/schools/${schoolId}/courses`, params),
+      },
+    },
+  },
+
   users: {
     name: "Usuários",
     path: (params?: Params) => buildPath("/users", params),

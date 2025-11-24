@@ -14,8 +14,8 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <div className="w-full">
-      <div className="flex flex-wrap md:flex-nowrap items-start md:items-center justify-between w-full mb-8">
-        <div className="flex-shrink-0 mr-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between w-full mb-8">
+        <div className="min-w-0 mr-4 space-y-1">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-zinc-100">
             {title}
           </h2>
@@ -26,7 +26,7 @@ export default function SectionHeader({
           )}
         </div>
         {actions.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-2">
+          <div className="flex w-full max-w-full flex-wrap items-center gap-2 pt-2 md:w-auto md:justify-end overflow-x-auto">
             {actions.map((action, idx) => (
               <div key={idx} className="flex items-center">
                 {action}

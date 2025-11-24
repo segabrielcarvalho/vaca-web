@@ -16,197 +16,164 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   DateTime: { input: any; output: any; }
-  JSON: { input: any; output: any; }
   Upload: { input: any; output: any; }
 };
 
-export type BannerForListObject = {
-  __typename?: 'BannerForListObject';
+export type AgentObject = {
+  __typename?: 'AgentObject';
+  Roles?: Maybe<Array<AgentRoleObject>>;
   createdAt: Scalars['DateTime']['output'];
-  description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  imagePath: Scalars['String']['output'];
-  imageUrl: Scalars['String']['output'];
-  isActive?: Maybe<Scalars['Boolean']['output']>;
-  name: Scalars['String']['output'];
-  offerUrl?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
+  userId: Scalars['ID']['output'];
 };
 
-export type BannerListObject = {
-  __typename?: 'BannerListObject';
-  count: Scalars['Int']['output'];
-  rows: Array<BannerForListObject>;
+export type AgentRoleObject = {
+  __typename?: 'AgentRoleObject';
+  agentId?: Maybe<Scalars['ID']['output']>;
+  id: Scalars['ID']['output'];
+  type: AgentTypeEnum;
 };
 
-export type BannerObject = {
-  __typename?: 'BannerObject';
-  createdAt: Scalars['DateTime']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  imagePath: Scalars['String']['output'];
-  imageUrl: Scalars['String']['output'];
-  isActive?: Maybe<Scalars['Boolean']['output']>;
-  name: Scalars['String']['output'];
-  offerUrl?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-};
+export enum AgentTypeEnum {
+  Coordinator = 'coordinator',
+  Director = 'director',
+  Teacher = 'teacher'
+}
 
 export type BoolFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
   not?: InputMaybe<NestedBoolFilter>;
 };
 
-export type ConnectCategoryToFlowInput = {
-  create: Array<CreateIaAgentFlowCategoryInput>;
+export type CoordinatorInput = {
+  agentId?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type ConnectDisconnectPlanToIaAgentFlowInput = {
-  connect?: InputMaybe<Array<UniqueFieldIdInput>>;
-  disconnect?: InputMaybe<Array<UniqueFieldIdInput>>;
+export type CorrectionEnqueueObject = {
+  __typename?: 'CorrectionEnqueueObject';
+  examId: Scalars['String']['output'];
+  jobId?: Maybe<Scalars['String']['output']>;
+  sessionId: Scalars['String']['output'];
 };
 
-export type ConnectManyPlansToFlowInput = {
-  connect: Array<UniqueFieldIdInput>;
+export type CorrectionSessionObject = {
+  __typename?: 'CorrectionSessionObject';
+  examId: Scalars['String']['output'];
+  sessionId: Scalars['String']['output'];
 };
 
-export type ConnectManyToKnowledgeBaseInput = {
-  connect: Array<UniqueFieldIdInput>;
+export enum CorrectionStatusEnum {
+  Error = 'ERROR',
+  Graded = 'GRADED',
+  PhotoOk = 'PHOTO_OK',
+  Processing = 'PROCESSING',
+  Queued = 'QUEUED'
+}
+
+export type CorrectionStatusObject = {
+  __typename?: 'CorrectionStatusObject';
+  attempt?: Maybe<Scalars['Float']['output']>;
+  correctionId?: Maybe<Scalars['String']['output']>;
+  examId: Scalars['String']['output'];
+  issues?: Maybe<Array<Scalars['String']['output']>>;
+  maxScore?: Maybe<Scalars['Float']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  score?: Maybe<Scalars['Float']['output']>;
+  sessionId: Scalars['String']['output'];
+  status: CorrectionStatusEnum;
+  studentRegistration?: Maybe<Scalars['String']['output']>;
 };
 
-export type ConnectOneToIaAgentInput = {
-  connect: UniqueFieldIdInput;
+export type CourseForListObject = {
+  __typename?: 'CourseForListObject';
+  Coordinator?: Maybe<AgentObject>;
+  School?: Maybe<SchoolObject>;
+  bannerPath?: Maybe<Scalars['String']['output']>;
+  coordinatorId?: Maybe<Scalars['ID']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  schoolId: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
-export type ConnectToFolderPathInput = {
-  connect: PickObjectType;
+export type CourseListObject = {
+  __typename?: 'CourseListObject';
+  count: Scalars['Int']['output'];
+  rows: Array<CourseForListObject>;
 };
 
-export type ConnectToGenericInput = {
-  connect: UniqueFieldIdInput;
+export type CourseObject = {
+  __typename?: 'CourseObject';
+  Coordinator?: Maybe<AgentObject>;
+  School?: Maybe<SchoolObject>;
+  bannerPath?: Maybe<Scalars['String']['output']>;
+  coordinatorId?: Maybe<Scalars['ID']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  schoolId: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
-export type ConnectToMessageInput = {
-  connect: UniqueFieldIdInput;
-};
-
-export type ConnectToSessionInput = {
-  connect: UniqueFieldIdInput;
-};
-
-export type CreateAgentToFlowCategoryInput = {
-  create: Array<IaAgentFlowCategoryOrderCreateInput>;
-};
-
-export type CreateBannerInput = {
-  File: Scalars['Upload']['input'];
+export type CreateCourseInput = {
+  bannerPath?: InputMaybe<Scalars['String']['input']>;
+  coordinator?: InputMaybe<CoordinatorInput>;
   description?: InputMaybe<Scalars['String']['input']>;
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
-  offerUrl?: InputMaybe<Scalars['String']['input']>;
+  schoolId: Scalars['String']['input'];
 };
 
-export type CreateDeleteManyToIaAgentInput = {
-  delete?: InputMaybe<Array<UniqueFieldIdInput>>;
-};
-
-export type CreateFileInput = {
-  Files: Array<Scalars['Upload']['input']>;
-  Folder: ConnectToFolderPathInput;
-};
-
-export type CreateFolderInput = {
-  Parent?: InputMaybe<ConnectToFolderPathInput>;
-  name: Scalars['String']['input'];
-};
-
-export type CreateIaAgentFlowCategoryInput = {
-  Agents?: InputMaybe<CreateAgentToFlowCategoryInput>;
-  name: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-};
-
-export type CreateIaAgentFlowInput = {
-  Banner?: InputMaybe<Scalars['String']['input']>;
-  Categories: ConnectCategoryToFlowInput;
-  Plans: ConnectManyPlansToFlowInput;
-  Reordered?: InputMaybe<Array<ReorderIaAgentFlowItemInput>>;
-  comingSoon: Scalars['Boolean']['input'];
+export type CreateExamInput = {
   description?: InputMaybe<Scalars['String']['input']>;
-  isActive: Scalars['Boolean']['input'];
-  name: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
-  tutorialDescription: Scalars['String']['input'];
-  tutorialLink: Scalars['String']['input'];
-  tutorialTitle: Scalars['String']['input'];
+  fileBase64: Scalars['String']['input'];
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  klassId: Scalars['String']['input'];
+  questions: Array<ExamQuestionInput>;
+  title: Scalars['String']['input'];
 };
 
-export type CreateIaAgentInput = {
-  Model: ConnectOneToIaAgentInput;
-  appName: Scalars['String']['input'];
-  avatarInBase64?: InputMaybe<Scalars['String']['input']>;
-  comingSoon?: Scalars['Boolean']['input'];
-  complementaryLink?: InputMaybe<Scalars['String']['input']>;
+export type CreateKlassInput = {
+  bannerPath?: InputMaybe<Scalars['String']['input']>;
+  courseId: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
-  featured: Scalars['Boolean']['input'];
-  instruction: Scalars['String']['input'];
-  marketplace: Scalars['Boolean']['input'];
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
-  systemMessage?: InputMaybe<Scalars['String']['input']>;
-  temperature: Scalars['Float']['input'];
-  tools?: InputMaybe<Array<Scalars['String']['input']>>;
+  teacher?: InputMaybe<TeacherInput>;
 };
 
-export type CreateKnowledgeBaseInput = {
-  Folders: ConnectManyToKnowledgeBaseInput;
-  name: Scalars['String']['input'];
-  qdrantCollectionName: Scalars['String']['input'];
-  toolDescription: Scalars['String']['input'];
-  toolName: Scalars['String']['input'];
-};
-
-export type CreateMessageInput = {
-  Session: ConnectToMessageInput;
-  content: Scalars['String']['input'];
-  role: MessageRole;
-};
-
-export type CreateModelInput = {
-  apiKey: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  provider: ModelProviderEnum;
-  providerUrl: Scalars['String']['input'];
-  slug: Scalars['String']['input'];
-};
-
-export type CreatePlanInput = {
-  Limit?: InputMaybe<CreatePlanWithLimitInput>;
-  code: Scalars['String']['input'];
+export type CreateSchoolInput = {
+  bannerPath?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  director?: InputMaybe<DirectorInput>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
 };
 
-export type CreatePlanLimitInput = {
-  limitType: LimitTypeEnum;
-  limitValue: Scalars['Int']['input'];
-  period: PeriodUnitEnum;
-};
-
-export type CreatePlanWithLimitInput = {
-  create: CreatePlanLimitInput;
-};
-
-export type CreateSessionInput = {
-  Agent: ConnectToSessionInput;
-  title?: InputMaybe<Scalars['String']['input']>;
+export type CreateStudentInput = {
+  email: Scalars['String']['input'];
+  gender?: InputMaybe<GenderEnum>;
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  registrationNumber: Scalars['String']['input'];
 };
 
 export type CreateUserInput = {
+  agentType?: InputMaybe<AgentTypeEnum>;
   email: Scalars['String']['input'];
   gender?: InputMaybe<GenderEnum>;
-  isActive?: Scalars['Boolean']['input'];
-  isTest?: Scalars['Boolean']['input'];
-  menteeType?: InputMaybe<MenteeTypeEnum>;
-  name: Scalars['String']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
   role: RoleEnum;
 };
 
@@ -225,92 +192,57 @@ export type DefaultWhereIdInput = {
   id: Scalars['ID']['input'];
 };
 
-export type FileForListObject = {
-  __typename?: 'FileForListObject';
-  Folder: FolderObject;
-  createdAt: Scalars['DateTime']['output'];
-  folderId: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  mimeType?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
-  path: Scalars['String']['output'];
-  size?: Maybe<Scalars['Int']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-  url: Scalars['String']['output'];
+export type DirectorInput = {
+  agentId?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type FileListObject = {
-  __typename?: 'FileListObject';
+export type EnrollStudentInput = {
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
+  studentId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ExamForListObject = {
+  __typename?: 'ExamForListObject';
+  Klass?: Maybe<KlassObject>;
+  Questions?: Maybe<Array<QuestionObject>>;
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  filePath: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  klassId: Scalars['ID']['output'];
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type ExamListObject = {
+  __typename?: 'ExamListObject';
   count: Scalars['Int']['output'];
-  rows: Array<FileForListObject>;
+  rows: Array<ExamForListObject>;
 };
 
-export type FileObject = {
-  __typename?: 'FileObject';
-  Folder: FolderObject;
+export type ExamObject = {
+  __typename?: 'ExamObject';
+  Klass?: Maybe<KlassObject>;
+  Questions?: Maybe<Array<QuestionObject>>;
   createdAt: Scalars['DateTime']['output'];
-  folderId: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  filePath: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  mimeType?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
-  path: Scalars['String']['output'];
-  size?: Maybe<Scalars['Int']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-  url: Scalars['String']['output'];
-};
-
-export type FileToFolderRelationFilterInput = {
-  is?: InputMaybe<ListFoldersInput>;
-  isNot?: InputMaybe<ListFoldersInput>;
-};
-
-export type FloatFilter = {
-  equals?: InputMaybe<Scalars['Float']['input']>;
-  gt?: InputMaybe<Scalars['Float']['input']>;
-  gte?: InputMaybe<Scalars['Float']['input']>;
-  in?: InputMaybe<Array<Scalars['Float']['input']>>;
-  lt?: InputMaybe<Scalars['Float']['input']>;
-  lte?: InputMaybe<Scalars['Float']['input']>;
-  notIn?: InputMaybe<Array<Scalars['Float']['input']>>;
-};
-
-export type FolderForListObject = {
-  __typename?: 'FolderForListObject';
-  Children?: Maybe<Array<FolderObject>>;
-  Files?: Maybe<Array<FileObject>>;
-  Parent?: Maybe<FolderObject>;
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  parentId?: Maybe<Scalars['String']['output']>;
-  path: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
+  isActive: Scalars['Boolean']['output'];
+  klassId: Scalars['ID']['output'];
+  title: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type FolderListObject = {
-  __typename?: 'FolderListObject';
-  count: Scalars['Int']['output'];
-  rows: Array<FolderForListObject>;
-};
-
-export type FolderObject = {
-  __typename?: 'FolderObject';
-  Children?: Maybe<Array<FolderObject>>;
-  Files?: Maybe<Array<FileObject>>;
-  Parent?: Maybe<FolderObject>;
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  parentId?: Maybe<Scalars['String']['output']>;
-  path: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type FolderRelationFilter = {
-  is?: InputMaybe<ListFoldersInput>;
-  isNot?: InputMaybe<ListFoldersInput>;
+export type ExamQuestionInput = {
+  correctOptions: Array<Scalars['Int']['input']>;
+  number: Scalars['Int']['input'];
+  text?: InputMaybe<Scalars['String']['input']>;
+  value: Scalars['Float']['input'];
 };
 
 export enum GenderEnum {
@@ -319,219 +251,60 @@ export enum GenderEnum {
   Other = 'other'
 }
 
-export type IaAgentCreateNestedOneInput = {
-  connect: UniqueFieldIdInput;
+export type GenderEnumFilter = {
+  equals?: InputMaybe<GenderEnum>;
+  in?: InputMaybe<Array<GenderEnum>>;
+  notIn?: InputMaybe<Array<GenderEnum>>;
 };
 
-export type IaAgentFlowCategoryObject = {
-  __typename?: 'IaAgentFlowCategoryObject';
-  Agents?: Maybe<Array<IaAgentFlowCategoryOrderObject>>;
-  Flow: IaAgentFlowObject;
-  createdAt: Scalars['DateTime']['output'];
-  flowId: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  isActive: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  order: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type IaAgentFlowCategoryOrderCreateInput = {
-  Agent: IaAgentCreateNestedOneInput;
-  order: Scalars['Int']['input'];
-};
-
-export type IaAgentFlowCategoryOrderObject = {
-  __typename?: 'IaAgentFlowCategoryOrderObject';
-  Agent: IaAgentObject;
-  Category?: Maybe<IaAgentFlowCategoryObject>;
-  agentId: Scalars['String']['output'];
-  categoryId: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  isActive: Scalars['Boolean']['output'];
-  order: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type IaAgentFlowForListObject = {
-  __typename?: 'IaAgentFlowForListObject';
-  Categories?: Maybe<Array<IaAgentFlowCategoryObject>>;
+export type KlassForListObject = {
+  __typename?: 'KlassForListObject';
+  Course?: Maybe<CourseObject>;
+  Teacher?: Maybe<AgentObject>;
   bannerPath?: Maybe<Scalars['String']['output']>;
-  bannerUrl?: Maybe<Scalars['String']['output']>;
-  comingSoon: Scalars['Boolean']['output'];
+  courseId: Scalars['ID']['output'];
   createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   isActive: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
-  order: Scalars['Int']['output'];
-  tutorialDescription: Scalars['String']['output'];
-  tutorialLink: Scalars['String']['output'];
-  tutorialTitle: Scalars['String']['output'];
+  teacherId?: Maybe<Scalars['ID']['output']>;
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type IaAgentFlowListObject = {
-  __typename?: 'IaAgentFlowListObject';
+export type KlassListObject = {
+  __typename?: 'KlassListObject';
   count: Scalars['Int']['output'];
-  rows: Array<IaAgentFlowForListObject>;
+  rows: Array<KlassForListObject>;
 };
 
-export type IaAgentFlowListRelationFilter = {
-  none?: InputMaybe<ListIaAgentFlowsInput>;
-  some?: InputMaybe<ListIaAgentFlowsInput>;
-};
-
-export type IaAgentFlowObject = {
-  __typename?: 'IaAgentFlowObject';
-  Categories?: Maybe<Array<IaAgentFlowCategoryObject>>;
+export type KlassObject = {
+  __typename?: 'KlassObject';
+  Course?: Maybe<CourseObject>;
+  Teacher?: Maybe<AgentObject>;
   bannerPath?: Maybe<Scalars['String']['output']>;
-  bannerUrl?: Maybe<Scalars['String']['output']>;
-  comingSoon: Scalars['Boolean']['output'];
+  courseId: Scalars['ID']['output'];
   createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   isActive: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
-  order: Scalars['Int']['output'];
-  tutorialDescription: Scalars['String']['output'];
-  tutorialLink: Scalars['String']['output'];
-  tutorialTitle: Scalars['String']['output'];
+  teacherId?: Maybe<Scalars['ID']['output']>;
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type IaAgentObject = {
-  __typename?: 'IaAgentObject';
-  Model: ModelObject;
-  Sessions?: Maybe<Array<SessionObject>>;
-  appName: Scalars['String']['output'];
-  avatarPath?: Maybe<Scalars['String']['output']>;
-  avatarUrl?: Maybe<Scalars['String']['output']>;
-  comingSoon: Scalars['Boolean']['output'];
-  complementaryLink?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  featured: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
-  instruction: Scalars['String']['output'];
-  isActive: Scalars['Boolean']['output'];
-  marketplace: Scalars['Boolean']['output'];
-  modelId: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  systemMessage?: Maybe<Scalars['String']['output']>;
-  temperature: Scalars['Float']['output'];
-  tools?: Maybe<Array<Scalars['String']['output']>>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type IaAgentsForListObject = {
-  __typename?: 'IaAgentsForListObject';
-  Model: ModelObject;
-  Sessions?: Maybe<Array<SessionObject>>;
-  appName: Scalars['String']['output'];
-  avatarPath?: Maybe<Scalars['String']['output']>;
-  avatarUrl?: Maybe<Scalars['String']['output']>;
-  comingSoon: Scalars['Boolean']['output'];
-  complementaryLink?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  featured: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
-  instruction: Scalars['String']['output'];
-  isActive: Scalars['Boolean']['output'];
-  marketplace: Scalars['Boolean']['output'];
-  modelId: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  systemMessage?: Maybe<Scalars['String']['output']>;
-  temperature: Scalars['Float']['output'];
-  tools?: Maybe<Array<Scalars['String']['output']>>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type IaAgentsListObject = {
-  __typename?: 'IaAgentsListObject';
-  count: Scalars['Int']['output'];
-  rows: Array<IaAgentsForListObject>;
-};
-
-export type IntFilter = {
-  equals?: InputMaybe<Scalars['Int']['input']>;
-  gt?: InputMaybe<Scalars['Int']['input']>;
-  gte?: InputMaybe<Scalars['Int']['input']>;
-  in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  lt?: InputMaybe<Scalars['Int']['input']>;
-  lte?: InputMaybe<Scalars['Int']['input']>;
-  not?: InputMaybe<IntFilterBase>;
-  notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
-};
-
-export type IntFilterBase = {
-  equals?: InputMaybe<Scalars['Int']['input']>;
-  gt?: InputMaybe<Scalars['Int']['input']>;
-  gte?: InputMaybe<Scalars['Int']['input']>;
-  in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  lt?: InputMaybe<Scalars['Int']['input']>;
-  lte?: InputMaybe<Scalars['Int']['input']>;
-  notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
-};
-
-export type KnowledgeBaseFileObject = {
-  __typename?: 'KnowledgeBaseFileObject';
-  File: FileObject;
-  KnowledgeBase: KnowledgeBaseObject;
-  createdAt: Scalars['DateTime']['output'];
-  fileId: Scalars['String']['output'];
-  knowledgeBaseId: Scalars['String']['output'];
-};
-
-export type KnowledgeBaseForListObject = {
-  __typename?: 'KnowledgeBaseForListObject';
-  Files?: Maybe<Array<KnowledgeBaseFileObject>>;
-  createdAt: Scalars['DateTime']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  qdrantCollectionName: Scalars['String']['output'];
-  toolDescription: Scalars['String']['output'];
-  toolName: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type KnowledgeBaseListObject = {
-  __typename?: 'KnowledgeBaseListObject';
-  count: Scalars['Int']['output'];
-  rows: Array<KnowledgeBaseForListObject>;
-};
-
-export type KnowledgeBaseObject = {
-  __typename?: 'KnowledgeBaseObject';
-  Files?: Maybe<Array<KnowledgeBaseFileObject>>;
-  createdAt: Scalars['DateTime']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  qdrantCollectionName: Scalars['String']['output'];
-  toolDescription: Scalars['String']['output'];
-  toolName: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export enum LimitTypeEnum {
-  Request = 'request',
-  Token = 'token'
-}
-
-export type ListBannersInput = {
-  AND?: InputMaybe<Array<ListBannersInput>>;
-  NOT?: InputMaybe<Array<ListBannersInput>>;
-  OR?: InputMaybe<Array<ListBannersInput>>;
+export type ListCoursesInput = {
+  AND?: InputMaybe<Array<ListCoursesInput>>;
+  NOT?: InputMaybe<Array<ListCoursesInput>>;
+  OR?: InputMaybe<Array<ListCoursesInput>>;
+  bannerPath?: InputMaybe<StringFilter>;
+  coordinatorId?: InputMaybe<StringFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   description?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
   isActive?: InputMaybe<BoolFilter>;
   name?: InputMaybe<StringFilter>;
-  offerUrl?: InputMaybe<StringFilter>;
+  schoolId?: InputMaybe<StringFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
 };
 
@@ -540,158 +313,48 @@ export type ListDefaultInput = {
   updatedAt?: InputMaybe<SortOrder>;
 };
 
-export type ListFilesInput = {
-  AND?: InputMaybe<Array<ListFilesInput>>;
-  Folder?: InputMaybe<FileToFolderRelationFilterInput>;
-  NOT?: InputMaybe<Array<ListFilesInput>>;
-  OR?: InputMaybe<Array<ListFilesInput>>;
+export type ListExamsInput = {
+  AND?: InputMaybe<Array<ListExamsInput>>;
+  NOT?: InputMaybe<Array<ListExamsInput>>;
+  OR?: InputMaybe<Array<ListExamsInput>>;
   createdAt?: InputMaybe<DateTimeFilter>;
-  folderId?: InputMaybe<StringFilter>;
+  description?: InputMaybe<StringFilter>;
+  filePath?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
-  mimeType?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringFilter>;
-  path?: InputMaybe<StringFilter>;
-  size?: InputMaybe<IntFilter>;
+  isActive?: InputMaybe<BoolFilter>;
+  klassId?: InputMaybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
 };
 
-export type ListFoldersInput = {
-  AND?: InputMaybe<Array<ListFoldersInput>>;
-  NOT?: InputMaybe<Array<ListFoldersInput>>;
-  OR?: InputMaybe<Array<ListFoldersInput>>;
-  Parent?: InputMaybe<FolderRelationFilter>;
-  createdAt?: InputMaybe<DateTimeFilter>;
-  id?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringFilter>;
-  parentId?: InputMaybe<StringFilter>;
-  path?: InputMaybe<StringFilter>;
-  slug?: InputMaybe<StringFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
-};
-
-export type ListIaAgentFlowsInput = {
-  AND?: InputMaybe<Array<ListIaAgentFlowsInput>>;
-  NOT?: InputMaybe<Array<ListIaAgentFlowsInput>>;
-  OR?: InputMaybe<Array<ListIaAgentFlowsInput>>;
-  Plans?: InputMaybe<PlanListRelationFilter>;
+export type ListKlassesInput = {
+  AND?: InputMaybe<Array<ListKlassesInput>>;
+  NOT?: InputMaybe<Array<ListKlassesInput>>;
+  OR?: InputMaybe<Array<ListKlassesInput>>;
   bannerPath?: InputMaybe<StringFilter>;
-  comingSoon?: InputMaybe<BoolFilter>;
+  courseId?: InputMaybe<StringFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   description?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
   isActive?: InputMaybe<BoolFilter>;
   name?: InputMaybe<StringFilter>;
-  tutorialDescription?: InputMaybe<StringFilter>;
-  tutorialLink?: InputMaybe<StringFilter>;
-  tutorialTitle?: InputMaybe<StringFilter>;
+  schoolId?: InputMaybe<StringFilter>;
+  teacherId?: InputMaybe<StringFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
 };
 
-export type ListIaAgentFlowsOrderByInput = {
-  createdAt?: InputMaybe<SortOrder>;
-  order?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type ListIaAgentsInput = {
-  AND?: InputMaybe<Array<ListIaAgentsInput>>;
-  NOT?: InputMaybe<Array<ListIaAgentsInput>>;
-  OR?: InputMaybe<Array<ListIaAgentsInput>>;
-  appName?: InputMaybe<StringFilter>;
+export type ListSchoolsInput = {
+  AND?: InputMaybe<Array<ListSchoolsInput>>;
+  NOT?: InputMaybe<Array<ListSchoolsInput>>;
+  OR?: InputMaybe<Array<ListSchoolsInput>>;
+  bannerPath?: InputMaybe<StringFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   description?: InputMaybe<StringFilter>;
-  featured?: InputMaybe<BoolFilter>;
-  id?: InputMaybe<StringFilter>;
-  instruction?: InputMaybe<StringFilter>;
-  isActive?: InputMaybe<BoolFilter>;
-  modelId?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringFilter>;
-  systemMessage?: InputMaybe<StringFilter>;
-  temperature?: InputMaybe<FloatFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
-};
-
-export type ListKnowledgeBasesInput = {
-  AND?: InputMaybe<Array<ListKnowledgeBasesInput>>;
-  NOT?: InputMaybe<Array<ListKnowledgeBasesInput>>;
-  OR?: InputMaybe<Array<ListKnowledgeBasesInput>>;
-  createdAt?: InputMaybe<DateTimeFilter>;
-  description?: InputMaybe<StringFilter>;
-  id?: InputMaybe<StringFilter>;
-  isActive?: InputMaybe<BoolFilter>;
-  name?: InputMaybe<StringFilter>;
-  qdrantCollectionName?: InputMaybe<StringFilter>;
-  toolDescription?: InputMaybe<StringFilter>;
-  toolName?: InputMaybe<StringFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
-};
-
-export type ListMenteesInput = {
-  AND?: InputMaybe<Array<ListMenteesInput>>;
-  NOT?: InputMaybe<Array<ListMenteesInput>>;
-  OR?: InputMaybe<Array<ListMenteesInput>>;
-  createdAt?: InputMaybe<DateTimeFilter>;
-  id?: InputMaybe<StringFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
-  userId?: InputMaybe<StringFilter>;
-};
-
-export type ListMessagesInput = {
-  AND?: InputMaybe<Array<ListMessagesInput>>;
-  NOT?: InputMaybe<Array<ListMessagesInput>>;
-  OR?: InputMaybe<Array<ListMessagesInput>>;
-  completionTokens?: InputMaybe<IntFilter>;
-  content?: InputMaybe<StringFilter>;
-  createdAt?: InputMaybe<DateTimeFilter>;
-  eventId?: InputMaybe<StringFilter>;
-  id?: InputMaybe<StringFilter>;
-  promptTokens?: InputMaybe<IntFilter>;
-  sessionId?: InputMaybe<StringFilter>;
-  timestamp?: InputMaybe<DateTimeFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
-  userId?: InputMaybe<StringFilter>;
-};
-
-export type ListModelsInput = {
-  AND?: InputMaybe<Array<ListModelsInput>>;
-  NOT?: InputMaybe<Array<ListModelsInput>>;
-  OR?: InputMaybe<Array<ListModelsInput>>;
-  apiKey?: InputMaybe<StringFilter>;
-  createdAt?: InputMaybe<DateTimeFilter>;
-  id?: InputMaybe<StringFilter>;
-  isActive?: InputMaybe<BoolFilter>;
-  name?: InputMaybe<StringFilter>;
-  slug?: InputMaybe<StringFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
-};
-
-export type ListPlansInput = {
-  AND?: InputMaybe<Array<ListPlansInput>>;
-  Flows?: InputMaybe<IaAgentFlowListRelationFilter>;
-  Mentee?: InputMaybe<MenteesListRelationFilter>;
-  NOT?: InputMaybe<Array<ListPlansInput>>;
-  OR?: InputMaybe<Array<ListPlansInput>>;
-  code?: InputMaybe<StringFilter>;
-  createdAt?: InputMaybe<DateTimeFilter>;
+  directorId?: InputMaybe<StringFilter>;
   id?: InputMaybe<StringFilter>;
   isActive?: InputMaybe<BoolFilter>;
   name?: InputMaybe<StringFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
-};
-
-export type ListSessionsInput = {
-  AND?: InputMaybe<Array<ListSessionsInput>>;
-  NOT?: InputMaybe<Array<ListSessionsInput>>;
-  OR?: InputMaybe<Array<ListSessionsInput>>;
-  agentId?: InputMaybe<StringFilter>;
-  appName?: InputMaybe<StringFilter>;
-  createdAt?: InputMaybe<DateTimeFilter>;
-  endedAt?: InputMaybe<DateTimeFilter>;
-  id?: InputMaybe<StringFilter>;
-  isActive?: InputMaybe<BoolFilter>;
-  isPublic?: InputMaybe<BoolFilter>;
-  updatedAt?: InputMaybe<DateTimeFilter>;
-  userId?: InputMaybe<StringFilter>;
 };
 
 export type ListUsersInput = {
@@ -699,15 +362,13 @@ export type ListUsersInput = {
   NOT?: InputMaybe<Array<ListUsersInput>>;
   OR?: InputMaybe<Array<ListUsersInput>>;
   createdAt?: InputMaybe<DateTimeFilter>;
-  description?: InputMaybe<StringFilter>;
   email?: InputMaybe<StringFilter>;
-  encryptedPassword?: InputMaybe<StringFilter>;
+  gender?: InputMaybe<GenderEnumFilter>;
   id?: InputMaybe<StringFilter>;
   isActive?: InputMaybe<BoolFilter>;
   isTest?: InputMaybe<BoolFilter>;
   lastSession?: InputMaybe<DateTimeFilter>;
   name?: InputMaybe<StringFilter>;
-  offerUrl?: InputMaybe<StringFilter>;
   role?: InputMaybe<RoleEnumFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
   verifiedEmail?: InputMaybe<BoolFilter>;
@@ -719,216 +380,50 @@ export type LoginObject = {
   token: Scalars['String']['output'];
 };
 
-export type MenteeObject = {
-  __typename?: 'MenteeObject';
-  Limits?: Maybe<Array<MenteeUsageLimitObject>>;
-  Plans?: Maybe<Array<PlanObject>>;
-  User: UserObject;
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  type: MenteeTypeEnum;
-  updatedAt: Scalars['DateTime']['output'];
-  userId: Scalars['String']['output'];
-};
-
-export enum MenteeTypeEnum {
-  Fl = 'fl',
-  Insider = 'insider',
-  Plat = 'plat'
-}
-
-export type MenteeUsageLimitObject = {
-  __typename?: 'MenteeUsageLimitObject';
-  lastReset: Scalars['DateTime']['output'];
-  limitId: Scalars['String']['output'];
-  menteeId: Scalars['String']['output'];
-  used: Scalars['Int']['output'];
-};
-
-export type MenteesListRelationFilter = {
-  none?: InputMaybe<ListMenteesInput>;
-  some?: InputMaybe<ListMenteesInput>;
-};
-
-export type MessageForListObject = {
-  __typename?: 'MessageForListObject';
-  Session: SessionObject;
-  completionTokens?: Maybe<Scalars['Int']['output']>;
-  content: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  metadataJson?: Maybe<Scalars['JSON']['output']>;
-  promptTokens?: Maybe<Scalars['Int']['output']>;
-  role: MessageRole;
-  sessionId: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type MessageListObject = {
-  __typename?: 'MessageListObject';
-  count: Scalars['Int']['output'];
-  rows: Array<MessageForListObject>;
-};
-
-export type MessageObject = {
-  __typename?: 'MessageObject';
-  Session: SessionObject;
-  completionTokens?: Maybe<Scalars['Int']['output']>;
-  content: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  metadataJson?: Maybe<Scalars['JSON']['output']>;
-  promptTokens?: Maybe<Scalars['Int']['output']>;
-  role: MessageRole;
-  sessionId: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export enum MessageRole {
-  Assistant = 'assistant',
-  System = 'system',
-  Tool = 'tool',
-  User = 'user'
-}
-
-export type MessageSubscriptionObject = {
-  __typename?: 'MessageSubscriptionObject';
-  Session: SessionObject;
-  completionTokens?: Maybe<Scalars['Int']['output']>;
-  content: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  metadataJson?: Maybe<Scalars['JSON']['output']>;
-  parentId?: Maybe<Scalars['String']['output']>;
-  promptTokens?: Maybe<Scalars['Int']['output']>;
-  role: MessageRole;
-  sessionId: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ModelForListObject = {
-  __typename?: 'ModelForListObject';
-  IaAgents?: Maybe<Array<IaAgentObject>>;
-  apiKey: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  isActive: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  provider: ModelProviderEnum;
-  providerUrl: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ModelListObject = {
-  __typename?: 'ModelListObject';
-  count: Scalars['Int']['output'];
-  rows: Array<ModelForListObject>;
-};
-
-export type ModelObject = {
-  __typename?: 'ModelObject';
-  IaAgents?: Maybe<Array<IaAgentObject>>;
-  apiKey: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  isActive: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  provider: ModelProviderEnum;
-  providerUrl: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export enum ModelProviderEnum {
-  Anthropic = 'anthropic',
-  AzureOpenAi = 'azureOpenAI',
-  Custom = 'custom',
-  Google = 'google',
-  OpenAi = 'openAI',
-  XAi = 'xAI'
-}
-
 export type Mutation = {
   __typename?: 'Mutation';
-  clientLogin: LoginObject;
-  createBanner: BannerObject;
-  createFile: Array<FileObject>;
-  createFolder: FolderObject;
-  createIaAgent: IaAgentObject;
-  createIaAgentFlow: IaAgentFlowObject;
-  createKnowledgeBase: KnowledgeBaseObject;
-  createModel: ModelObject;
-  createPlan: PlanObject;
-  createSession: SessionObject;
+  createCourse: CourseObject;
+  createExam: ExamObject;
+  createKlass: KlassObject;
+  createSchool: SchoolObject;
+  createStudents: Array<StudentObject>;
   createUser: UserObject;
-  deleteBanner: BannerObject;
-  deleteFolder: Scalars['String']['output'];
-  deleteModel: ModelObject;
-  deletePlan: PlanObject;
+  deleteUser: UserObject;
+  enrollStudents: Scalars['Boolean']['output'];
   login: LoginObject;
-  sendMessage: MessageObject;
-  updateBanner: BannerObject;
-  updateFolder: FolderObject;
-  updateIaAgent: IaAgentObject;
-  updateIaAgentFlow: IaAgentFlowObject;
-  updatePlan: PlanObject;
-  updateSession: SessionObject;
+  startCorrection: CorrectionSessionObject;
+  submitCorrectionPhoto: CorrectionEnqueueObject;
+  updateCourse: CourseObject;
+  updateExam: ExamObject;
+  updateKlass: KlassObject;
+  updateSchool: SchoolObject;
   updateUser: UserObject;
-  validateCode: TokenPairObject;
 };
 
 
-export type MutationClientLoginArgs = {
-  email: Scalars['String']['input'];
+export type MutationCreateCourseArgs = {
+  data: CreateCourseInput;
 };
 
 
-export type MutationCreateBannerArgs = {
-  data: CreateBannerInput;
+export type MutationCreateExamArgs = {
+  data: CreateExamInput;
 };
 
 
-export type MutationCreateFileArgs = {
-  data: CreateFileInput;
+export type MutationCreateKlassArgs = {
+  data: CreateKlassInput;
 };
 
 
-export type MutationCreateFolderArgs = {
-  data: CreateFolderInput;
+export type MutationCreateSchoolArgs = {
+  data: CreateSchoolInput;
 };
 
 
-export type MutationCreateIaAgentArgs = {
-  data: CreateIaAgentInput;
-};
-
-
-export type MutationCreateIaAgentFlowArgs = {
-  data: CreateIaAgentFlowInput;
-};
-
-
-export type MutationCreateKnowledgeBaseArgs = {
-  data: CreateKnowledgeBaseInput;
-};
-
-
-export type MutationCreateModelArgs = {
-  data: CreateModelInput;
-};
-
-
-export type MutationCreatePlanArgs = {
-  data: CreatePlanInput;
-};
-
-
-export type MutationCreateSessionArgs = {
-  data: CreateSessionInput;
+export type MutationCreateStudentsArgs = {
+  data: Array<CreateStudentInput>;
+  klassId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -937,23 +432,14 @@ export type MutationCreateUserArgs = {
 };
 
 
-export type MutationDeleteBannerArgs = {
-  id: Scalars['String']['input'];
+export type MutationDeleteUserArgs = {
+  where: DefaultWhereIdInput;
 };
 
 
-export type MutationDeleteFolderArgs = {
-  folderId: Scalars['String']['input'];
-};
-
-
-export type MutationDeleteModelArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type MutationDeletePlanArgs = {
-  id: Scalars['String']['input'];
+export type MutationEnrollStudentsArgs = {
+  klassId: Scalars['String']['input'];
+  students: Array<EnrollStudentInput>;
 };
 
 
@@ -963,43 +449,36 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationSendMessageArgs = {
-  data: CreateMessageInput;
+export type MutationStartCorrectionArgs = {
+  examId: Scalars['String']['input'];
 };
 
 
-export type MutationUpdateBannerArgs = {
-  data: UpdateBannerInput;
+export type MutationSubmitCorrectionPhotoArgs = {
+  data: SubmitCorrectionInput;
+};
+
+
+export type MutationUpdateCourseArgs = {
+  data: UpdateCourseInput;
   where: DefaultWhereIdInput;
 };
 
 
-export type MutationUpdateFolderArgs = {
-  data: UpdateFolderInput;
+export type MutationUpdateExamArgs = {
+  data: UpdateExamInput;
   where: DefaultWhereIdInput;
 };
 
 
-export type MutationUpdateIaAgentArgs = {
-  data: UpdateIaAgentInput;
+export type MutationUpdateKlassArgs = {
+  data: UpdateKlassInput;
   where: DefaultWhereIdInput;
 };
 
 
-export type MutationUpdateIaAgentFlowArgs = {
-  data: UpdateIAgentFlowInput;
-  where: DefaultWhereIdInput;
-};
-
-
-export type MutationUpdatePlanArgs = {
-  data: UpdatePlanInput;
-  where: DefaultWhereIdInput;
-};
-
-
-export type MutationUpdateSessionArgs = {
-  data: UpdateSessionInput;
+export type MutationUpdateSchoolArgs = {
+  data: UpdateSchoolInput;
   where: DefaultWhereIdInput;
 };
 
@@ -1007,12 +486,6 @@ export type MutationUpdateSessionArgs = {
 export type MutationUpdateUserArgs = {
   data: UpdateUserInput;
   where: DefaultWhereIdInput;
-};
-
-
-export type MutationValidateCodeArgs = {
-  code: Scalars['String']['input'];
-  token: Scalars['String']['input'];
 };
 
 export type NestedBoolFilter = {
@@ -1043,96 +516,39 @@ export type NestedStringFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
-export enum PeriodUnitEnum {
-  Day = 'day',
-  Hour = 'hour',
-  Month = 'month',
-  Week = 'week',
-  Year = 'year'
-}
-
-export type PickObjectType = {
-  path: Scalars['String']['input'];
-};
-
-export type PlanForListObject = {
-  __typename?: 'PlanForListObject';
-  Agents?: Maybe<Array<IaAgentObject>>;
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  isActive?: Maybe<Scalars['Boolean']['output']>;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type PlanListObject = {
-  __typename?: 'PlanListObject';
-  count: Scalars['Int']['output'];
-  rows: Array<PlanForListObject>;
-};
-
-export type PlanListRelationFilter = {
-  none?: InputMaybe<ListPlansInput>;
-  some?: InputMaybe<ListPlansInput>;
-};
-
-export type PlanObject = {
-  __typename?: 'PlanObject';
-  Agents?: Maybe<Array<IaAgentObject>>;
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  isActive?: Maybe<Scalars['Boolean']['output']>;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
 export type Query = {
   __typename?: 'Query';
-  getBanner: BannerObject;
-  getIaAgent?: Maybe<IaAgentObject>;
-  getIaAgentFlow?: Maybe<IaAgentFlowObject>;
-  getPlan: PlanObject;
-  getSession: SessionObject;
+  getCourse: CourseObject;
+  getExam: ExamObject;
+  getKlass: KlassObject;
+  getSchool: SchoolObject;
   getUser: UserObject;
   healthCheck: Scalars['String']['output'];
-  listBanners: BannerListObject;
-  listFiles: FileListObject;
-  listFolders: FolderListObject;
-  listIaAgentFlows: IaAgentFlowListObject;
-  listIaAgents: IaAgentsListObject;
-  listKnowledgeBases: KnowledgeBaseListObject;
-  listMessages: MessageListObject;
-  listModels: ModelListObject;
-  listPlans: PlanListObject;
-  listSessions: SessionListObject;
+  listCourses: CourseListObject;
+  listExams: ExamListObject;
+  listKlasses: KlassListObject;
+  listSchools: SchoolListObject;
   listUsers: UserListObject;
   me: UserObject;
 };
 
 
-export type QueryGetBannerArgs = {
+export type QueryGetCourseArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type QueryGetIaAgentArgs = {
+export type QueryGetExamArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type QueryGetIaAgentFlowArgs = {
+export type QueryGetKlassArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type QueryGetPlanArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryGetSessionArgs = {
+export type QueryGetSchoolArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -1142,83 +558,35 @@ export type QueryGetUserArgs = {
 };
 
 
-export type QueryListBannersArgs = {
+export type QueryListCoursesArgs = {
   orderBy?: InputMaybe<ListDefaultInput>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListBannersInput>;
+  where?: InputMaybe<ListCoursesInput>;
 };
 
 
-export type QueryListFilesArgs = {
+export type QueryListExamsArgs = {
   orderBy?: InputMaybe<ListDefaultInput>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListFilesInput>;
+  where?: InputMaybe<ListExamsInput>;
 };
 
 
-export type QueryListFoldersArgs = {
+export type QueryListKlassesArgs = {
   orderBy?: InputMaybe<ListDefaultInput>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListFoldersInput>;
+  where?: InputMaybe<ListKlassesInput>;
 };
 
 
-export type QueryListIaAgentFlowsArgs = {
-  orderBy?: InputMaybe<ListIaAgentFlowsOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListIaAgentFlowsInput>;
-};
-
-
-export type QueryListIaAgentsArgs = {
+export type QueryListSchoolsArgs = {
   orderBy?: InputMaybe<ListDefaultInput>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListIaAgentsInput>;
-};
-
-
-export type QueryListKnowledgeBasesArgs = {
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListKnowledgeBasesInput>;
-};
-
-
-export type QueryListMessagesArgs = {
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListMessagesInput>;
-};
-
-
-export type QueryListModelsArgs = {
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListModelsInput>;
-};
-
-
-export type QueryListPlansArgs = {
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListPlansInput>;
-};
-
-
-export type QueryListSessionsArgs = {
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListSessionsInput>;
+  where?: InputMaybe<ListSchoolsInput>;
 };
 
 
@@ -1234,9 +602,17 @@ export enum QueryMode {
   Insensitive = 'insensitive'
 }
 
-export type ReorderIaAgentFlowItemInput = {
-  id: Scalars['String']['input'];
-  order: Scalars['Int']['input'];
+export type QuestionObject = {
+  __typename?: 'QuestionObject';
+  correct: Scalars['Int']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  examId: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  number: Scalars['Int']['output'];
+  text?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  value: Scalars['Float']['output'];
 };
 
 export enum RoleEnum {
@@ -1251,67 +627,37 @@ export type RoleEnumFilter = {
   notIn?: InputMaybe<Array<RoleEnum>>;
 };
 
-export type SessionForListObject = {
-  __typename?: 'SessionForListObject';
-  Agent: IaAgentObject;
-  Messages?: Maybe<Array<MessageObject>>;
-  Participants?: Maybe<Array<SessionParticipantObject>>;
-  agentId: Scalars['String']['output'];
-  appName?: Maybe<Scalars['String']['output']>;
+export type SchoolForListObject = {
+  __typename?: 'SchoolForListObject';
+  Director?: Maybe<AgentObject>;
+  bannerPath?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
-  endedAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  directorId?: Maybe<Scalars['ID']['output']>;
   id: Scalars['ID']['output'];
   isActive: Scalars['Boolean']['output'];
-  isPublic: Scalars['Boolean']['output'];
-  stateJson?: Maybe<Scalars['JSON']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
-  userId?: Maybe<Scalars['String']['output']>;
 };
 
-export type SessionListObject = {
-  __typename?: 'SessionListObject';
+export type SchoolListObject = {
+  __typename?: 'SchoolListObject';
   count: Scalars['Int']['output'];
-  rows: Array<SessionForListObject>;
+  rows: Array<SchoolForListObject>;
 };
 
-export type SessionObject = {
-  __typename?: 'SessionObject';
-  Agent: IaAgentObject;
-  Messages?: Maybe<Array<MessageObject>>;
-  Participants?: Maybe<Array<SessionParticipantObject>>;
-  agentId: Scalars['String']['output'];
-  appName?: Maybe<Scalars['String']['output']>;
+export type SchoolObject = {
+  __typename?: 'SchoolObject';
+  Director?: Maybe<AgentObject>;
+  bannerPath?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
-  endedAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  directorId?: Maybe<Scalars['ID']['output']>;
   id: Scalars['ID']['output'];
   isActive: Scalars['Boolean']['output'];
-  isPublic: Scalars['Boolean']['output'];
-  stateJson?: Maybe<Scalars['JSON']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
-  userId?: Maybe<Scalars['String']['output']>;
 };
-
-export type SessionParticipantObject = {
-  __typename?: 'SessionParticipantObject';
-  Session: SessionObject;
-  User: UserObject;
-  joinedAt: Scalars['DateTime']['output'];
-  leftAt?: Maybe<Scalars['DateTime']['output']>;
-  roleInSession: SessionRoleEnum;
-  sessionId: Scalars['String']['output'];
-  userId: Scalars['String']['output'];
-};
-
-export enum SessionRoleEnum {
-  Admin = 'admin',
-  Guest = 'guest',
-  Owner = 'owner',
-  Participant = 'participant',
-  Support = 'support',
-  System = 'system'
-}
 
 export enum SortOrder {
   Asc = 'asc',
@@ -1333,94 +679,94 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type StudentObject = {
+  __typename?: 'StudentObject';
+  Klasses?: Maybe<Array<KlassObject>>;
+  User?: Maybe<UserObject>;
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  registrationNumber: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  userId: Scalars['ID']['output'];
+};
+
+export type SubmitCorrectionInput = {
+  delta?: InputMaybe<Scalars['Float']['input']>;
+  examId: Scalars['String']['input'];
+  fileBase64: Scalars['String']['input'];
+  sessionId: Scalars['String']['input'];
+  threshold?: InputMaybe<Scalars['Float']['input']>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
-  messageAdded: MessageSubscriptionObject;
+  correctionStatus: CorrectionStatusObject;
 };
 
 
-export type SubscriptionMessageAddedArgs = {
+export type SubscriptionCorrectionStatusArgs = {
   sessionId: Scalars['String']['input'];
 };
 
-export type TokenPairObject = {
-  __typename?: 'TokenPairObject';
-  accessToken: Scalars['String']['output'];
-  refreshToken: Scalars['String']['output'];
+export type TeacherInput = {
+  agentId?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UniqueFieldIdInput = {
-  id: Scalars['ID']['input'];
-};
-
-export type UpdateBannerInput = {
-  File?: InputMaybe<Scalars['Upload']['input']>;
+export type UpdateCourseInput = {
+  bannerPath?: InputMaybe<Scalars['String']['input']>;
+  coordinator?: InputMaybe<CoordinatorInput>;
   description?: InputMaybe<Scalars['String']['input']>;
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  offerUrl?: InputMaybe<Scalars['String']['input']>;
+  schoolId?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UpdateFolderInput = {
-  Parent?: InputMaybe<ConnectToGenericInput>;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateIAgentFlowInput = {
-  File?: InputMaybe<Scalars['Upload']['input']>;
-  Plans?: InputMaybe<ConnectDisconnectPlanToIaAgentFlowInput>;
-  comingSoon?: InputMaybe<Scalars['Boolean']['input']>;
+export type UpdateExamInput = {
   description?: InputMaybe<Scalars['String']['input']>;
+  fileBase64?: InputMaybe<Scalars['String']['input']>;
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Int']['input']>;
-  tutorialDescription?: InputMaybe<Scalars['String']['input']>;
-  tutorialLink?: InputMaybe<Scalars['String']['input']>;
-  tutorialTitle?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateIaAgentInput = {
-  Model?: InputMaybe<ConnectOneToIaAgentInput>;
-  Plans?: InputMaybe<CreateDeleteManyToIaAgentInput>;
-  appName?: InputMaybe<Scalars['String']['input']>;
-  avatarInBase64?: InputMaybe<Scalars['String']['input']>;
-  avatarPath?: InputMaybe<Scalars['String']['input']>;
-  comingSoon?: InputMaybe<Scalars['Boolean']['input']>;
-  complementaryLink?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  featured?: InputMaybe<Scalars['Boolean']['input']>;
-  instruction?: InputMaybe<Scalars['String']['input']>;
-  isActive?: InputMaybe<Scalars['Boolean']['input']>;
-  marketplace?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  systemMessage?: InputMaybe<Scalars['String']['input']>;
-  temperature?: InputMaybe<Scalars['Float']['input']>;
-  tools?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
-export type UpdatePlanInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  isActive?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateSessionInput = {
-  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  klassId?: InputMaybe<Scalars['String']['input']>;
+  questions?: InputMaybe<Array<ExamQuestionInput>>;
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateKlassInput = {
+  bannerPath?: InputMaybe<Scalars['String']['input']>;
+  courseId?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  teacher?: InputMaybe<TeacherInput>;
+};
+
+export type UpdateSchoolInput = {
+  bannerPath?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  director?: InputMaybe<DirectorInput>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateUserInput = {
+  agentType?: InputMaybe<AgentTypeEnum>;
   email?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<GenderEnum>;
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   isTest?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<RoleEnum>;
+  verifiedEmail?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type UserForListObject = {
   __typename?: 'UserForListObject';
-  Mentee?: Maybe<MenteeObject>;
+  Agent?: Maybe<AgentObject>;
+  Student?: Maybe<StudentObject>;
   avatarUrl: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   email: Scalars['String']['output'];
@@ -1429,7 +775,7 @@ export type UserForListObject = {
   isActive: Scalars['Boolean']['output'];
   isTest: Scalars['Boolean']['output'];
   lastSession?: Maybe<Scalars['DateTime']['output']>;
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   role: RoleEnum;
   updatedAt: Scalars['DateTime']['output'];
   verifiedEmail: Scalars['Boolean']['output'];
@@ -1443,7 +789,8 @@ export type UserListObject = {
 
 export type UserObject = {
   __typename?: 'UserObject';
-  Mentee?: Maybe<MenteeObject>;
+  Agent?: Maybe<AgentObject>;
+  Student?: Maybe<StudentObject>;
   avatarUrl: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   email: Scalars['String']['output'];
@@ -1452,309 +799,133 @@ export type UserObject = {
   isActive: Scalars['Boolean']['output'];
   isTest: Scalars['Boolean']['output'];
   lastSession?: Maybe<Scalars['DateTime']['output']>;
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   role: RoleEnum;
   updatedAt: Scalars['DateTime']['output'];
   verifiedEmail: Scalars['Boolean']['output'];
 };
 
-export type CreateBannerMutationVariables = Exact<{
-  data: CreateBannerInput;
-}>;
-
-
-export type CreateBannerMutation = { __typename?: 'Mutation', createBanner: { __typename?: 'BannerObject', id: string } };
-
-export type DeleteBannerMutationVariables = Exact<{
-  deleteBannerId: Scalars['String']['input'];
-}>;
-
-
-export type DeleteBannerMutation = { __typename?: 'Mutation', deleteBanner: { __typename?: 'BannerObject', id: string } };
-
-export type GetBannerQueryVariables = Exact<{
-  getBannerId: Scalars['String']['input'];
-}>;
-
-
-export type GetBannerQuery = { __typename?: 'Query', getBanner: { __typename?: 'BannerObject', id: string, name: string, imagePath: string, isActive?: boolean | null, description?: string | null, offerUrl?: string | null, imageUrl: string } };
-
-export type ListBannersQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListBannersInput>;
-}>;
-
-
-export type ListBannersQuery = { __typename?: 'Query', listBanners: { __typename?: 'BannerListObject', count: number, rows: Array<{ __typename?: 'BannerForListObject', id: string, name: string, imagePath: string, isActive?: boolean | null, description?: string | null, offerUrl?: string | null, imageUrl: string, createdAt: any }> } };
-
-export type UpdateBannerMutationVariables = Exact<{
-  data: UpdateBannerInput;
-  where: DefaultWhereIdInput;
-}>;
-
-
-export type UpdateBannerMutation = { __typename?: 'Mutation', updateBanner: { __typename?: 'BannerObject', id: string } };
-
-export type CreateFileMutationVariables = Exact<{
-  data: CreateFileInput;
-}>;
-
-
-export type CreateFileMutation = { __typename?: 'Mutation', createFile: Array<{ __typename?: 'FileObject', id: string }> };
-
-export type CreateFolderMutationVariables = Exact<{
-  data: CreateFolderInput;
-}>;
-
-
-export type CreateFolderMutation = { __typename?: 'Mutation', createFolder: { __typename?: 'FolderObject', id: string } };
-
-export type ListFilesQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListFilesInput>;
-}>;
-
-
-export type ListFilesQuery = { __typename?: 'Query', listFiles: { __typename?: 'FileListObject', count: number, rows: Array<{ __typename?: 'FileForListObject', id: string, name: string, size?: number | null, createdAt: any, url: string }> } };
-
-export type ListFoldersQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListFoldersInput>;
-}>;
-
-
-export type ListFoldersQuery = { __typename?: 'Query', listFolders: { __typename?: 'FolderListObject', count: number, rows: Array<{ __typename?: 'FolderForListObject', id: string, name: string, path: string, slug: string, createdAt: any, Files?: Array<{ __typename?: 'FileObject', id: string, name: string, mimeType?: string | null, size?: number | null, createdAt: any }> | null }> } };
-
-export type GetIaAgentFlowQueryVariables = Exact<{
-  getIaAgentFlowId: Scalars['String']['input'];
-}>;
-
-
-export type GetIaAgentFlowQuery = { __typename?: 'Query', getIaAgentFlow?: { __typename?: 'IaAgentFlowObject', id: string, isActive: boolean, name: string, order: number, description?: string | null, tutorialDescription: string, tutorialLink: string, tutorialTitle: string, comingSoon: boolean, bannerUrl?: string | null } | null };
-
-export type ListIaAgentFlowPlansQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListPlansInput>;
-}>;
-
-
-export type ListIaAgentFlowPlansQuery = { __typename?: 'Query', listPlans: { __typename?: 'PlanListObject', count: number, rows: Array<{ __typename?: 'PlanForListObject', id: string, isActive?: boolean | null, name: string, code: string }> } };
-
-export type UpdateIaAgentFlowMutationVariables = Exact<{
-  data: UpdateIAgentFlowInput;
-  where: DefaultWhereIdInput;
-}>;
-
-
-export type UpdateIaAgentFlowMutation = { __typename?: 'Mutation', updateIaAgentFlow: { __typename?: 'IaAgentFlowObject', id: string } };
-
-export type ListIaAgentFlowsQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListIaAgentFlowsOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListIaAgentFlowsInput>;
-}>;
-
-
-export type ListIaAgentFlowsQuery = { __typename?: 'Query', listIaAgentFlows: { __typename?: 'IaAgentFlowListObject', count: number, rows: Array<{ __typename?: 'IaAgentFlowForListObject', id: string, name: string, comingSoon: boolean, order: number, createdAt: any, isActive: boolean }> } };
-
-export type CreateIaAgentFlowMutationVariables = Exact<{
-  data: CreateIaAgentFlowInput;
-}>;
-
-
-export type CreateIaAgentFlowMutation = { __typename?: 'Mutation', createIaAgentFlow: { __typename?: 'IaAgentFlowObject', id: string } };
-
-export type ListIaAgentFlowsForCreateFlowQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListIaAgentFlowsOrderByInput>;
-}>;
-
-
-export type ListIaAgentFlowsForCreateFlowQuery = { __typename?: 'Query', listIaAgentFlows: { __typename?: 'IaAgentFlowListObject', count: number, rows: Array<{ __typename?: 'IaAgentFlowForListObject', id: string, name: string, order: number }> } };
-
-export type ListIaAgentsForCreateFlowsQueryVariables = Exact<{
-  where?: InputMaybe<ListIaAgentsInput>;
-  orderBy?: InputMaybe<ListDefaultInput>;
-}>;
-
-
-export type ListIaAgentsForCreateFlowsQuery = { __typename?: 'Query', listIaAgents: { __typename?: 'IaAgentsListObject', rows: Array<{ __typename?: 'IaAgentsForListObject', id: string, name: string }> } };
-
-export type GetIaAgentQueryVariables = Exact<{
+export type GetSchoolQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type GetIaAgentQuery = { __typename?: 'Query', getIaAgent?: { __typename?: 'IaAgentObject', id: string, name: string, appName: string, description?: string | null, avatarUrl?: string | null, marketplace: boolean, featured: boolean, isActive: boolean, systemMessage?: string | null, temperature: number, tools?: Array<string> | null, instruction: string, complementaryLink?: string | null, comingSoon: boolean, Model: { __typename?: 'ModelObject', id: string, name: string } } | null };
+export type GetSchoolQuery = { __typename?: 'Query', getSchool: { __typename?: 'SchoolObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, directorId?: string | null, createdAt: any, updatedAt: any } };
 
-export type UpdateIaAgentMutationVariables = Exact<{
-  data: UpdateIaAgentInput;
+export type ListCoursesBySchoolQueryVariables = Exact<{
+  where?: InputMaybe<ListCoursesInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ListDefaultInput>;
+}>;
+
+
+export type ListCoursesBySchoolQuery = { __typename?: 'Query', listCourses: { __typename?: 'CourseListObject', count: number, rows: Array<{ __typename?: 'CourseForListObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, schoolId: string, coordinatorId?: string | null, createdAt: any, updatedAt: any }> } };
+
+export type UpdateSchoolMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  data: UpdateSchoolInput;
+}>;
+
+
+export type UpdateSchoolMutation = { __typename?: 'Mutation', updateSchool: { __typename?: 'SchoolObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, directorId?: string | null, updatedAt: any, Director?: { __typename?: 'AgentObject', id: string, userId: string } | null } };
+
+export type CreateKlassMutationVariables = Exact<{
+  data: CreateKlassInput;
+}>;
+
+
+export type CreateKlassMutation = { __typename?: 'Mutation', createKlass: { __typename?: 'KlassObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, courseId: string, teacherId?: string | null, createdAt: any, updatedAt: any, Course?: { __typename?: 'CourseObject', id: string, name: string, schoolId: string } | null } };
+
+export type GetKlassQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GetKlassQuery = { __typename?: 'Query', getKlass: { __typename?: 'KlassObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, courseId: string, teacherId?: string | null, createdAt: any, updatedAt: any, Course?: { __typename?: 'CourseObject', id: string, name: string, schoolId: string } | null } };
+
+export type ListKlassesByCourseQueryVariables = Exact<{
+  where?: InputMaybe<ListKlassesInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ListDefaultInput>;
+}>;
+
+
+export type ListKlassesByCourseQuery = { __typename?: 'Query', listKlasses: { __typename?: 'KlassListObject', count: number, rows: Array<{ __typename?: 'KlassForListObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, courseId: string, teacherId?: string | null, createdAt: any, updatedAt: any, Course?: { __typename?: 'CourseObject', id: string, name: string, schoolId: string } | null }> } };
+
+export type GetCourseQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GetCourseQuery = { __typename?: 'Query', getCourse: { __typename?: 'CourseObject', id: string, name: string, description?: string | null, isActive: boolean, schoolId: string, coordinatorId?: string | null, createdAt: any, updatedAt: any } };
+
+export type CreateExamMutationVariables = Exact<{
+  data: CreateExamInput;
+}>;
+
+
+export type CreateExamMutation = { __typename?: 'Mutation', createExam: { __typename?: 'ExamObject', id: string, title: string, description?: string | null, filePath: string, klassId: string, isActive: boolean, createdAt: any, updatedAt: any } };
+
+export type GetExamQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GetExamQuery = { __typename?: 'Query', getExam: { __typename?: 'ExamObject', id: string, title: string, description?: string | null, filePath: string, klassId: string, isActive: boolean, createdAt: any, updatedAt: any, Klass?: { __typename?: 'KlassObject', id: string, name: string, courseId: string } | null, Questions?: Array<{ __typename?: 'QuestionObject', id: string, number: number, text?: string | null, value: number, correct: number }> | null } };
+
+export type ListExamsByKlassQueryVariables = Exact<{
+  where?: InputMaybe<ListExamsInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ListDefaultInput>;
+}>;
+
+
+export type ListExamsByKlassQuery = { __typename?: 'Query', listExams: { __typename?: 'ExamListObject', count: number, rows: Array<{ __typename?: 'ExamForListObject', id: string, title: string, description?: string | null, filePath: string, klassId: string, isActive: boolean, createdAt: any, updatedAt: any }> } };
+
+export type UpdateExamMutationVariables = Exact<{
   where: DefaultWhereIdInput;
+  data: UpdateExamInput;
 }>;
 
 
-export type UpdateIaAgentMutation = { __typename?: 'Mutation', updateIaAgent: { __typename?: 'IaAgentObject', id: string } };
+export type UpdateExamMutation = { __typename?: 'Mutation', updateExam: { __typename?: 'ExamObject', id: string, title: string, description?: string | null, filePath: string, klassId: string, isActive: boolean, createdAt: any, updatedAt: any } };
 
-export type ListIaAgentsQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListIaAgentsInput>;
+export type CreateCourseMutationVariables = Exact<{
+  data: CreateCourseInput;
 }>;
 
 
-export type ListIaAgentsQuery = { __typename?: 'Query', listIaAgents: { __typename?: 'IaAgentsListObject', count: number, rows: Array<{ __typename?: 'IaAgentsForListObject', id: string, name: string, avatarUrl?: string | null, createdAt: any, marketplace: boolean, featured: boolean, isActive: boolean, Model: { __typename?: 'ModelObject', name: string } }> } };
-
-export type CreateIaAgentMutationVariables = Exact<{
-  data: CreateIaAgentInput;
-}>;
-
-
-export type CreateIaAgentMutation = { __typename?: 'Mutation', createIaAgent: { __typename?: 'IaAgentObject', id: string } };
-
-export type ListModelsForCreateIaAgentQueryVariables = Exact<{
-  where?: InputMaybe<ListModelsInput>;
-  orderBy?: InputMaybe<ListDefaultInput>;
-}>;
-
-
-export type ListModelsForCreateIaAgentQuery = { __typename?: 'Query', listModels: { __typename?: 'ModelListObject', count: number, rows: Array<{ __typename?: 'ModelForListObject', id: string, name: string }> } };
-
-export type ListPlansForCreateIaAgentQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  where?: InputMaybe<ListPlansInput>;
-}>;
-
-
-export type ListPlansForCreateIaAgentQuery = { __typename?: 'Query', listPlans: { __typename?: 'PlanListObject', count: number, rows: Array<{ __typename?: 'PlanForListObject', id: string, name: string, code: string }> } };
-
-export type CreateKnowledgeBaseMutationVariables = Exact<{
-  data: CreateKnowledgeBaseInput;
-}>;
-
-
-export type CreateKnowledgeBaseMutation = { __typename?: 'Mutation', createKnowledgeBase: { __typename?: 'KnowledgeBaseObject', id: string } };
-
-export type ListFoldersForCreateKnowledgeBaseQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  where?: InputMaybe<ListFoldersInput>;
-}>;
-
-
-export type ListFoldersForCreateKnowledgeBaseQuery = { __typename?: 'Query', listFolders: { __typename?: 'FolderListObject', count: number, rows: Array<{ __typename?: 'FolderForListObject', id: string, name: string, parentId?: string | null }> } };
-
-export type ListKnowledgeBasesQueryVariables = Exact<{
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<ListDefaultInput>;
-  where?: InputMaybe<ListKnowledgeBasesInput>;
-}>;
-
-
-export type ListKnowledgeBasesQuery = { __typename?: 'Query', listKnowledgeBases: { __typename?: 'KnowledgeBaseListObject', count: number, rows: Array<{ __typename?: 'KnowledgeBaseForListObject', id: string, name: string, qdrantCollectionName: string, toolName: string, description?: string | null }> } };
-
-export type CreateModelMutationVariables = Exact<{
-  data: CreateModelInput;
-}>;
-
-
-export type CreateModelMutation = { __typename?: 'Mutation', createModel: { __typename?: 'ModelObject', id: string } };
-
-export type DeleteModelMutationVariables = Exact<{
-  modelId: Scalars['String']['input'];
-}>;
-
-
-export type DeleteModelMutation = { __typename?: 'Mutation', deleteModel: { __typename?: 'ModelObject', id: string } };
-
-export type ListModelsQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListModelsInput>;
-}>;
-
-
-export type ListModelsQuery = { __typename?: 'Query', listModels: { __typename?: 'ModelListObject', count: number, rows: Array<{ __typename?: 'ModelForListObject', id: string, isActive: boolean, name: string, slug: string, provider: ModelProviderEnum, providerUrl: string, createdAt: any }> } };
-
-export type CreatePlanMutationVariables = Exact<{
-  data: CreatePlanInput;
-}>;
-
-
-export type CreatePlanMutation = { __typename?: 'Mutation', createPlan: { __typename?: 'PlanObject', id: string } };
-
-export type DeletePlanMutationVariables = Exact<{
-  planId: Scalars['String']['input'];
-}>;
-
-
-export type DeletePlanMutation = { __typename?: 'Mutation', deletePlan: { __typename?: 'PlanObject', id: string } };
-
-export type GetPlanQueryVariables = Exact<{
-  planId: Scalars['String']['input'];
-}>;
-
-
-export type GetPlanQuery = { __typename?: 'Query', getPlan: { __typename?: 'PlanObject', id: string, isActive?: boolean | null, name: string, code: string } };
-
-export type ListPlansQueryVariables = Exact<{
-  orderBy?: InputMaybe<ListDefaultInput>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListPlansInput>;
-}>;
-
-
-export type ListPlansQuery = { __typename?: 'Query', listPlans: { __typename?: 'PlanListObject', count: number, rows: Array<{ __typename?: 'PlanForListObject', id: string, name: string, isActive?: boolean | null, createdAt: any, code: string }> } };
-
-export type UpdatePlanMutationVariables = Exact<{
-  data: UpdatePlanInput;
-  where: DefaultWhereIdInput;
-}>;
-
-
-export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan: { __typename?: 'PlanObject', id: string } };
-
-export type GetUserQueryVariables = Exact<{
-  getUserId: Scalars['String']['input'];
-}>;
-
-
-export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'UserObject', id: string, email: string, name: string, role: RoleEnum, gender?: GenderEnum | null, avatarUrl: string, isActive: boolean, isTest: boolean, lastSession?: any | null, verifiedEmail: boolean, createdAt: any, updatedAt: any, Mentee?: { __typename?: 'MenteeObject', id: string, type: MenteeTypeEnum, createdAt: any, updatedAt: any } | null } };
-
-export type UpdateUserMutationVariables = Exact<{
-  data: UpdateUserInput;
-  where: DefaultWhereIdInput;
-}>;
-
-
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserObject', id: string } };
-
-export type CreateUserMutationVariables = Exact<{
-  data: CreateUserInput;
-}>;
-
-
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserObject', id: string } };
+export type CreateCourseMutation = { __typename?: 'Mutation', createCourse: { __typename?: 'CourseObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, schoolId: string, coordinatorId?: string | null, createdAt: any, updatedAt: any } };
 
 export type ListUsersQueryVariables = Exact<{
+  where?: InputMaybe<ListUsersInput>;
   orderBy?: InputMaybe<ListDefaultInput>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ListUsersInput>;
 }>;
 
 
-export type ListUsersQuery = { __typename?: 'Query', listUsers: { __typename?: 'UserListObject', count: number, rows: Array<{ __typename?: 'UserForListObject', name: string, role: RoleEnum, isTest: boolean, id: string, isActive: boolean, gender?: GenderEnum | null, email: string, createdAt: any, updatedAt: any, avatarUrl: string, lastSession?: any | null }> } };
+export type ListUsersQuery = { __typename?: 'Query', listUsers: { __typename?: 'UserListObject', count: number, rows: Array<{ __typename?: 'UserForListObject', id: string, name?: string | null, email: string, isActive: boolean, role: RoleEnum, createdAt: any }> } };
+
+export type CreateSchoolMutationVariables = Exact<{
+  data: CreateSchoolInput;
+}>;
+
+
+export type CreateSchoolMutation = { __typename?: 'Mutation', createSchool: { __typename?: 'SchoolObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, directorId?: string | null, createdAt: any, updatedAt: any } };
+
+export type ListSchoolsQueryVariables = Exact<{
+  where?: InputMaybe<ListSchoolsInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ListDefaultInput>;
+}>;
+
+
+export type ListSchoolsQuery = { __typename?: 'Query', listSchools: { __typename?: 'SchoolListObject', count: number, rows: Array<{ __typename?: 'SchoolForListObject', id: string, name: string, description?: string | null, isActive: boolean, bannerPath?: string | null, directorId?: string | null, createdAt: any, updatedAt: any }> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -1767,871 +938,384 @@ export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Lo
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserObject', id: string, email: string, name: string, role: RoleEnum, avatarUrl: string } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserObject', id: string, email: string, name?: string | null, role: RoleEnum, avatarUrl: string } };
 
 
-export const CreateBannerDocument = gql`
-    mutation CreateBanner($data: CreateBannerInput!) {
-  createBanner(data: $data) {
-    id
-  }
-}
-    `;
-export type CreateBannerMutationFn = Apollo.MutationFunction<CreateBannerMutation, CreateBannerMutationVariables>;
-export function useCreateBannerMutation(baseOptions?: Apollo.MutationHookOptions<CreateBannerMutation, CreateBannerMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateBannerMutation, CreateBannerMutationVariables>(CreateBannerDocument, options);
-      }
-export type CreateBannerMutationHookResult = ReturnType<typeof useCreateBannerMutation>;
-export type CreateBannerMutationResult = Apollo.MutationResult<CreateBannerMutation>;
-export type CreateBannerMutationOptions = Apollo.BaseMutationOptions<CreateBannerMutation, CreateBannerMutationVariables>;
-export const DeleteBannerDocument = gql`
-    mutation DeleteBanner($deleteBannerId: String!) {
-  deleteBanner(id: $deleteBannerId) {
-    id
-  }
-}
-    `;
-export type DeleteBannerMutationFn = Apollo.MutationFunction<DeleteBannerMutation, DeleteBannerMutationVariables>;
-export function useDeleteBannerMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBannerMutation, DeleteBannerMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteBannerMutation, DeleteBannerMutationVariables>(DeleteBannerDocument, options);
-      }
-export type DeleteBannerMutationHookResult = ReturnType<typeof useDeleteBannerMutation>;
-export type DeleteBannerMutationResult = Apollo.MutationResult<DeleteBannerMutation>;
-export type DeleteBannerMutationOptions = Apollo.BaseMutationOptions<DeleteBannerMutation, DeleteBannerMutationVariables>;
-export const GetBannerDocument = gql`
-    query GetBanner($getBannerId: String!) {
-  getBanner(id: $getBannerId) {
+export const GetSchoolDocument = gql`
+    query GetSchool($id: String!) {
+  getSchool(id: $id) {
     id
     name
-    imagePath
-    isActive
     description
-    offerUrl
-    imageUrl
-  }
-}
-    `;
-export function useGetBannerQuery(baseOptions: Apollo.QueryHookOptions<GetBannerQuery, GetBannerQueryVariables> & ({ variables: GetBannerQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetBannerQuery, GetBannerQueryVariables>(GetBannerDocument, options);
-      }
-export function useGetBannerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBannerQuery, GetBannerQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetBannerQuery, GetBannerQueryVariables>(GetBannerDocument, options);
-        }
-export function useGetBannerSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBannerQuery, GetBannerQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetBannerQuery, GetBannerQueryVariables>(GetBannerDocument, options);
-        }
-export type GetBannerQueryHookResult = ReturnType<typeof useGetBannerQuery>;
-export type GetBannerLazyQueryHookResult = ReturnType<typeof useGetBannerLazyQuery>;
-export type GetBannerSuspenseQueryHookResult = ReturnType<typeof useGetBannerSuspenseQuery>;
-export type GetBannerQueryResult = Apollo.QueryResult<GetBannerQuery, GetBannerQueryVariables>;
-export const ListBannersDocument = gql`
-    query ListBanners($orderBy: ListDefaultInput, $skip: Int, $take: Int, $where: ListBannersInput) {
-  listBanners(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
-    count
-    rows {
-      id
-      name
-      imagePath
-      isActive
-      description
-      offerUrl
-      imageUrl
-      createdAt
-    }
-  }
-}
-    `;
-export function useListBannersQuery(baseOptions?: Apollo.QueryHookOptions<ListBannersQuery, ListBannersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListBannersQuery, ListBannersQueryVariables>(ListBannersDocument, options);
-      }
-export function useListBannersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListBannersQuery, ListBannersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListBannersQuery, ListBannersQueryVariables>(ListBannersDocument, options);
-        }
-export function useListBannersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListBannersQuery, ListBannersQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListBannersQuery, ListBannersQueryVariables>(ListBannersDocument, options);
-        }
-export type ListBannersQueryHookResult = ReturnType<typeof useListBannersQuery>;
-export type ListBannersLazyQueryHookResult = ReturnType<typeof useListBannersLazyQuery>;
-export type ListBannersSuspenseQueryHookResult = ReturnType<typeof useListBannersSuspenseQuery>;
-export type ListBannersQueryResult = Apollo.QueryResult<ListBannersQuery, ListBannersQueryVariables>;
-export const UpdateBannerDocument = gql`
-    mutation UpdateBanner($data: UpdateBannerInput!, $where: DefaultWhereIdInput!) {
-  updateBanner(data: $data, where: $where) {
-    id
-  }
-}
-    `;
-export type UpdateBannerMutationFn = Apollo.MutationFunction<UpdateBannerMutation, UpdateBannerMutationVariables>;
-export function useUpdateBannerMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBannerMutation, UpdateBannerMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateBannerMutation, UpdateBannerMutationVariables>(UpdateBannerDocument, options);
-      }
-export type UpdateBannerMutationHookResult = ReturnType<typeof useUpdateBannerMutation>;
-export type UpdateBannerMutationResult = Apollo.MutationResult<UpdateBannerMutation>;
-export type UpdateBannerMutationOptions = Apollo.BaseMutationOptions<UpdateBannerMutation, UpdateBannerMutationVariables>;
-export const CreateFileDocument = gql`
-    mutation CreateFile($data: CreateFileInput!) {
-  createFile(data: $data) {
-    id
-  }
-}
-    `;
-export type CreateFileMutationFn = Apollo.MutationFunction<CreateFileMutation, CreateFileMutationVariables>;
-export function useCreateFileMutation(baseOptions?: Apollo.MutationHookOptions<CreateFileMutation, CreateFileMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateFileMutation, CreateFileMutationVariables>(CreateFileDocument, options);
-      }
-export type CreateFileMutationHookResult = ReturnType<typeof useCreateFileMutation>;
-export type CreateFileMutationResult = Apollo.MutationResult<CreateFileMutation>;
-export type CreateFileMutationOptions = Apollo.BaseMutationOptions<CreateFileMutation, CreateFileMutationVariables>;
-export const CreateFolderDocument = gql`
-    mutation CreateFolder($data: CreateFolderInput!) {
-  createFolder(data: $data) {
-    id
-  }
-}
-    `;
-export type CreateFolderMutationFn = Apollo.MutationFunction<CreateFolderMutation, CreateFolderMutationVariables>;
-export function useCreateFolderMutation(baseOptions?: Apollo.MutationHookOptions<CreateFolderMutation, CreateFolderMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateFolderMutation, CreateFolderMutationVariables>(CreateFolderDocument, options);
-      }
-export type CreateFolderMutationHookResult = ReturnType<typeof useCreateFolderMutation>;
-export type CreateFolderMutationResult = Apollo.MutationResult<CreateFolderMutation>;
-export type CreateFolderMutationOptions = Apollo.BaseMutationOptions<CreateFolderMutation, CreateFolderMutationVariables>;
-export const ListFilesDocument = gql`
-    query ListFiles($orderBy: ListDefaultInput, $skip: Int, $take: Int, $where: ListFilesInput) {
-  listFiles(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
-    count
-    rows {
-      id
-      name
-      size
-      createdAt
-      url
-    }
-  }
-}
-    `;
-export function useListFilesQuery(baseOptions?: Apollo.QueryHookOptions<ListFilesQuery, ListFilesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListFilesQuery, ListFilesQueryVariables>(ListFilesDocument, options);
-      }
-export function useListFilesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListFilesQuery, ListFilesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListFilesQuery, ListFilesQueryVariables>(ListFilesDocument, options);
-        }
-export function useListFilesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListFilesQuery, ListFilesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListFilesQuery, ListFilesQueryVariables>(ListFilesDocument, options);
-        }
-export type ListFilesQueryHookResult = ReturnType<typeof useListFilesQuery>;
-export type ListFilesLazyQueryHookResult = ReturnType<typeof useListFilesLazyQuery>;
-export type ListFilesSuspenseQueryHookResult = ReturnType<typeof useListFilesSuspenseQuery>;
-export type ListFilesQueryResult = Apollo.QueryResult<ListFilesQuery, ListFilesQueryVariables>;
-export const ListFoldersDocument = gql`
-    query ListFolders($orderBy: ListDefaultInput, $skip: Int, $take: Int, $where: ListFoldersInput) {
-  listFolders(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
-    count
-    rows {
-      id
-      name
-      path
-      slug
-      createdAt
-      Files {
-        id
-        name
-        mimeType
-        size
-        createdAt
-      }
-    }
-  }
-}
-    `;
-export function useListFoldersQuery(baseOptions?: Apollo.QueryHookOptions<ListFoldersQuery, ListFoldersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListFoldersQuery, ListFoldersQueryVariables>(ListFoldersDocument, options);
-      }
-export function useListFoldersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListFoldersQuery, ListFoldersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListFoldersQuery, ListFoldersQueryVariables>(ListFoldersDocument, options);
-        }
-export function useListFoldersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListFoldersQuery, ListFoldersQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListFoldersQuery, ListFoldersQueryVariables>(ListFoldersDocument, options);
-        }
-export type ListFoldersQueryHookResult = ReturnType<typeof useListFoldersQuery>;
-export type ListFoldersLazyQueryHookResult = ReturnType<typeof useListFoldersLazyQuery>;
-export type ListFoldersSuspenseQueryHookResult = ReturnType<typeof useListFoldersSuspenseQuery>;
-export type ListFoldersQueryResult = Apollo.QueryResult<ListFoldersQuery, ListFoldersQueryVariables>;
-export const GetIaAgentFlowDocument = gql`
-    query GetIaAgentFlow($getIaAgentFlowId: String!) {
-  getIaAgentFlow(id: $getIaAgentFlowId) {
-    id
     isActive
-    name
-    order
-    description
-    tutorialDescription
-    tutorialLink
-    tutorialTitle
-    comingSoon
-    bannerUrl
-  }
-}
-    `;
-export function useGetIaAgentFlowQuery(baseOptions: Apollo.QueryHookOptions<GetIaAgentFlowQuery, GetIaAgentFlowQueryVariables> & ({ variables: GetIaAgentFlowQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetIaAgentFlowQuery, GetIaAgentFlowQueryVariables>(GetIaAgentFlowDocument, options);
-      }
-export function useGetIaAgentFlowLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIaAgentFlowQuery, GetIaAgentFlowQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetIaAgentFlowQuery, GetIaAgentFlowQueryVariables>(GetIaAgentFlowDocument, options);
-        }
-export function useGetIaAgentFlowSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetIaAgentFlowQuery, GetIaAgentFlowQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetIaAgentFlowQuery, GetIaAgentFlowQueryVariables>(GetIaAgentFlowDocument, options);
-        }
-export type GetIaAgentFlowQueryHookResult = ReturnType<typeof useGetIaAgentFlowQuery>;
-export type GetIaAgentFlowLazyQueryHookResult = ReturnType<typeof useGetIaAgentFlowLazyQuery>;
-export type GetIaAgentFlowSuspenseQueryHookResult = ReturnType<typeof useGetIaAgentFlowSuspenseQuery>;
-export type GetIaAgentFlowQueryResult = Apollo.QueryResult<GetIaAgentFlowQuery, GetIaAgentFlowQueryVariables>;
-export const ListIaAgentFlowPlansDocument = gql`
-    query ListIaAgentFlowPlans($orderBy: ListDefaultInput, $skip: Int, $take: Int, $where: ListPlansInput) {
-  listPlans(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
-    count
-    rows {
-      id
-      isActive
-      name
-      code
-    }
-  }
-}
-    `;
-export function useListIaAgentFlowPlansQuery(baseOptions?: Apollo.QueryHookOptions<ListIaAgentFlowPlansQuery, ListIaAgentFlowPlansQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListIaAgentFlowPlansQuery, ListIaAgentFlowPlansQueryVariables>(ListIaAgentFlowPlansDocument, options);
-      }
-export function useListIaAgentFlowPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListIaAgentFlowPlansQuery, ListIaAgentFlowPlansQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListIaAgentFlowPlansQuery, ListIaAgentFlowPlansQueryVariables>(ListIaAgentFlowPlansDocument, options);
-        }
-export function useListIaAgentFlowPlansSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListIaAgentFlowPlansQuery, ListIaAgentFlowPlansQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListIaAgentFlowPlansQuery, ListIaAgentFlowPlansQueryVariables>(ListIaAgentFlowPlansDocument, options);
-        }
-export type ListIaAgentFlowPlansQueryHookResult = ReturnType<typeof useListIaAgentFlowPlansQuery>;
-export type ListIaAgentFlowPlansLazyQueryHookResult = ReturnType<typeof useListIaAgentFlowPlansLazyQuery>;
-export type ListIaAgentFlowPlansSuspenseQueryHookResult = ReturnType<typeof useListIaAgentFlowPlansSuspenseQuery>;
-export type ListIaAgentFlowPlansQueryResult = Apollo.QueryResult<ListIaAgentFlowPlansQuery, ListIaAgentFlowPlansQueryVariables>;
-export const UpdateIaAgentFlowDocument = gql`
-    mutation UpdateIaAgentFlow($data: UpdateIAgentFlowInput!, $where: DefaultWhereIdInput!) {
-  updateIaAgentFlow(data: $data, where: $where) {
-    id
-  }
-}
-    `;
-export type UpdateIaAgentFlowMutationFn = Apollo.MutationFunction<UpdateIaAgentFlowMutation, UpdateIaAgentFlowMutationVariables>;
-export function useUpdateIaAgentFlowMutation(baseOptions?: Apollo.MutationHookOptions<UpdateIaAgentFlowMutation, UpdateIaAgentFlowMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateIaAgentFlowMutation, UpdateIaAgentFlowMutationVariables>(UpdateIaAgentFlowDocument, options);
-      }
-export type UpdateIaAgentFlowMutationHookResult = ReturnType<typeof useUpdateIaAgentFlowMutation>;
-export type UpdateIaAgentFlowMutationResult = Apollo.MutationResult<UpdateIaAgentFlowMutation>;
-export type UpdateIaAgentFlowMutationOptions = Apollo.BaseMutationOptions<UpdateIaAgentFlowMutation, UpdateIaAgentFlowMutationVariables>;
-export const ListIaAgentFlowsDocument = gql`
-    query ListIaAgentFlows($orderBy: ListIaAgentFlowsOrderByInput, $skip: Int, $take: Int, $where: ListIaAgentFlowsInput) {
-  listIaAgentFlows(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
-    count
-    rows {
-      id
-      name
-      comingSoon
-      order
-      createdAt
-      isActive
-    }
-  }
-}
-    `;
-export function useListIaAgentFlowsQuery(baseOptions?: Apollo.QueryHookOptions<ListIaAgentFlowsQuery, ListIaAgentFlowsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListIaAgentFlowsQuery, ListIaAgentFlowsQueryVariables>(ListIaAgentFlowsDocument, options);
-      }
-export function useListIaAgentFlowsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListIaAgentFlowsQuery, ListIaAgentFlowsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListIaAgentFlowsQuery, ListIaAgentFlowsQueryVariables>(ListIaAgentFlowsDocument, options);
-        }
-export function useListIaAgentFlowsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListIaAgentFlowsQuery, ListIaAgentFlowsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListIaAgentFlowsQuery, ListIaAgentFlowsQueryVariables>(ListIaAgentFlowsDocument, options);
-        }
-export type ListIaAgentFlowsQueryHookResult = ReturnType<typeof useListIaAgentFlowsQuery>;
-export type ListIaAgentFlowsLazyQueryHookResult = ReturnType<typeof useListIaAgentFlowsLazyQuery>;
-export type ListIaAgentFlowsSuspenseQueryHookResult = ReturnType<typeof useListIaAgentFlowsSuspenseQuery>;
-export type ListIaAgentFlowsQueryResult = Apollo.QueryResult<ListIaAgentFlowsQuery, ListIaAgentFlowsQueryVariables>;
-export const CreateIaAgentFlowDocument = gql`
-    mutation CreateIaAgentFlow($data: CreateIaAgentFlowInput!) {
-  createIaAgentFlow(data: $data) {
-    id
-  }
-}
-    `;
-export type CreateIaAgentFlowMutationFn = Apollo.MutationFunction<CreateIaAgentFlowMutation, CreateIaAgentFlowMutationVariables>;
-export function useCreateIaAgentFlowMutation(baseOptions?: Apollo.MutationHookOptions<CreateIaAgentFlowMutation, CreateIaAgentFlowMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateIaAgentFlowMutation, CreateIaAgentFlowMutationVariables>(CreateIaAgentFlowDocument, options);
-      }
-export type CreateIaAgentFlowMutationHookResult = ReturnType<typeof useCreateIaAgentFlowMutation>;
-export type CreateIaAgentFlowMutationResult = Apollo.MutationResult<CreateIaAgentFlowMutation>;
-export type CreateIaAgentFlowMutationOptions = Apollo.BaseMutationOptions<CreateIaAgentFlowMutation, CreateIaAgentFlowMutationVariables>;
-export const ListIaAgentFlowsForCreateFlowDocument = gql`
-    query ListIaAgentFlowsForCreateFlow($orderBy: ListIaAgentFlowsOrderByInput) {
-  listIaAgentFlows(orderBy: $orderBy) {
-    count
-    rows {
-      id
-      name
-      order
-    }
-  }
-}
-    `;
-export function useListIaAgentFlowsForCreateFlowQuery(baseOptions?: Apollo.QueryHookOptions<ListIaAgentFlowsForCreateFlowQuery, ListIaAgentFlowsForCreateFlowQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListIaAgentFlowsForCreateFlowQuery, ListIaAgentFlowsForCreateFlowQueryVariables>(ListIaAgentFlowsForCreateFlowDocument, options);
-      }
-export function useListIaAgentFlowsForCreateFlowLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListIaAgentFlowsForCreateFlowQuery, ListIaAgentFlowsForCreateFlowQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListIaAgentFlowsForCreateFlowQuery, ListIaAgentFlowsForCreateFlowQueryVariables>(ListIaAgentFlowsForCreateFlowDocument, options);
-        }
-export function useListIaAgentFlowsForCreateFlowSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListIaAgentFlowsForCreateFlowQuery, ListIaAgentFlowsForCreateFlowQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListIaAgentFlowsForCreateFlowQuery, ListIaAgentFlowsForCreateFlowQueryVariables>(ListIaAgentFlowsForCreateFlowDocument, options);
-        }
-export type ListIaAgentFlowsForCreateFlowQueryHookResult = ReturnType<typeof useListIaAgentFlowsForCreateFlowQuery>;
-export type ListIaAgentFlowsForCreateFlowLazyQueryHookResult = ReturnType<typeof useListIaAgentFlowsForCreateFlowLazyQuery>;
-export type ListIaAgentFlowsForCreateFlowSuspenseQueryHookResult = ReturnType<typeof useListIaAgentFlowsForCreateFlowSuspenseQuery>;
-export type ListIaAgentFlowsForCreateFlowQueryResult = Apollo.QueryResult<ListIaAgentFlowsForCreateFlowQuery, ListIaAgentFlowsForCreateFlowQueryVariables>;
-export const ListIaAgentsForCreateFlowsDocument = gql`
-    query ListIaAgentsForCreateFlows($where: ListIaAgentsInput, $orderBy: ListDefaultInput) {
-  listIaAgents(where: $where, orderBy: $orderBy) {
-    rows {
-      id
-      name
-    }
-  }
-}
-    `;
-export function useListIaAgentsForCreateFlowsQuery(baseOptions?: Apollo.QueryHookOptions<ListIaAgentsForCreateFlowsQuery, ListIaAgentsForCreateFlowsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListIaAgentsForCreateFlowsQuery, ListIaAgentsForCreateFlowsQueryVariables>(ListIaAgentsForCreateFlowsDocument, options);
-      }
-export function useListIaAgentsForCreateFlowsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListIaAgentsForCreateFlowsQuery, ListIaAgentsForCreateFlowsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListIaAgentsForCreateFlowsQuery, ListIaAgentsForCreateFlowsQueryVariables>(ListIaAgentsForCreateFlowsDocument, options);
-        }
-export function useListIaAgentsForCreateFlowsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListIaAgentsForCreateFlowsQuery, ListIaAgentsForCreateFlowsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListIaAgentsForCreateFlowsQuery, ListIaAgentsForCreateFlowsQueryVariables>(ListIaAgentsForCreateFlowsDocument, options);
-        }
-export type ListIaAgentsForCreateFlowsQueryHookResult = ReturnType<typeof useListIaAgentsForCreateFlowsQuery>;
-export type ListIaAgentsForCreateFlowsLazyQueryHookResult = ReturnType<typeof useListIaAgentsForCreateFlowsLazyQuery>;
-export type ListIaAgentsForCreateFlowsSuspenseQueryHookResult = ReturnType<typeof useListIaAgentsForCreateFlowsSuspenseQuery>;
-export type ListIaAgentsForCreateFlowsQueryResult = Apollo.QueryResult<ListIaAgentsForCreateFlowsQuery, ListIaAgentsForCreateFlowsQueryVariables>;
-export const GetIaAgentDocument = gql`
-    query GetIaAgent($id: String!) {
-  getIaAgent(id: $id) {
-    id
-    name
-    appName
-    description
-    avatarUrl
-    marketplace
-    featured
-    isActive
-    systemMessage
-    temperature
-    tools
-    instruction
-    complementaryLink
-    comingSoon
-    Model {
-      id
-      name
-    }
-  }
-}
-    `;
-export function useGetIaAgentQuery(baseOptions: Apollo.QueryHookOptions<GetIaAgentQuery, GetIaAgentQueryVariables> & ({ variables: GetIaAgentQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetIaAgentQuery, GetIaAgentQueryVariables>(GetIaAgentDocument, options);
-      }
-export function useGetIaAgentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIaAgentQuery, GetIaAgentQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetIaAgentQuery, GetIaAgentQueryVariables>(GetIaAgentDocument, options);
-        }
-export function useGetIaAgentSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetIaAgentQuery, GetIaAgentQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetIaAgentQuery, GetIaAgentQueryVariables>(GetIaAgentDocument, options);
-        }
-export type GetIaAgentQueryHookResult = ReturnType<typeof useGetIaAgentQuery>;
-export type GetIaAgentLazyQueryHookResult = ReturnType<typeof useGetIaAgentLazyQuery>;
-export type GetIaAgentSuspenseQueryHookResult = ReturnType<typeof useGetIaAgentSuspenseQuery>;
-export type GetIaAgentQueryResult = Apollo.QueryResult<GetIaAgentQuery, GetIaAgentQueryVariables>;
-export const UpdateIaAgentDocument = gql`
-    mutation UpdateIaAgent($data: UpdateIaAgentInput!, $where: DefaultWhereIdInput!) {
-  updateIaAgent(data: $data, where: $where) {
-    id
-  }
-}
-    `;
-export type UpdateIaAgentMutationFn = Apollo.MutationFunction<UpdateIaAgentMutation, UpdateIaAgentMutationVariables>;
-export function useUpdateIaAgentMutation(baseOptions?: Apollo.MutationHookOptions<UpdateIaAgentMutation, UpdateIaAgentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateIaAgentMutation, UpdateIaAgentMutationVariables>(UpdateIaAgentDocument, options);
-      }
-export type UpdateIaAgentMutationHookResult = ReturnType<typeof useUpdateIaAgentMutation>;
-export type UpdateIaAgentMutationResult = Apollo.MutationResult<UpdateIaAgentMutation>;
-export type UpdateIaAgentMutationOptions = Apollo.BaseMutationOptions<UpdateIaAgentMutation, UpdateIaAgentMutationVariables>;
-export const ListIaAgentsDocument = gql`
-    query ListIaAgents($orderBy: ListDefaultInput, $skip: Int, $take: Int, $where: ListIaAgentsInput) {
-  listIaAgents(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
-    count
-    rows {
-      id
-      name
-      avatarUrl
-      createdAt
-      marketplace
-      featured
-      isActive
-      Model {
-        name
-      }
-    }
-  }
-}
-    `;
-export function useListIaAgentsQuery(baseOptions?: Apollo.QueryHookOptions<ListIaAgentsQuery, ListIaAgentsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListIaAgentsQuery, ListIaAgentsQueryVariables>(ListIaAgentsDocument, options);
-      }
-export function useListIaAgentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListIaAgentsQuery, ListIaAgentsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListIaAgentsQuery, ListIaAgentsQueryVariables>(ListIaAgentsDocument, options);
-        }
-export function useListIaAgentsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListIaAgentsQuery, ListIaAgentsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListIaAgentsQuery, ListIaAgentsQueryVariables>(ListIaAgentsDocument, options);
-        }
-export type ListIaAgentsQueryHookResult = ReturnType<typeof useListIaAgentsQuery>;
-export type ListIaAgentsLazyQueryHookResult = ReturnType<typeof useListIaAgentsLazyQuery>;
-export type ListIaAgentsSuspenseQueryHookResult = ReturnType<typeof useListIaAgentsSuspenseQuery>;
-export type ListIaAgentsQueryResult = Apollo.QueryResult<ListIaAgentsQuery, ListIaAgentsQueryVariables>;
-export const CreateIaAgentDocument = gql`
-    mutation CreateIaAgent($data: CreateIaAgentInput!) {
-  createIaAgent(data: $data) {
-    id
-  }
-}
-    `;
-export type CreateIaAgentMutationFn = Apollo.MutationFunction<CreateIaAgentMutation, CreateIaAgentMutationVariables>;
-export function useCreateIaAgentMutation(baseOptions?: Apollo.MutationHookOptions<CreateIaAgentMutation, CreateIaAgentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateIaAgentMutation, CreateIaAgentMutationVariables>(CreateIaAgentDocument, options);
-      }
-export type CreateIaAgentMutationHookResult = ReturnType<typeof useCreateIaAgentMutation>;
-export type CreateIaAgentMutationResult = Apollo.MutationResult<CreateIaAgentMutation>;
-export type CreateIaAgentMutationOptions = Apollo.BaseMutationOptions<CreateIaAgentMutation, CreateIaAgentMutationVariables>;
-export const ListModelsForCreateIaAgentDocument = gql`
-    query ListModelsForCreateIaAgent($where: ListModelsInput, $orderBy: ListDefaultInput) {
-  listModels(where: $where, orderBy: $orderBy) {
-    count
-    rows {
-      id
-      name
-    }
-  }
-}
-    `;
-export function useListModelsForCreateIaAgentQuery(baseOptions?: Apollo.QueryHookOptions<ListModelsForCreateIaAgentQuery, ListModelsForCreateIaAgentQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListModelsForCreateIaAgentQuery, ListModelsForCreateIaAgentQueryVariables>(ListModelsForCreateIaAgentDocument, options);
-      }
-export function useListModelsForCreateIaAgentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListModelsForCreateIaAgentQuery, ListModelsForCreateIaAgentQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListModelsForCreateIaAgentQuery, ListModelsForCreateIaAgentQueryVariables>(ListModelsForCreateIaAgentDocument, options);
-        }
-export function useListModelsForCreateIaAgentSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListModelsForCreateIaAgentQuery, ListModelsForCreateIaAgentQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListModelsForCreateIaAgentQuery, ListModelsForCreateIaAgentQueryVariables>(ListModelsForCreateIaAgentDocument, options);
-        }
-export type ListModelsForCreateIaAgentQueryHookResult = ReturnType<typeof useListModelsForCreateIaAgentQuery>;
-export type ListModelsForCreateIaAgentLazyQueryHookResult = ReturnType<typeof useListModelsForCreateIaAgentLazyQuery>;
-export type ListModelsForCreateIaAgentSuspenseQueryHookResult = ReturnType<typeof useListModelsForCreateIaAgentSuspenseQuery>;
-export type ListModelsForCreateIaAgentQueryResult = Apollo.QueryResult<ListModelsForCreateIaAgentQuery, ListModelsForCreateIaAgentQueryVariables>;
-export const ListPlansForCreateIaAgentDocument = gql`
-    query ListPlansForCreateIaAgent($orderBy: ListDefaultInput, $where: ListPlansInput) {
-  listPlans(orderBy: $orderBy, where: $where) {
-    count
-    rows {
-      id
-      name
-      code
-    }
-  }
-}
-    `;
-export function useListPlansForCreateIaAgentQuery(baseOptions?: Apollo.QueryHookOptions<ListPlansForCreateIaAgentQuery, ListPlansForCreateIaAgentQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListPlansForCreateIaAgentQuery, ListPlansForCreateIaAgentQueryVariables>(ListPlansForCreateIaAgentDocument, options);
-      }
-export function useListPlansForCreateIaAgentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListPlansForCreateIaAgentQuery, ListPlansForCreateIaAgentQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListPlansForCreateIaAgentQuery, ListPlansForCreateIaAgentQueryVariables>(ListPlansForCreateIaAgentDocument, options);
-        }
-export function useListPlansForCreateIaAgentSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListPlansForCreateIaAgentQuery, ListPlansForCreateIaAgentQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListPlansForCreateIaAgentQuery, ListPlansForCreateIaAgentQueryVariables>(ListPlansForCreateIaAgentDocument, options);
-        }
-export type ListPlansForCreateIaAgentQueryHookResult = ReturnType<typeof useListPlansForCreateIaAgentQuery>;
-export type ListPlansForCreateIaAgentLazyQueryHookResult = ReturnType<typeof useListPlansForCreateIaAgentLazyQuery>;
-export type ListPlansForCreateIaAgentSuspenseQueryHookResult = ReturnType<typeof useListPlansForCreateIaAgentSuspenseQuery>;
-export type ListPlansForCreateIaAgentQueryResult = Apollo.QueryResult<ListPlansForCreateIaAgentQuery, ListPlansForCreateIaAgentQueryVariables>;
-export const CreateKnowledgeBaseDocument = gql`
-    mutation CreateKnowledgeBase($data: CreateKnowledgeBaseInput!) {
-  createKnowledgeBase(data: $data) {
-    id
-  }
-}
-    `;
-export type CreateKnowledgeBaseMutationFn = Apollo.MutationFunction<CreateKnowledgeBaseMutation, CreateKnowledgeBaseMutationVariables>;
-export function useCreateKnowledgeBaseMutation(baseOptions?: Apollo.MutationHookOptions<CreateKnowledgeBaseMutation, CreateKnowledgeBaseMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateKnowledgeBaseMutation, CreateKnowledgeBaseMutationVariables>(CreateKnowledgeBaseDocument, options);
-      }
-export type CreateKnowledgeBaseMutationHookResult = ReturnType<typeof useCreateKnowledgeBaseMutation>;
-export type CreateKnowledgeBaseMutationResult = Apollo.MutationResult<CreateKnowledgeBaseMutation>;
-export type CreateKnowledgeBaseMutationOptions = Apollo.BaseMutationOptions<CreateKnowledgeBaseMutation, CreateKnowledgeBaseMutationVariables>;
-export const ListFoldersForCreateKnowledgeBaseDocument = gql`
-    query ListFoldersForCreateKnowledgeBase($orderBy: ListDefaultInput, $where: ListFoldersInput) {
-  listFolders(orderBy: $orderBy, where: $where) {
-    count
-    rows {
-      id
-      name
-      parentId
-    }
-  }
-}
-    `;
-export function useListFoldersForCreateKnowledgeBaseQuery(baseOptions?: Apollo.QueryHookOptions<ListFoldersForCreateKnowledgeBaseQuery, ListFoldersForCreateKnowledgeBaseQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListFoldersForCreateKnowledgeBaseQuery, ListFoldersForCreateKnowledgeBaseQueryVariables>(ListFoldersForCreateKnowledgeBaseDocument, options);
-      }
-export function useListFoldersForCreateKnowledgeBaseLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListFoldersForCreateKnowledgeBaseQuery, ListFoldersForCreateKnowledgeBaseQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListFoldersForCreateKnowledgeBaseQuery, ListFoldersForCreateKnowledgeBaseQueryVariables>(ListFoldersForCreateKnowledgeBaseDocument, options);
-        }
-export function useListFoldersForCreateKnowledgeBaseSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListFoldersForCreateKnowledgeBaseQuery, ListFoldersForCreateKnowledgeBaseQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListFoldersForCreateKnowledgeBaseQuery, ListFoldersForCreateKnowledgeBaseQueryVariables>(ListFoldersForCreateKnowledgeBaseDocument, options);
-        }
-export type ListFoldersForCreateKnowledgeBaseQueryHookResult = ReturnType<typeof useListFoldersForCreateKnowledgeBaseQuery>;
-export type ListFoldersForCreateKnowledgeBaseLazyQueryHookResult = ReturnType<typeof useListFoldersForCreateKnowledgeBaseLazyQuery>;
-export type ListFoldersForCreateKnowledgeBaseSuspenseQueryHookResult = ReturnType<typeof useListFoldersForCreateKnowledgeBaseSuspenseQuery>;
-export type ListFoldersForCreateKnowledgeBaseQueryResult = Apollo.QueryResult<ListFoldersForCreateKnowledgeBaseQuery, ListFoldersForCreateKnowledgeBaseQueryVariables>;
-export const ListKnowledgeBasesDocument = gql`
-    query ListKnowledgeBases($skip: Int, $take: Int, $orderBy: ListDefaultInput, $where: ListKnowledgeBasesInput) {
-  listKnowledgeBases(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
-    count
-    rows {
-      id
-      name
-      qdrantCollectionName
-      toolName
-      description
-    }
-  }
-}
-    `;
-export function useListKnowledgeBasesQuery(baseOptions?: Apollo.QueryHookOptions<ListKnowledgeBasesQuery, ListKnowledgeBasesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListKnowledgeBasesQuery, ListKnowledgeBasesQueryVariables>(ListKnowledgeBasesDocument, options);
-      }
-export function useListKnowledgeBasesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListKnowledgeBasesQuery, ListKnowledgeBasesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListKnowledgeBasesQuery, ListKnowledgeBasesQueryVariables>(ListKnowledgeBasesDocument, options);
-        }
-export function useListKnowledgeBasesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListKnowledgeBasesQuery, ListKnowledgeBasesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListKnowledgeBasesQuery, ListKnowledgeBasesQueryVariables>(ListKnowledgeBasesDocument, options);
-        }
-export type ListKnowledgeBasesQueryHookResult = ReturnType<typeof useListKnowledgeBasesQuery>;
-export type ListKnowledgeBasesLazyQueryHookResult = ReturnType<typeof useListKnowledgeBasesLazyQuery>;
-export type ListKnowledgeBasesSuspenseQueryHookResult = ReturnType<typeof useListKnowledgeBasesSuspenseQuery>;
-export type ListKnowledgeBasesQueryResult = Apollo.QueryResult<ListKnowledgeBasesQuery, ListKnowledgeBasesQueryVariables>;
-export const CreateModelDocument = gql`
-    mutation CreateModel($data: CreateModelInput!) {
-  createModel(data: $data) {
-    id
-  }
-}
-    `;
-export type CreateModelMutationFn = Apollo.MutationFunction<CreateModelMutation, CreateModelMutationVariables>;
-export function useCreateModelMutation(baseOptions?: Apollo.MutationHookOptions<CreateModelMutation, CreateModelMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateModelMutation, CreateModelMutationVariables>(CreateModelDocument, options);
-      }
-export type CreateModelMutationHookResult = ReturnType<typeof useCreateModelMutation>;
-export type CreateModelMutationResult = Apollo.MutationResult<CreateModelMutation>;
-export type CreateModelMutationOptions = Apollo.BaseMutationOptions<CreateModelMutation, CreateModelMutationVariables>;
-export const DeleteModelDocument = gql`
-    mutation DeleteModel($modelId: String!) {
-  deleteModel(id: $modelId) {
-    id
-  }
-}
-    `;
-export type DeleteModelMutationFn = Apollo.MutationFunction<DeleteModelMutation, DeleteModelMutationVariables>;
-export function useDeleteModelMutation(baseOptions?: Apollo.MutationHookOptions<DeleteModelMutation, DeleteModelMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteModelMutation, DeleteModelMutationVariables>(DeleteModelDocument, options);
-      }
-export type DeleteModelMutationHookResult = ReturnType<typeof useDeleteModelMutation>;
-export type DeleteModelMutationResult = Apollo.MutationResult<DeleteModelMutation>;
-export type DeleteModelMutationOptions = Apollo.BaseMutationOptions<DeleteModelMutation, DeleteModelMutationVariables>;
-export const ListModelsDocument = gql`
-    query ListModels($orderBy: ListDefaultInput, $skip: Int, $take: Int, $where: ListModelsInput) {
-  listModels(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
-    count
-    rows {
-      id
-      isActive
-      name
-      slug
-      provider
-      providerUrl
-      createdAt
-    }
-  }
-}
-    `;
-export function useListModelsQuery(baseOptions?: Apollo.QueryHookOptions<ListModelsQuery, ListModelsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListModelsQuery, ListModelsQueryVariables>(ListModelsDocument, options);
-      }
-export function useListModelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListModelsQuery, ListModelsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListModelsQuery, ListModelsQueryVariables>(ListModelsDocument, options);
-        }
-export function useListModelsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListModelsQuery, ListModelsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListModelsQuery, ListModelsQueryVariables>(ListModelsDocument, options);
-        }
-export type ListModelsQueryHookResult = ReturnType<typeof useListModelsQuery>;
-export type ListModelsLazyQueryHookResult = ReturnType<typeof useListModelsLazyQuery>;
-export type ListModelsSuspenseQueryHookResult = ReturnType<typeof useListModelsSuspenseQuery>;
-export type ListModelsQueryResult = Apollo.QueryResult<ListModelsQuery, ListModelsQueryVariables>;
-export const CreatePlanDocument = gql`
-    mutation CreatePlan($data: CreatePlanInput!) {
-  createPlan(data: $data) {
-    id
-  }
-}
-    `;
-export type CreatePlanMutationFn = Apollo.MutationFunction<CreatePlanMutation, CreatePlanMutationVariables>;
-export function useCreatePlanMutation(baseOptions?: Apollo.MutationHookOptions<CreatePlanMutation, CreatePlanMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreatePlanMutation, CreatePlanMutationVariables>(CreatePlanDocument, options);
-      }
-export type CreatePlanMutationHookResult = ReturnType<typeof useCreatePlanMutation>;
-export type CreatePlanMutationResult = Apollo.MutationResult<CreatePlanMutation>;
-export type CreatePlanMutationOptions = Apollo.BaseMutationOptions<CreatePlanMutation, CreatePlanMutationVariables>;
-export const DeletePlanDocument = gql`
-    mutation DeletePlan($planId: String!) {
-  deletePlan(id: $planId) {
-    id
-  }
-}
-    `;
-export type DeletePlanMutationFn = Apollo.MutationFunction<DeletePlanMutation, DeletePlanMutationVariables>;
-export function useDeletePlanMutation(baseOptions?: Apollo.MutationHookOptions<DeletePlanMutation, DeletePlanMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePlanMutation, DeletePlanMutationVariables>(DeletePlanDocument, options);
-      }
-export type DeletePlanMutationHookResult = ReturnType<typeof useDeletePlanMutation>;
-export type DeletePlanMutationResult = Apollo.MutationResult<DeletePlanMutation>;
-export type DeletePlanMutationOptions = Apollo.BaseMutationOptions<DeletePlanMutation, DeletePlanMutationVariables>;
-export const GetPlanDocument = gql`
-    query GetPlan($planId: String!) {
-  getPlan(id: $planId) {
-    id
-    isActive
-    name
-    code
-  }
-}
-    `;
-export function useGetPlanQuery(baseOptions: Apollo.QueryHookOptions<GetPlanQuery, GetPlanQueryVariables> & ({ variables: GetPlanQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPlanQuery, GetPlanQueryVariables>(GetPlanDocument, options);
-      }
-export function useGetPlanLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPlanQuery, GetPlanQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPlanQuery, GetPlanQueryVariables>(GetPlanDocument, options);
-        }
-export function useGetPlanSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPlanQuery, GetPlanQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetPlanQuery, GetPlanQueryVariables>(GetPlanDocument, options);
-        }
-export type GetPlanQueryHookResult = ReturnType<typeof useGetPlanQuery>;
-export type GetPlanLazyQueryHookResult = ReturnType<typeof useGetPlanLazyQuery>;
-export type GetPlanSuspenseQueryHookResult = ReturnType<typeof useGetPlanSuspenseQuery>;
-export type GetPlanQueryResult = Apollo.QueryResult<GetPlanQuery, GetPlanQueryVariables>;
-export const ListPlansDocument = gql`
-    query ListPlans($orderBy: ListDefaultInput, $skip: Int, $take: Int, $where: ListPlansInput) {
-  listPlans(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
-    count
-    rows {
-      id
-      name
-      isActive
-      createdAt
-      code
-    }
-  }
-}
-    `;
-export function useListPlansQuery(baseOptions?: Apollo.QueryHookOptions<ListPlansQuery, ListPlansQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListPlansQuery, ListPlansQueryVariables>(ListPlansDocument, options);
-      }
-export function useListPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListPlansQuery, ListPlansQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListPlansQuery, ListPlansQueryVariables>(ListPlansDocument, options);
-        }
-export function useListPlansSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListPlansQuery, ListPlansQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ListPlansQuery, ListPlansQueryVariables>(ListPlansDocument, options);
-        }
-export type ListPlansQueryHookResult = ReturnType<typeof useListPlansQuery>;
-export type ListPlansLazyQueryHookResult = ReturnType<typeof useListPlansLazyQuery>;
-export type ListPlansSuspenseQueryHookResult = ReturnType<typeof useListPlansSuspenseQuery>;
-export type ListPlansQueryResult = Apollo.QueryResult<ListPlansQuery, ListPlansQueryVariables>;
-export const UpdatePlanDocument = gql`
-    mutation UpdatePlan($data: UpdatePlanInput!, $where: DefaultWhereIdInput!) {
-  updatePlan(data: $data, where: $where) {
-    id
-  }
-}
-    `;
-export type UpdatePlanMutationFn = Apollo.MutationFunction<UpdatePlanMutation, UpdatePlanMutationVariables>;
-export function useUpdatePlanMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePlanMutation, UpdatePlanMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePlanMutation, UpdatePlanMutationVariables>(UpdatePlanDocument, options);
-      }
-export type UpdatePlanMutationHookResult = ReturnType<typeof useUpdatePlanMutation>;
-export type UpdatePlanMutationResult = Apollo.MutationResult<UpdatePlanMutation>;
-export type UpdatePlanMutationOptions = Apollo.BaseMutationOptions<UpdatePlanMutation, UpdatePlanMutationVariables>;
-export const GetUserDocument = gql`
-    query GetUser($getUserId: String!) {
-  getUser(id: $getUserId) {
-    id
-    email
-    name
-    role
-    gender
-    avatarUrl
-    isActive
-    isTest
-    lastSession
-    verifiedEmail
+    bannerPath
+    directorId
     createdAt
     updatedAt
-    Mentee {
+  }
+}
+    `;
+export function useGetSchoolQuery(baseOptions: Apollo.QueryHookOptions<GetSchoolQuery, GetSchoolQueryVariables> & ({ variables: GetSchoolQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSchoolQuery, GetSchoolQueryVariables>(GetSchoolDocument, options);
+      }
+export function useGetSchoolLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSchoolQuery, GetSchoolQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSchoolQuery, GetSchoolQueryVariables>(GetSchoolDocument, options);
+        }
+export function useGetSchoolSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetSchoolQuery, GetSchoolQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetSchoolQuery, GetSchoolQueryVariables>(GetSchoolDocument, options);
+        }
+export type GetSchoolQueryHookResult = ReturnType<typeof useGetSchoolQuery>;
+export type GetSchoolLazyQueryHookResult = ReturnType<typeof useGetSchoolLazyQuery>;
+export type GetSchoolSuspenseQueryHookResult = ReturnType<typeof useGetSchoolSuspenseQuery>;
+export type GetSchoolQueryResult = Apollo.QueryResult<GetSchoolQuery, GetSchoolQueryVariables>;
+export const ListCoursesBySchoolDocument = gql`
+    query ListCoursesBySchool($where: ListCoursesInput, $skip: Int, $take: Int, $orderBy: ListDefaultInput) {
+  listCourses(where: $where, skip: $skip, take: $take, orderBy: $orderBy) {
+    count
+    rows {
       id
-      type
+      name
+      description
+      isActive
+      bannerPath
+      schoolId
+      coordinatorId
       createdAt
       updatedAt
     }
   }
 }
     `;
-export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables> & ({ variables: GetUserQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useListCoursesBySchoolQuery(baseOptions?: Apollo.QueryHookOptions<ListCoursesBySchoolQuery, ListCoursesBySchoolQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        return Apollo.useQuery<ListCoursesBySchoolQuery, ListCoursesBySchoolQueryVariables>(ListCoursesBySchoolDocument, options);
       }
-export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+export function useListCoursesBySchoolLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListCoursesBySchoolQuery, ListCoursesBySchoolQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+          return Apollo.useLazyQuery<ListCoursesBySchoolQuery, ListCoursesBySchoolQueryVariables>(ListCoursesBySchoolDocument, options);
         }
-export function useGetUserSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+export function useListCoursesBySchoolSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListCoursesBySchoolQuery, ListCoursesBySchoolQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+          return Apollo.useSuspenseQuery<ListCoursesBySchoolQuery, ListCoursesBySchoolQueryVariables>(ListCoursesBySchoolDocument, options);
         }
-export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
-export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
-export type GetUserSuspenseQueryHookResult = ReturnType<typeof useGetUserSuspenseQuery>;
-export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
-export const UpdateUserDocument = gql`
-    mutation UpdateUser($data: UpdateUserInput!, $where: DefaultWhereIdInput!) {
-  updateUser(data: $data, where: $where) {
+export type ListCoursesBySchoolQueryHookResult = ReturnType<typeof useListCoursesBySchoolQuery>;
+export type ListCoursesBySchoolLazyQueryHookResult = ReturnType<typeof useListCoursesBySchoolLazyQuery>;
+export type ListCoursesBySchoolSuspenseQueryHookResult = ReturnType<typeof useListCoursesBySchoolSuspenseQuery>;
+export type ListCoursesBySchoolQueryResult = Apollo.QueryResult<ListCoursesBySchoolQuery, ListCoursesBySchoolQueryVariables>;
+export const UpdateSchoolDocument = gql`
+    mutation UpdateSchool($id: ID!, $data: UpdateSchoolInput!) {
+  updateSchool(where: {id: $id}, data: $data) {
     id
+    name
+    description
+    isActive
+    bannerPath
+    directorId
+    updatedAt
+    Director {
+      id
+      userId
+    }
   }
 }
     `;
-export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
-export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+export type UpdateSchoolMutationFn = Apollo.MutationFunction<UpdateSchoolMutation, UpdateSchoolMutationVariables>;
+export function useUpdateSchoolMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSchoolMutation, UpdateSchoolMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+        return Apollo.useMutation<UpdateSchoolMutation, UpdateSchoolMutationVariables>(UpdateSchoolDocument, options);
       }
-export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
-export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
-export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
-export const CreateUserDocument = gql`
-    mutation CreateUser($data: CreateUserInput!) {
-  createUser(data: $data) {
+export type UpdateSchoolMutationHookResult = ReturnType<typeof useUpdateSchoolMutation>;
+export type UpdateSchoolMutationResult = Apollo.MutationResult<UpdateSchoolMutation>;
+export type UpdateSchoolMutationOptions = Apollo.BaseMutationOptions<UpdateSchoolMutation, UpdateSchoolMutationVariables>;
+export const CreateKlassDocument = gql`
+    mutation CreateKlass($data: CreateKlassInput!) {
+  createKlass(data: $data) {
     id
+    name
+    description
+    isActive
+    bannerPath
+    courseId
+    teacherId
+    createdAt
+    updatedAt
+    Course {
+      id
+      name
+      schoolId
+    }
   }
 }
     `;
-export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
-export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+export type CreateKlassMutationFn = Apollo.MutationFunction<CreateKlassMutation, CreateKlassMutationVariables>;
+export function useCreateKlassMutation(baseOptions?: Apollo.MutationHookOptions<CreateKlassMutation, CreateKlassMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+        return Apollo.useMutation<CreateKlassMutation, CreateKlassMutationVariables>(CreateKlassDocument, options);
       }
-export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
-export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
-export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
-export const ListUsersDocument = gql`
-    query ListUsers($orderBy: ListDefaultInput, $skip: Int, $take: Int, $where: ListUsersInput) {
-  listUsers(orderBy: $orderBy, skip: $skip, take: $take, where: $where) {
+export type CreateKlassMutationHookResult = ReturnType<typeof useCreateKlassMutation>;
+export type CreateKlassMutationResult = Apollo.MutationResult<CreateKlassMutation>;
+export type CreateKlassMutationOptions = Apollo.BaseMutationOptions<CreateKlassMutation, CreateKlassMutationVariables>;
+export const GetKlassDocument = gql`
+    query GetKlass($id: String!) {
+  getKlass(id: $id) {
+    id
+    name
+    description
+    isActive
+    bannerPath
+    courseId
+    teacherId
+    createdAt
+    updatedAt
+    Course {
+      id
+      name
+      schoolId
+    }
+  }
+}
+    `;
+export function useGetKlassQuery(baseOptions: Apollo.QueryHookOptions<GetKlassQuery, GetKlassQueryVariables> & ({ variables: GetKlassQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetKlassQuery, GetKlassQueryVariables>(GetKlassDocument, options);
+      }
+export function useGetKlassLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetKlassQuery, GetKlassQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetKlassQuery, GetKlassQueryVariables>(GetKlassDocument, options);
+        }
+export function useGetKlassSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetKlassQuery, GetKlassQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetKlassQuery, GetKlassQueryVariables>(GetKlassDocument, options);
+        }
+export type GetKlassQueryHookResult = ReturnType<typeof useGetKlassQuery>;
+export type GetKlassLazyQueryHookResult = ReturnType<typeof useGetKlassLazyQuery>;
+export type GetKlassSuspenseQueryHookResult = ReturnType<typeof useGetKlassSuspenseQuery>;
+export type GetKlassQueryResult = Apollo.QueryResult<GetKlassQuery, GetKlassQueryVariables>;
+export const ListKlassesByCourseDocument = gql`
+    query ListKlassesByCourse($where: ListKlassesInput, $skip: Int, $take: Int, $orderBy: ListDefaultInput) {
+  listKlasses(where: $where, skip: $skip, take: $take, orderBy: $orderBy) {
     count
     rows {
-      name
-      role
-      isTest
       id
+      name
+      description
       isActive
-      gender
-      email
+      bannerPath
+      courseId
+      teacherId
       createdAt
       updatedAt
-      avatarUrl
-      lastSession
+      Course {
+        id
+        name
+        schoolId
+      }
+    }
+  }
+}
+    `;
+export function useListKlassesByCourseQuery(baseOptions?: Apollo.QueryHookOptions<ListKlassesByCourseQuery, ListKlassesByCourseQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListKlassesByCourseQuery, ListKlassesByCourseQueryVariables>(ListKlassesByCourseDocument, options);
+      }
+export function useListKlassesByCourseLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListKlassesByCourseQuery, ListKlassesByCourseQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListKlassesByCourseQuery, ListKlassesByCourseQueryVariables>(ListKlassesByCourseDocument, options);
+        }
+export function useListKlassesByCourseSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListKlassesByCourseQuery, ListKlassesByCourseQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ListKlassesByCourseQuery, ListKlassesByCourseQueryVariables>(ListKlassesByCourseDocument, options);
+        }
+export type ListKlassesByCourseQueryHookResult = ReturnType<typeof useListKlassesByCourseQuery>;
+export type ListKlassesByCourseLazyQueryHookResult = ReturnType<typeof useListKlassesByCourseLazyQuery>;
+export type ListKlassesByCourseSuspenseQueryHookResult = ReturnType<typeof useListKlassesByCourseSuspenseQuery>;
+export type ListKlassesByCourseQueryResult = Apollo.QueryResult<ListKlassesByCourseQuery, ListKlassesByCourseQueryVariables>;
+export const GetCourseDocument = gql`
+    query GetCourse($id: String!) {
+  getCourse(id: $id) {
+    id
+    name
+    description
+    isActive
+    schoolId
+    coordinatorId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export function useGetCourseQuery(baseOptions: Apollo.QueryHookOptions<GetCourseQuery, GetCourseQueryVariables> & ({ variables: GetCourseQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCourseQuery, GetCourseQueryVariables>(GetCourseDocument, options);
+      }
+export function useGetCourseLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCourseQuery, GetCourseQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCourseQuery, GetCourseQueryVariables>(GetCourseDocument, options);
+        }
+export function useGetCourseSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCourseQuery, GetCourseQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCourseQuery, GetCourseQueryVariables>(GetCourseDocument, options);
+        }
+export type GetCourseQueryHookResult = ReturnType<typeof useGetCourseQuery>;
+export type GetCourseLazyQueryHookResult = ReturnType<typeof useGetCourseLazyQuery>;
+export type GetCourseSuspenseQueryHookResult = ReturnType<typeof useGetCourseSuspenseQuery>;
+export type GetCourseQueryResult = Apollo.QueryResult<GetCourseQuery, GetCourseQueryVariables>;
+export const CreateExamDocument = gql`
+    mutation CreateExam($data: CreateExamInput!) {
+  createExam(data: $data) {
+    id
+    title
+    description
+    filePath
+    klassId
+    isActive
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateExamMutationFn = Apollo.MutationFunction<CreateExamMutation, CreateExamMutationVariables>;
+export function useCreateExamMutation(baseOptions?: Apollo.MutationHookOptions<CreateExamMutation, CreateExamMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateExamMutation, CreateExamMutationVariables>(CreateExamDocument, options);
+      }
+export type CreateExamMutationHookResult = ReturnType<typeof useCreateExamMutation>;
+export type CreateExamMutationResult = Apollo.MutationResult<CreateExamMutation>;
+export type CreateExamMutationOptions = Apollo.BaseMutationOptions<CreateExamMutation, CreateExamMutationVariables>;
+export const GetExamDocument = gql`
+    query GetExam($id: String!) {
+  getExam(id: $id) {
+    id
+    title
+    description
+    filePath
+    klassId
+    isActive
+    createdAt
+    updatedAt
+    Klass {
+      id
+      name
+      courseId
+    }
+    Questions {
+      id
+      number
+      text
+      value
+      correct
+    }
+  }
+}
+    `;
+export function useGetExamQuery(baseOptions: Apollo.QueryHookOptions<GetExamQuery, GetExamQueryVariables> & ({ variables: GetExamQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetExamQuery, GetExamQueryVariables>(GetExamDocument, options);
+      }
+export function useGetExamLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExamQuery, GetExamQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetExamQuery, GetExamQueryVariables>(GetExamDocument, options);
+        }
+export function useGetExamSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetExamQuery, GetExamQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetExamQuery, GetExamQueryVariables>(GetExamDocument, options);
+        }
+export type GetExamQueryHookResult = ReturnType<typeof useGetExamQuery>;
+export type GetExamLazyQueryHookResult = ReturnType<typeof useGetExamLazyQuery>;
+export type GetExamSuspenseQueryHookResult = ReturnType<typeof useGetExamSuspenseQuery>;
+export type GetExamQueryResult = Apollo.QueryResult<GetExamQuery, GetExamQueryVariables>;
+export const ListExamsByKlassDocument = gql`
+    query ListExamsByKlass($where: ListExamsInput, $skip: Int, $take: Int, $orderBy: ListDefaultInput) {
+  listExams(where: $where, skip: $skip, take: $take, orderBy: $orderBy) {
+    count
+    rows {
+      id
+      title
+      description
+      filePath
+      klassId
+      isActive
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export function useListExamsByKlassQuery(baseOptions?: Apollo.QueryHookOptions<ListExamsByKlassQuery, ListExamsByKlassQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListExamsByKlassQuery, ListExamsByKlassQueryVariables>(ListExamsByKlassDocument, options);
+      }
+export function useListExamsByKlassLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListExamsByKlassQuery, ListExamsByKlassQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListExamsByKlassQuery, ListExamsByKlassQueryVariables>(ListExamsByKlassDocument, options);
+        }
+export function useListExamsByKlassSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListExamsByKlassQuery, ListExamsByKlassQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ListExamsByKlassQuery, ListExamsByKlassQueryVariables>(ListExamsByKlassDocument, options);
+        }
+export type ListExamsByKlassQueryHookResult = ReturnType<typeof useListExamsByKlassQuery>;
+export type ListExamsByKlassLazyQueryHookResult = ReturnType<typeof useListExamsByKlassLazyQuery>;
+export type ListExamsByKlassSuspenseQueryHookResult = ReturnType<typeof useListExamsByKlassSuspenseQuery>;
+export type ListExamsByKlassQueryResult = Apollo.QueryResult<ListExamsByKlassQuery, ListExamsByKlassQueryVariables>;
+export const UpdateExamDocument = gql`
+    mutation UpdateExam($where: DefaultWhereIdInput!, $data: UpdateExamInput!) {
+  updateExam(where: $where, data: $data) {
+    id
+    title
+    description
+    filePath
+    klassId
+    isActive
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type UpdateExamMutationFn = Apollo.MutationFunction<UpdateExamMutation, UpdateExamMutationVariables>;
+export function useUpdateExamMutation(baseOptions?: Apollo.MutationHookOptions<UpdateExamMutation, UpdateExamMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateExamMutation, UpdateExamMutationVariables>(UpdateExamDocument, options);
+      }
+export type UpdateExamMutationHookResult = ReturnType<typeof useUpdateExamMutation>;
+export type UpdateExamMutationResult = Apollo.MutationResult<UpdateExamMutation>;
+export type UpdateExamMutationOptions = Apollo.BaseMutationOptions<UpdateExamMutation, UpdateExamMutationVariables>;
+export const CreateCourseDocument = gql`
+    mutation CreateCourse($data: CreateCourseInput!) {
+  createCourse(data: $data) {
+    id
+    name
+    description
+    isActive
+    bannerPath
+    schoolId
+    coordinatorId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateCourseMutationFn = Apollo.MutationFunction<CreateCourseMutation, CreateCourseMutationVariables>;
+export function useCreateCourseMutation(baseOptions?: Apollo.MutationHookOptions<CreateCourseMutation, CreateCourseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCourseMutation, CreateCourseMutationVariables>(CreateCourseDocument, options);
+      }
+export type CreateCourseMutationHookResult = ReturnType<typeof useCreateCourseMutation>;
+export type CreateCourseMutationResult = Apollo.MutationResult<CreateCourseMutation>;
+export type CreateCourseMutationOptions = Apollo.BaseMutationOptions<CreateCourseMutation, CreateCourseMutationVariables>;
+export const ListUsersDocument = gql`
+    query ListUsers($where: ListUsersInput, $orderBy: ListDefaultInput, $skip: Int, $take: Int) {
+  listUsers(where: $where, orderBy: $orderBy, skip: $skip, take: $take) {
+    count
+    rows {
+      id
+      name
+      email
+      isActive
+      role
+      createdAt
     }
   }
 }
@@ -2652,6 +1336,61 @@ export type ListUsersQueryHookResult = ReturnType<typeof useListUsersQuery>;
 export type ListUsersLazyQueryHookResult = ReturnType<typeof useListUsersLazyQuery>;
 export type ListUsersSuspenseQueryHookResult = ReturnType<typeof useListUsersSuspenseQuery>;
 export type ListUsersQueryResult = Apollo.QueryResult<ListUsersQuery, ListUsersQueryVariables>;
+export const CreateSchoolDocument = gql`
+    mutation CreateSchool($data: CreateSchoolInput!) {
+  createSchool(data: $data) {
+    id
+    name
+    description
+    isActive
+    bannerPath
+    directorId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateSchoolMutationFn = Apollo.MutationFunction<CreateSchoolMutation, CreateSchoolMutationVariables>;
+export function useCreateSchoolMutation(baseOptions?: Apollo.MutationHookOptions<CreateSchoolMutation, CreateSchoolMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSchoolMutation, CreateSchoolMutationVariables>(CreateSchoolDocument, options);
+      }
+export type CreateSchoolMutationHookResult = ReturnType<typeof useCreateSchoolMutation>;
+export type CreateSchoolMutationResult = Apollo.MutationResult<CreateSchoolMutation>;
+export type CreateSchoolMutationOptions = Apollo.BaseMutationOptions<CreateSchoolMutation, CreateSchoolMutationVariables>;
+export const ListSchoolsDocument = gql`
+    query ListSchools($where: ListSchoolsInput, $skip: Int, $take: Int, $orderBy: ListDefaultInput) {
+  listSchools(where: $where, skip: $skip, take: $take, orderBy: $orderBy) {
+    count
+    rows {
+      id
+      name
+      description
+      isActive
+      bannerPath
+      directorId
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export function useListSchoolsQuery(baseOptions?: Apollo.QueryHookOptions<ListSchoolsQuery, ListSchoolsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListSchoolsQuery, ListSchoolsQueryVariables>(ListSchoolsDocument, options);
+      }
+export function useListSchoolsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListSchoolsQuery, ListSchoolsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListSchoolsQuery, ListSchoolsQueryVariables>(ListSchoolsDocument, options);
+        }
+export function useListSchoolsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListSchoolsQuery, ListSchoolsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ListSchoolsQuery, ListSchoolsQueryVariables>(ListSchoolsDocument, options);
+        }
+export type ListSchoolsQueryHookResult = ReturnType<typeof useListSchoolsQuery>;
+export type ListSchoolsLazyQueryHookResult = ReturnType<typeof useListSchoolsLazyQuery>;
+export type ListSchoolsSuspenseQueryHookResult = ReturnType<typeof useListSchoolsSuspenseQuery>;
+export type ListSchoolsQueryResult = Apollo.QueryResult<ListSchoolsQuery, ListSchoolsQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
