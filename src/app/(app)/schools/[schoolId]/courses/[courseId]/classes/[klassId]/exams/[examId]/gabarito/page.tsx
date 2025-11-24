@@ -4,13 +4,13 @@ import { Button } from "@/components/button";
 import { Dialog } from "@/components/dialog";
 import { Input } from "@/components/input";
 import { Textarea } from "@/components/textarea";
-import { ExamShell } from "../_/components/exam-shell";
 import useToastHook from "@/hooks/useToastHook";
 import { handleMutationError } from "@/lib/handleMutationError";
 import { gql, useMutation, useSuspenseQuery } from "@apollo/client";
 import { type ExamObject, type ExamQuestionInput } from "@generated/hooks";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { use, useEffect, useMemo, useState } from "react";
+import { ExamShell } from "../_/components/exam-shell";
 
 type PageProps = {
   params: Promise<{
@@ -189,9 +189,9 @@ export default function ExamGabaritoPage({ params }: PageProps) {
       exam={{ id: exam.id, title: exam.title, isActive: exam.isActive }}
       params={{ schoolId, courseId, klassId, examId }}
     >
-      <div className="space-y-6">
-        <div className="rounded-2xl bg-white p-5">
-          <div className="grid gap-4 sm:grid-cols-2">
+      <div className="space-y-5">
+        <div className="rounded-2xl bg-white p-4">
+          <div className="grid gap-3 sm:grid-cols-2">
             <Input label="Título" value={exam.title} readOnly />
             <Input label="Arquivo" value={exam.filePath} readOnly />
             <Textarea
@@ -203,7 +203,7 @@ export default function ExamGabaritoPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-white p-5 space-y-4">
+        <div className="rounded-2xl bg-white p-4 space-y-3">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-yellow-700">
@@ -216,7 +216,7 @@ export default function ExamGabaritoPage({ params }: PageProps) {
                 Clique para registrar as alternativas corretas (A–E).
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2">
               <Button
                 color="light"
                 onClick={handleRandomize}
@@ -230,18 +230,27 @@ export default function ExamGabaritoPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="columns-2 sm:columns-3 lg:columns-6 gap-2 space-y-2">
             {answers.map((row) => (
               <div
                 key={row.number}
-                className="rounded-xl bg-zinc-50 px-3 py-2"
+                className="break-inside-avoid rounded-xl bg-zinc-50 px-3 py-2"
               >
                 <p className="text-xs font-semibold uppercase tracking-wide text-zinc-600">
                   Questão {row.number}
                 </p>
-                <p className="text-lg font-semibold text-zinc-900">
-                  {letterForOption(row.correctOption)}
-                </p>
+                <div className="mt-1 flex items-center gap-3">
+                  <span className="text-sm text-zinc-600">Correta</span>
+                  <span
+                    className={`flex h-11 w-11 items-center justify-center rounded-full border text-sm font-semibold ${
+                      row.correctOption
+                        ? "border-yellow-400 bg-yellow-50 text-yellow-800"
+                        : "border-zinc-200 bg-white text-zinc-500"
+                    }`}
+                  >
+                    {letterForOption(row.correctOption)}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
@@ -257,11 +266,11 @@ export default function ExamGabaritoPage({ params }: PageProps) {
           size="3xl"
           scrollBehavior="inside"
         >
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="grid gap-2 md:grid-cols-2">
             {answers.map((row, index) => (
               <div
                 key={row.number}
-                className="flex flex-col gap-3 rounded-xl bg-white px-4 py-3"
+                className="flex flex-col gap-3 rounded-xl bg-white px-3 py-3"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-zinc-800">
@@ -302,8 +311,8 @@ export default function ExamGabaritoPage({ params }: PageProps) {
           </div>
         </Dialog>
 
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="rounded-2xl bg-white p-4">
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             <InfoItem label="Criada em" value={createdAt} />
             <InfoItem label="Atualizada em" value={updatedAt} />
             <InfoItem label="Arquivo" value={exam.filePath} isCode />

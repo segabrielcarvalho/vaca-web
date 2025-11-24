@@ -1,0 +1,7 @@
+mutation SubmitCorrectionPhoto($data: SubmitCorrectionInput!) {
+  submitCorrectionPhoto(data: $data) {
+    sessionId
+    examId
+    jobId
+  }
+}

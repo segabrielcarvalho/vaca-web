@@ -1,0 +1,6 @@
+mutation StartCorrection($examId: String!) {
+  startCorrection(examId: $examId) {
+    sessionId
+    examId
+  }
+}
