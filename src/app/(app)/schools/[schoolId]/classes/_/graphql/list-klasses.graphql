@@ -1,0 +1,21 @@
+query ListKlassesByCourse($where: ListKlassesInput, $skip: Int, $take: Int, $orderBy: ListDefaultInput) {
+  listKlasses(where: $where, skip: $skip, take: $take, orderBy: $orderBy) {
+    count
+    rows {
+      id
+      name
+      description
+      isActive
+      bannerPath
+      courseId
+      teacherId
+      createdAt
+      updatedAt
+      Course {
+        id
+        name
+        schoolId
+      }
+    }
+  }
+}

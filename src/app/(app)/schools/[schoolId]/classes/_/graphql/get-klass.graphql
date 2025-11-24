@@ -1,0 +1,18 @@
+query GetKlass($id: String!) {
+  getKlass(id: $id) {
+    id
+    name
+    description
+    isActive
+    bannerPath
+    courseId
+    teacherId
+    createdAt
+    updatedAt
+    Course {
+      id
+      name
+      schoolId
+    }
+  }
+}

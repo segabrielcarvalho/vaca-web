@@ -1,0 +1,16 @@
+query ListCoursesBySchool($where: ListCoursesInput, $skip: Int, $take: Int, $orderBy: ListDefaultInput) {
+  listCourses(where: $where, skip: $skip, take: $take, orderBy: $orderBy) {
+    count
+    rows {
+      id
+      name
+      description
+      isActive
+      bannerPath
+      schoolId
+      coordinatorId
+      createdAt
+      updatedAt
+    }
+  }
+}

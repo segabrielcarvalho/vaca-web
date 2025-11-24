@@ -1,0 +1,12 @@
+query GetSchool($id: String!) {
+  getSchool(id: $id) {
+    id
+    name
+    description
+    isActive
+    bannerPath
+    directorId
+    createdAt
+    updatedAt
+  }
+}

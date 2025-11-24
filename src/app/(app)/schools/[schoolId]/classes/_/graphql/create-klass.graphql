@@ -1,0 +1,18 @@
+mutation CreateKlass($data: CreateKlassInput!) {
+  createKlass(data: $data) {
+    id
+    name
+    description
+    isActive
+    bannerPath
+    courseId
+    teacherId
+    createdAt
+    updatedAt
+    Course {
+      id
+      name
+      schoolId
+    }
+  }
+}

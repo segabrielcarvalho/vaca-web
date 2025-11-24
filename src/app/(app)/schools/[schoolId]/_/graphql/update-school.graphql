@@ -1,0 +1,15 @@
+mutation UpdateSchool($id: ID!, $data: UpdateSchoolInput!) {
+  updateSchool(where: { id: $id }, data: $data) {
+    id
+    name
+    description
+    isActive
+    bannerPath
+    directorId
+    updatedAt
+    Director {
+      id
+      userId
+    }
+  }
+}
