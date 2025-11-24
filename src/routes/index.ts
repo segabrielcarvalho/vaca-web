@@ -41,6 +41,11 @@ const getRoutes = () => ({
     path: (params?: Params) => buildPath("/home", params),
   },
 
+  reports: {
+    name: "Relatórios",
+    path: (params?: Params) => buildPath("/reports", params),
+  },
+
   schools: {
     name: "Escolas",
     path: (params?: Params) => buildPath("/schools", params),
@@ -60,10 +65,15 @@ const getRoutes = () => ({
     show: {
       path: (id: string, params?: Params) => buildPath(`/users/${id}`, params),
       plans: {
-        path: (id: string, params?: Params) =>
-          buildPath(`/users/${id}/plans`, params),
+          path: (id: string, params?: Params) =>
+            buildPath(`/users/${id}/plans`, params),
       },
     },
+  },
+
+  settings: {
+    name: "Configurações",
+    path: (params?: Params) => buildPath("/settings", params),
   },
 });
 

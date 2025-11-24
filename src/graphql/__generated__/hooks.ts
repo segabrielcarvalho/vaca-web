@@ -53,11 +53,44 @@ export type CoordinatorInput = {
   password?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type CorrectionAnswerStatusObject = {
+  __typename?: 'CorrectionAnswerStatusObject';
+  correct?: Maybe<Scalars['Float']['output']>;
+  isCorrect?: Maybe<Scalars['Boolean']['output']>;
+  number: Scalars['Float']['output'];
+  selected?: Maybe<Scalars['Float']['output']>;
+};
+
 export type CorrectionEnqueueObject = {
   __typename?: 'CorrectionEnqueueObject';
   examId: Scalars['String']['output'];
   jobId?: Maybe<Scalars['String']['output']>;
   sessionId: Scalars['String']['output'];
+};
+
+export type CorrectionExamObject = {
+  __typename?: 'CorrectionExamObject';
+  Items?: Maybe<Array<CorrectionQuestionObject>>;
+  attempt: Scalars['Float']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  examId: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  score?: Maybe<Scalars['Float']['output']>;
+  status: Scalars['String']['output'];
+  studentId: Scalars['ID']['output'];
+  studentName?: Maybe<Scalars['String']['output']>;
+  studentRegistration: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type CorrectionQuestionObject = {
+  __typename?: 'CorrectionQuestionObject';
+  correct?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['ID']['output'];
+  isCorrect?: Maybe<Scalars['Boolean']['output']>;
+  number?: Maybe<Scalars['Float']['output']>;
+  questionId: Scalars['ID']['output'];
+  selected?: Maybe<Scalars['Float']['output']>;
 };
 
 export type CorrectionSessionObject = {
@@ -76,6 +109,7 @@ export enum CorrectionStatusEnum {
 
 export type CorrectionStatusObject = {
   __typename?: 'CorrectionStatusObject';
+  answers?: Maybe<Array<CorrectionAnswerStatusObject>>;
   attempt?: Maybe<Scalars['Float']['output']>;
   correctionId?: Maybe<Scalars['String']['output']>;
   examId: Scalars['String']['output'];
@@ -525,6 +559,7 @@ export type Query = {
   getUser: UserObject;
   healthCheck: Scalars['String']['output'];
   listCourses: CourseListObject;
+  listExamCorrections: Array<CorrectionExamObject>;
   listExams: ExamListObject;
   listKlasses: KlassListObject;
   listSchools: SchoolListObject;
@@ -563,6 +598,11 @@ export type QueryListCoursesArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ListCoursesInput>;
+};
+
+
+export type QueryListExamCorrectionsArgs = {
+  examId: Scalars['String']['input'];
 };
 
 
@@ -860,6 +900,27 @@ export type GetCourseQueryVariables = Exact<{
 
 
 export type GetCourseQuery = { __typename?: 'Query', getCourse: { __typename?: 'CourseObject', id: string, name: string, description?: string | null, isActive: boolean, schoolId: string, coordinatorId?: string | null, createdAt: any, updatedAt: any } };
+
+export type CorrectionStatusSubscriptionVariables = Exact<{
+  sessionId: Scalars['String']['input'];
+}>;
+
+
+export type CorrectionStatusSubscription = { __typename?: 'Subscription', correctionStatus: { __typename?: 'CorrectionStatusObject', sessionId: string, examId: string, status: CorrectionStatusEnum } };
+
+export type StartCorrectionMutationVariables = Exact<{
+  examId: Scalars['String']['input'];
+}>;
+
+
+export type StartCorrectionMutation = { __typename?: 'Mutation', startCorrection: { __typename?: 'CorrectionSessionObject', sessionId: string, examId: string } };
+
+export type SubmitCorrectionPhotoMutationVariables = Exact<{
+  data: SubmitCorrectionInput;
+}>;
+
+
+export type SubmitCorrectionPhotoMutation = { __typename?: 'Mutation', submitCorrectionPhoto: { __typename?: 'CorrectionEnqueueObject', sessionId: string, examId: string, jobId?: string | null } };
 
 export type CreateExamMutationVariables = Exact<{
   data: CreateExamInput;
@@ -1163,6 +1224,54 @@ export type GetCourseQueryHookResult = ReturnType<typeof useGetCourseQuery>;
 export type GetCourseLazyQueryHookResult = ReturnType<typeof useGetCourseLazyQuery>;
 export type GetCourseSuspenseQueryHookResult = ReturnType<typeof useGetCourseSuspenseQuery>;
 export type GetCourseQueryResult = Apollo.QueryResult<GetCourseQuery, GetCourseQueryVariables>;
+export const CorrectionStatusDocument = gql`
+    subscription CorrectionStatus($sessionId: String!) {
+  correctionStatus(sessionId: $sessionId) {
+    sessionId
+    examId
+    status
+  }
+}
+    `;
+export function useCorrectionStatusSubscription(baseOptions: Apollo.SubscriptionHookOptions<CorrectionStatusSubscription, CorrectionStatusSubscriptionVariables> & ({ variables: CorrectionStatusSubscriptionVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CorrectionStatusSubscription, CorrectionStatusSubscriptionVariables>(CorrectionStatusDocument, options);
+      }
+export type CorrectionStatusSubscriptionHookResult = ReturnType<typeof useCorrectionStatusSubscription>;
+export type CorrectionStatusSubscriptionResult = Apollo.SubscriptionResult<CorrectionStatusSubscription>;
+export const StartCorrectionDocument = gql`
+    mutation StartCorrection($examId: String!) {
+  startCorrection(examId: $examId) {
+    sessionId
+    examId
+  }
+}
+    `;
+export type StartCorrectionMutationFn = Apollo.MutationFunction<StartCorrectionMutation, StartCorrectionMutationVariables>;
+export function useStartCorrectionMutation(baseOptions?: Apollo.MutationHookOptions<StartCorrectionMutation, StartCorrectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<StartCorrectionMutation, StartCorrectionMutationVariables>(StartCorrectionDocument, options);
+      }
+export type StartCorrectionMutationHookResult = ReturnType<typeof useStartCorrectionMutation>;
+export type StartCorrectionMutationResult = Apollo.MutationResult<StartCorrectionMutation>;
+export type StartCorrectionMutationOptions = Apollo.BaseMutationOptions<StartCorrectionMutation, StartCorrectionMutationVariables>;
+export const SubmitCorrectionPhotoDocument = gql`
+    mutation SubmitCorrectionPhoto($data: SubmitCorrectionInput!) {
+  submitCorrectionPhoto(data: $data) {
+    sessionId
+    examId
+    jobId
+  }
+}
+    `;
+export type SubmitCorrectionPhotoMutationFn = Apollo.MutationFunction<SubmitCorrectionPhotoMutation, SubmitCorrectionPhotoMutationVariables>;
+export function useSubmitCorrectionPhotoMutation(baseOptions?: Apollo.MutationHookOptions<SubmitCorrectionPhotoMutation, SubmitCorrectionPhotoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubmitCorrectionPhotoMutation, SubmitCorrectionPhotoMutationVariables>(SubmitCorrectionPhotoDocument, options);
+      }
+export type SubmitCorrectionPhotoMutationHookResult = ReturnType<typeof useSubmitCorrectionPhotoMutation>;
+export type SubmitCorrectionPhotoMutationResult = Apollo.MutationResult<SubmitCorrectionPhotoMutation>;
+export type SubmitCorrectionPhotoMutationOptions = Apollo.BaseMutationOptions<SubmitCorrectionPhotoMutation, SubmitCorrectionPhotoMutationVariables>;
 export const CreateExamDocument = gql`
     mutation CreateExam($data: CreateExamInput!) {
   createExam(data: $data) {

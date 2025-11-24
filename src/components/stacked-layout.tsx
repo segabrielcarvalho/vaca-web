@@ -1,188 +1,197 @@
 "use client";
 
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { LayoutSidebar } from "./stacked-layout/sidebar";
+import { Avatar } from "@/components/avatar";
+import { Button } from "@/components/button";
+import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from "@headlessui/react";
+import {
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import clsx from "clsx";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useMemo, useState, type CSSProperties } from "react";
+import { isPathActive } from "@/routes";
+import { Logo } from "./logo";
+import type { NavigationItem } from "./application-layout";
 
-type LayoutSidebarContextValue = {
-  isSidebarOpen: boolean;
-  toggleSidebar: () => void;
-  openSidebar: () => void;
-  closeSidebar: () => void;
+type StackedLayoutProps = {
+  navItems: NavigationItem[];
+  user?: { name: string; email?: string; avatarUrl?: string };
+  onSignOut?: () => void;
+  signingOut?: boolean;
+  children: React.ReactNode;
 };
 
-const LayoutSidebarContext = createContext<LayoutSidebarContextValue | null>(
-  null
-);
+export function StackedLayout({
+  navItems,
+  user,
+  onSignOut,
+  signingOut,
+  children,
+}: StackedLayoutProps) {
+  const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-export const useApplicationLayoutSidebar = () => {
-  const ctx = useContext(LayoutSidebarContext);
-  if (!ctx) {
-    throw new Error(
-      "useApplicationLayoutSidebar must be used within StackedLayout"
-    );
-  }
-  return ctx;
-};
+  const activeItem =
+    navItems.find((item) => isPathActive(pathname, item.href)) ?? navItems[0];
 
-const recentActivities = [
-  {
-    id: "activity-1",
-    title: "Reunião de pais",
-    description: "Turma 3º Ano Ensino Médio",
-    time: "Hoje · 14:00",
-  },
-  {
-    id: "activity-2",
-    title: "Entrega de boletins",
-    description: "Turmas Ensino Fundamental II",
-    time: "Amanhã · 09:00",
-  },
-  {
-    id: "activity-3",
-    title: "Aula aberta de artes",
-    description: "Turma Artes Cênicas",
-    time: "Sexta · 19:30",
-  },
-  {
-    id: "activity-4",
-    title: "Envio de comunicados",
-    description: "Responsáveis do 5º Ano B",
-    time: "Ontem · 17:45",
-  },
-];
-
-const weekDayLabels = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
-
-function useCurrentMonthMatrix() {
-  return useMemo(() => {
-    const today = new Date();
-    const monthLabel = new Intl.DateTimeFormat("pt-BR", {
-      month: "long",
-      year: "numeric",
-    }).format(today);
-
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    const startOffset = (firstDay.getDay() + 6) % 7;
-    const totalCells = Math.ceil((startOffset + lastDay.getDate()) / 7) * 7;
-
-    const cells = Array.from({ length: totalCells }, (_, index) => {
-      const day = index - startOffset + 1;
-      return day > 0 && day <= lastDay.getDate() ? day : null;
-    });
-
-    return {
-      monthLabel,
-      todayDay: today.getDate(),
-      cells,
-    };
-  }, []);
-}
-
-type StackedLayoutProps = React.PropsWithChildren<{ navbar: React.ReactNode }>;
-
-export function StackedLayout({ navbar, children }: StackedLayoutProps) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  const sidebarControls = useMemo<LayoutSidebarContextValue>(
+  const sidebarStyle = useMemo<CSSProperties>(
     () => ({
-      isSidebarOpen,
-      toggleSidebar: () => setIsSidebarOpen((prev) => !prev),
-      openSidebar: () => setIsSidebarOpen(true),
-      closeSidebar: () => setIsSidebarOpen(false),
+      ["--sidebar-width" as string]: "min(22vw, 18rem)",
     }),
-    [isSidebarOpen]
+    []
   );
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  const initials =
+    !user?.avatarUrl && user?.name
+      ? user.name
+          .split(/\s+/)
+          .map((part) => part[0])
+          .filter(Boolean)
+          .join("")
+          .slice(0, 2)
+          .toUpperCase()
+      : undefined;
 
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
-
-    const apply = (matches: boolean) => {
-      setIsDesktop(matches);
-      if (!matches) {
-        setIsSidebarOpen(false);
-      }
-    };
-
-    apply(mediaQuery.matches);
-    if (mediaQuery.matches) {
-      setIsSidebarOpen(true);
-    }
-
-    const listener = (event: MediaQueryListEvent) => apply(event.matches);
-    mediaQuery.addEventListener("change", listener);
-    return () => mediaQuery.removeEventListener("change", listener);
-  }, []);
-
-  const { monthLabel, todayDay, cells } = useCurrentMonthMatrix();
-  const calendarData = useMemo(
-    () => ({
-      monthLabel,
-      todayDay,
-      cells,
-      weekDayLabels,
-    }),
-    [monthLabel, todayDay, cells]
+  const renderNavList = (isMobile?: boolean) => (
+    <ul role="list" className="flex flex-1 flex-col gap-y-7">
+      <li>
+        <ul role="list" className="-mx-2 space-y-1">
+          {navItems.map((item) => {
+            const active = isPathActive(pathname, item.href);
+            return (
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  onClick={() => {
+                    if (isMobile) setSidebarOpen(false);
+                  }}
+                  className={clsx(
+                    active
+                      ? "bg-white/5 text-white"
+                      : "text-gray-400 hover:bg-white/5 hover:text-white",
+                    "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition"
+                  )}
+                >
+                  <item.Icon aria-hidden="true" className="size-6 shrink-0" />
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </li>
+      {user && (
+        <li className="-mx-2 mt-auto">
+          <div className="flex items-center gap-x-3 rounded-lg px-2 py-3 text-sm font-semibold text-white transition hover:bg-white/5">
+            <Avatar
+              src={user.avatarUrl}
+              initials={initials}
+              alt={user.name}
+              className="size-9 shrink-0"
+            />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-white">{user.name}</p>
+              {user.email && (
+                <p className="truncate text-xs text-white/70">{user.email}</p>
+              )}
+            </div>
+            {onSignOut && (
+              <Button
+                size="sm"
+                color="light"
+                outline
+                className="px-3 py-1 text-xs"
+                onClick={onSignOut}
+                loading={signingOut}
+              >
+                Sair
+              </Button>
+            )}
+          </div>
+        </li>
+      )}
+    </ul>
   );
 
   return (
-    <LayoutSidebarContext.Provider value={sidebarControls}>
-      <div className="relative isolate flex h-svh min-h-svh w-full flex-col overflow-hidden bg-slate-50 text-zinc-900">
-        <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/90 backdrop-blur">
-          <div className="flex items-center justify-between bg-blue-950 px-4 py-3 text-white sm:px-6 lg:px-8">
-            {navbar}
-          </div>
-        </header>
+    <div
+      className="min-h-svh bg-slate-50 text-zinc-900"
+      style={sidebarStyle}
+    >
+      <Dialog
+        open={sidebarOpen}
+        onClose={setSidebarOpen}
+        className="relative z-50 lg:hidden"
+      >
+        <DialogBackdrop
+          transition
+          className="fixed inset-0 bg-zinc-950/70 transition-opacity duration-300 ease-linear data-closed:opacity-0"
+        />
 
-        <main className="relative flex flex-1 items-stretch overflow-hidden">
-          <div className="relative z-10 flex flex-1 flex-col px-4 pb-24 pt-4 transition-all duration-300 sm:px-6 sm:pb-6 lg:px-8 lg:pb-6">
-            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-300/70 hover:scrollbar-thumb-yellow-300/80">
-              <div className="w-full rounded-2xl bg-white p-6 ring-1 ring-zinc-100">
-                {children}
+        <div className="fixed inset-0 flex">
+          <DialogPanel
+            transition
+            className="relative mr-16 flex w-full max-w-[min(82vw,var(--sidebar-width))] flex-1 transform transition duration-300 ease-in-out data-closed:-translate-x-full"
+          >
+            <TransitionChild>
+              <div className="absolute left-full top-0 flex w-16 justify-center pt-5 duration-300 ease-in-out data-closed:opacity-0">
+                <button
+                  type="button"
+                  onClick={() => setSidebarOpen(false)}
+                  className="-m-2.5 rounded-full p-2.5 text-white hover:bg-white/10"
+                >
+                  <span className="sr-only">Fechar menu</span>
+                  <XMarkIcon aria-hidden="true" className="size-6" />
+                </button>
               </div>
+            </TransitionChild>
+
+            <div className="relative flex grow flex-col gap-y-6 overflow-y-auto bg-slate-900 px-6 pb-4 pt-6 ring-1 ring-white/10">
+              <div className="flex h-12 items-center">
+                <Logo className="h-9 w-auto text-white" />
+              </div>
+              <nav className="flex flex-1 flex-col">{renderNavList(true)}</nav>
             </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
+
+      <div className="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:flex-col">
+        <div className="flex h-full flex-col gap-y-6 bg-slate-900 px-6 pb-6 pt-8 ring-1 ring-black/10 lg:w-[var(--sidebar-width)]">
+          <div className="flex h-12 items-center">
+            <Logo className="h-10 w-auto text-white" />
           </div>
-
-          <LayoutSidebar
-            isOpen={isSidebarOpen}
-            isDesktop={isDesktop}
-            onOpen={sidebarControls.openSidebar}
-            onClose={sidebarControls.closeSidebar}
-            calendar={calendarData}
-            activities={recentActivities}
-          />
-
-          {!isDesktop && !isSidebarOpen && (
-            <button
-              type="button"
-              onClick={sidebarControls.openSidebar}
-              aria-label="Abrir painel lateral"
-              className="fixed bottom-6 right-4 z-30 inline-flex items-center justify-center rounded-full border border-yellow-400/60 bg-white p-3 text-yellow-600 shadow-[0_24px_70px_-45px_rgba(252,211,77,0.7)] transition hover:border-yellow-400 hover:bg-yellow-50 hover:text-yellow-700 sm:right-6"
-            >
-              <AdjustmentsHorizontalIcon className="size-5" />
-            </button>
-          )}
-
-          {isSidebarOpen && (
-            <button
-              type="button"
-              aria-label="Fechar painel lateral"
-              onClick={sidebarControls.closeSidebar}
-              className="fixed inset-0 z-20 bg-zinc-900/35 backdrop-blur-sm transition-opacity duration-300 lg:hidden"
-            />
-          )}
-        </main>
+          <nav className="flex flex-1 flex-col">{renderNavList()}</nav>
+        </div>
       </div>
-    </LayoutSidebarContext.Provider>
+
+      <div className="sticky top-0 z-30 flex items-center gap-x-4 bg-slate-900 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+        <button
+          type="button"
+          onClick={() => setSidebarOpen(true)}
+          className="-m-2.5 rounded-full p-2.5 text-white hover:bg-white/10"
+        >
+          <span className="sr-only">Abrir menu</span>
+          <Bars3Icon aria-hidden="true" className="size-6" />
+        </button>
+        <div className="flex-1 text-sm font-semibold text-white">
+          {activeItem?.label || "Navegação"}
+        </div>
+        {user && (
+          <Avatar
+            src={user.avatarUrl}
+            initials={initials}
+            alt={user.name}
+            className="size-9 border border-white/15 bg-white/10 text-white"
+          />
+        )}
+      </div>
+
+      <main className="pt-6 lg:pl-[var(--sidebar-width)]">
+        <div className="px-4 pb-10 sm:px-6 lg:px-8">{children}</div>
+      </main>
+    </div>
   );
 }
