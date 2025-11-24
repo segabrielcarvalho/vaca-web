@@ -42,7 +42,7 @@ export default function Drawer({
   return (
     <div>
       <div className="flex justify-end items-center w-full">
-        <Button outline onClick={onOpen}>
+        <Button outline color="yellow" onClick={onOpen}>
           {label}
         </Button>
       </div>

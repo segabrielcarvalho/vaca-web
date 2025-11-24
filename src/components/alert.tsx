@@ -106,7 +106,7 @@ export function Alert({
                     }}
                     className="w-full sm:w-auto"
                     loading={loading}
-                    color="purple"
+                    color="yellow"
                     disabled={loading}
                   >
                     {confirmLabel}

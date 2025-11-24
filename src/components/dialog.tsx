@@ -103,7 +103,7 @@ export function Dialog({
                 <Button
                   type="button"
                   onClick={onActualSubmit}
-                  color="purple"
+                  color="yellow"
                   loading={loading}
                 >
                   Confirmar

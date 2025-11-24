@@ -52,7 +52,7 @@ export default function MarkdownInput({
     "bg-white dark:bg-neutral-800/60",
     "px-4 py-3 text-sm leading-6 text-zinc-900 dark:text-zinc-100",
     "placeholder-zinc-500 dark:placeholder-neutral-500",
-    "focus:outline-none focus:ring-2 focus:ring-purple-600",
+    "focus:outline-none focus:ring-2 focus:ring-yellow-600",
     "max-w-full md:max-w-xl lg:max-w-2xl",
     inputClassName
   );

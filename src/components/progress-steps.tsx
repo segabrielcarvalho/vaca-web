@@ -104,22 +104,22 @@ export const ProgressSteps = forwardRef<
 
           const borderColor =
             status === "complete" || status === "current"
-              ? "border-purple-600 dark:border-purple-500"
+              ? "border-yellow-600 dark:border-yellow-500"
               : "border-gray-200 dark:border-zinc-700";
 
           const hoverBorder =
             status === "complete"
-              ? "hover:border-purple-800 dark:hover:border-purple-400"
+              ? "hover:border-yellow-800 dark:hover:border-yellow-400"
               : "hover:border-gray-300 dark:hover:border-zinc-600";
 
           const idColor =
             status === "complete" || status === "current"
-              ? "text-purple-600 dark:text-purple-400"
+              ? "text-yellow-600 dark:text-yellow-400"
               : "text-gray-500 dark:text-zinc-400";
 
           const hoverText =
             status === "complete"
-              ? "group-hover:text-purple-800 dark:group-hover:text-purple-300"
+              ? "group-hover:text-yellow-800 dark:group-hover:text-yellow-300"
               : "group-hover:text-gray-700 dark:group-hover:text-zinc-200";
 
           const linkCls = clsx(

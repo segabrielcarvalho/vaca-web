@@ -80,7 +80,7 @@ export function Pagination({
               className={clsx(
                 "inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium",
                 p === page
-                  ? "border-purple-500 text-purple-600 dark:border-purple-400 dark:text-purple-300"
+                  ? "border-yellow-500 text-yellow-600 dark:border-yellow-400 dark:text-yellow-300"
                   : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-zinc-400 dark:hover:text-zinc-200"
               )}
             >

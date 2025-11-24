@@ -1,14 +1,10 @@
 "use client";
-import useColorScheme from "@/hooks/useColorScheme";
 import clsx from "clsx";
 import Image from "next/image";
 import React, { HTMLAttributes, ImgHTMLAttributes } from "react";
 import ReactMarkdown, { Components as MdComponents } from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-  oneDark,
-  oneLight,
-} from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 
 type HProps = HTMLAttributes<HTMLHeadingElement>;
@@ -25,8 +21,7 @@ type CodeProps = HTMLAttributes<HTMLElement> & {
 };
 
 export const MarkdownComponent = ({ children }: { children: string }) => {
-  const scheme = useColorScheme();
-  const prismStyle = scheme === "dark" ? oneDark : oneLight;
+  const prismStyle = oneLight;
 
   const markdownComponents: MdComponents = {
     h1: ({ children, ...props }: HProps) => (
@@ -85,7 +80,7 @@ export const MarkdownComponent = ({ children }: { children: string }) => {
     ul: ({ children, ...props }: UlProps) => (
       <ul
         {...props}
-        className="list-disc list-inside pl-6 marker:text-purple-600 marker:text-base dark:marker:text-purple-400 w-full"
+        className="list-disc list-inside pl-6 marker:text-yellow-600 marker:text-base dark:marker:text-yellow-400 w-full"
       >
         {children}
       </ul>
@@ -119,7 +114,7 @@ export const MarkdownComponent = ({ children }: { children: string }) => {
               type="checkbox"
               checked={!!el.data?.checked}
               readOnly
-              className="h-4 w-4 cursor-default rounded border-zinc-300 bg-white accent-purple-600 dark:border-neutral-600 dark:bg-neutral-800"
+              className="h-4 w-4 cursor-default rounded border-zinc-300 bg-white accent-yellow-600 dark:border-neutral-600 dark:bg-neutral-800"
             />
           )}
 
@@ -145,7 +140,7 @@ export const MarkdownComponent = ({ children }: { children: string }) => {
       <a
         {...props}
         href={href}
-        className="underline break-all text-purple-700 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300"
+        className="underline break-all text-yellow-700 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-300"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -163,7 +158,10 @@ export const MarkdownComponent = ({ children }: { children: string }) => {
       />
     ),
     pre: ({ children, ...props }: HTMLAttributes<HTMLPreElement>) => (
-      <pre {...props} className="overflow-x-auto rounded-lg text-sm leading-6 w-full">
+      <pre
+        {...props}
+        className="overflow-x-auto rounded-lg text-sm leading-6 w-full"
+      >
         {children}
       </pre>
     ),
