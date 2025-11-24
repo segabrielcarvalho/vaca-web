@@ -1,0 +1,24 @@
+query GetExam($id: String!) {
+  getExam(id: $id) {
+    id
+    title
+    description
+    filePath
+    klassId
+    isActive
+    createdAt
+    updatedAt
+    Klass {
+      id
+      name
+      courseId
+    }
+    Questions {
+      id
+      number
+      text
+      value
+      correct
+    }
+  }
+}

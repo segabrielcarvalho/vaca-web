@@ -1,0 +1,12 @@
+mutation CreateExam($data: CreateExamInput!) {
+  createExam(data: $data) {
+    id
+    title
+    description
+    filePath
+    klassId
+    isActive
+    createdAt
+    updatedAt
+  }
+}

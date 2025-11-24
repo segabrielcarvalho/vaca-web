@@ -1,0 +1,15 @@
+query ListExamsByKlass($where: ListExamsInput, $skip: Int, $take: Int, $orderBy: ListDefaultInput) {
+  listExams(where: $where, skip: $skip, take: $take, orderBy: $orderBy) {
+    count
+    rows {
+      id
+      title
+      description
+      filePath
+      klassId
+      isActive
+      createdAt
+      updatedAt
+    }
+  }
+}

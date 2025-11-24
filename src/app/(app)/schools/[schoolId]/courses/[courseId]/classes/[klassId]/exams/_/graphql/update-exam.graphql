@@ -1,0 +1,12 @@
+mutation UpdateExam($where: DefaultWhereIdInput!, $data: UpdateExamInput!) {
+  updateExam(where: $where, data: $data) {
+    id
+    title
+    description
+    filePath
+    klassId
+    isActive
+    createdAt
+    updatedAt
+  }
+}
