@@ -46,7 +46,7 @@ export default function CreateUser() {
 
   return (
     <>
-      <Button color="purple" onClick={onOpen}>
+      <Button color="yellow" onClick={onOpen}>
         Novo Usuário
       </Button>
 

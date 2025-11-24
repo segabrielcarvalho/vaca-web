@@ -113,7 +113,7 @@ export default function UserDetailsLayoutComponent({
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={item.current ? "text-purple-400" : ""}
+                    className={item.current ? "text-yellow-400" : ""}
                   >
                     {item.name}
                   </Link>

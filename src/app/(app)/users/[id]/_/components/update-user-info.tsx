@@ -45,7 +45,7 @@ export const UpdateUserInfo = () => {
 
   return (
     <>
-      <Button onClick={onOpen} loading={loading} color="purple" size="sm">
+      <Button onClick={onOpen} loading={loading} color="yellow" size="sm">
         Editar
       </Button>
 

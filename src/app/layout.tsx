@@ -1,7 +1,9 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
+import settings from "@/config/settings";
 import { Providers } from "./providers";
 
 const inter = Inter({
@@ -47,7 +49,14 @@ export const viewport: Viewport = {
   userScalable: false,
   colorScheme: "light",
 };
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(settings.tokenKey)?.value;
+
   return (
     <html
       lang="pt-br"
@@ -55,7 +64,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <meta name="color-scheme" content="light" />
       <body className="min-w-0 h-full w-full overflow-x-hidden bg-white text-zinc-900 scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-transparent">
-        <Providers>{children}</Providers>
+        <Providers initialToken={token}>{children}</Providers>
       </body>
     </html>
   );
