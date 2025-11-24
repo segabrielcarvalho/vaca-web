@@ -1,0 +1,7 @@
+subscription CorrectionStatus($sessionId: String!) {
+  correctionStatus(sessionId: $sessionId) {
+    sessionId
+    examId
+    status
+  }
+}

@@ -1,3 +1,5 @@
-export default async function Home() {
-  return <div>Home Page</div>;
+import { redirect } from "next/navigation";
+
+export default function AppIndex() {
+  redirect("/home");
 }
