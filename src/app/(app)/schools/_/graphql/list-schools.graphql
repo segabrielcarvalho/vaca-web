@@ -1,0 +1,15 @@
+query ListSchools($where: ListSchoolsInput, $skip: Int, $take: Int, $orderBy: ListDefaultInput) {
+  listSchools(where: $where, skip: $skip, take: $take, orderBy: $orderBy) {
+    count
+    rows {
+      id
+      name
+      description
+      isActive
+      bannerPath
+      directorId
+      createdAt
+      updatedAt
+    }
+  }
+}
