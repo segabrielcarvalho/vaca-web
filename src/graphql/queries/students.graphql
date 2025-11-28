@@ -1,0 +1,27 @@
+query ListStudents($klassId: ID!) {
+  listStudents(klassId: $klassId) {
+    id
+    registrationNumber
+    createdAt
+    User {
+      name
+      email
+    }
+  }
+}
+
+mutation CreateStudents($data: [CreateStudentInput!]!, $klassId: String) {
+  createStudents(data: $data, klassId: $klassId) {
+    id
+    registrationNumber
+    createdAt
+    User {
+      name
+      email
+    }
+  }
+}
+
+mutation EnrollStudents($klassId: String!, $students: [EnrollStudentInput!]!) {
+  enrollStudents(klassId: $klassId, students: $students)
+}

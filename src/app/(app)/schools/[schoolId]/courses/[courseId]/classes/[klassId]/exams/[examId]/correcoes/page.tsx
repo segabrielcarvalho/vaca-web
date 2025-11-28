@@ -10,6 +10,11 @@ import moment from "moment";
 import "moment/locale/pt-br";
 import { use, useMemo, useState } from "react";
 
+const letterForOption = (option?: number | null) =>
+  option && option >= 1 && option <= 5
+    ? String.fromCharCode(64 + option)
+    : "—";
+
 type PageProps = {
   params: Promise<{
     schoolId: string;
@@ -229,15 +234,15 @@ export default function CorrecoesPage({ params }: PageProps) {
                       return (
                         <span
                           key={opt}
-                          title={`Opção ${opt}`}
+                          title={`Opção ${letterForOption(opt)}`}
                           className={`h-3 w-3 rounded-full ${color}`}
                         />
                       );
                     })}
                   </div>
                   <p className="mt-1 text-xs text-zinc-600">
-                    Marcou: {ans?.selected ?? "—"} | Correta:{" "}
-                    {ans?.correct ?? "—"}
+                    Marcou: {letterForOption(ans?.selected)} | Correta:{" "}
+                    {letterForOption(ans?.correct)}
                   </p>
                 </div>
               ))}

@@ -10,6 +10,8 @@ import {
 } from "@generated/hooks";
 import { useMemo } from "react";
 import { SchoolHeader } from "../../_/components/school-header";
+import { CoursesFilters } from "./components/courses-filters";
+import { CoursesHero } from "./components/courses-hero";
 import { CoursesTable } from "./components/courses-table";
 
 type CoursesScreenProps = { schoolId: string };
@@ -82,20 +84,36 @@ export function CoursesScreen({ schoolId }: CoursesScreenProps) {
 
   const safePageNumber = pageNumber || 1;
   const safePageSize = pageSize || 10;
+  const handleCourseCreated = () => {
+    setPageNumber(1);
+    refetchCourses?.();
+  };
 
   return (
     <div className="space-y-8">
       <SchoolHeader schoolId={schoolId} />
 
-      <div className="space-y-6">
-        <CoursesTable
-          rows={courseRows}
-          totalCourses={totalCourses}
-          pageNumber={safePageNumber}
-          pageSize={safePageSize}
-          onPageChange={(page) => setPageNumber(page)}
-        />
-      </div>
+      <CoursesHero
+        schoolId={schoolId}
+        totalCourses={totalCourses}
+        onCreated={handleCourseCreated}
+      />
+
+      <CoursesFilters
+        courseSearch={courseSearch || ""}
+        onSearchChange={(value) => {
+          setCourseSearch(value);
+          setPageNumber(1);
+        }}
+      />
+
+      <CoursesTable
+        rows={courseRows}
+        totalCourses={totalCourses}
+        pageNumber={safePageNumber}
+        pageSize={safePageSize}
+        onPageChange={(page) => setPageNumber(page)}
+      />
     </div>
   );
 }

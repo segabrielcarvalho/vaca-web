@@ -183,6 +183,13 @@ export default function ExamGabaritoPage({ params }: PageProps) {
 
   const createdAt = new Date(exam.createdAt).toLocaleDateString("pt-BR");
   const updatedAt = new Date(exam.updatedAt).toLocaleDateString("pt-BR");
+  const answerColumns = useMemo(
+    () => {
+      const midpoint = Math.ceil(answers.length / 2);
+      return [answers.slice(0, midpoint), answers.slice(midpoint)];
+    },
+    [answers]
+  );
 
   return (
     <ExamShell
@@ -217,13 +224,6 @@ export default function ExamGabaritoPage({ params }: PageProps) {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Button
-                color="light"
-                onClick={handleRandomize}
-                disabled={isRandomizing}
-              >
-                Aleatorizar
-              </Button>
               <Button color="yellow" onClick={() => setDialogOpen(true)}>
                 Registrar gabarito
               </Button>
@@ -266,48 +266,77 @@ export default function ExamGabaritoPage({ params }: PageProps) {
           size="3xl"
           scrollBehavior="inside"
         >
-          <div className="grid gap-2 md:grid-cols-2">
-            {answers.map((row, index) => (
-              <div
-                key={row.number}
-                className="flex flex-col gap-3 rounded-xl bg-white px-3 py-3"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-zinc-800">
-                    Questão {row.number}
-                  </span>
-                  <span className="text-xs text-zinc-500">
-                    Valor: {row.value}
-                  </span>
-                </div>
-                <div className="grid grid-cols-5 gap-2">
-                  {[1, 2, 3, 4, 5].map((option) => {
-                    const letter = letterForOption(option);
-                    const selected = row.correctOption === option;
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-600">
+                Preenchimento
+              </p>
+              <p className="text-sm text-zinc-800">
+                Escolha as alternativas ou aleatorize para testar.
+              </p>
+            </div>
+            <Button
+              color="light"
+              onClick={handleRandomize}
+              disabled={isRandomizing}
+            >
+              Aleatorizar
+            </Button>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {answerColumns.map((column, columnIndex) => {
+              const baseIndex =
+                columnIndex === 0 ? 0 : answerColumns[0]?.length || 0;
+              return (
+                <div key={`column-${columnIndex}`} className="space-y-2">
+                  {column.map((row, index) => {
+                    const answerIndex = baseIndex + index;
                     return (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() =>
-                          handleUpdateAnswer(
-                            index,
-                            "correctOption",
-                            String(option)
-                          )
-                        }
-                        className={`flex h-12 w-12 items-center justify-center rounded-full border text-sm font-semibold transition ${
-                          selected
-                            ? "border-yellow-400 bg-yellow-100 text-yellow-800"
-                            : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50"
-                        }`}
+                      <div
+                        key={row.number}
+                        className="flex flex-col gap-3 rounded-xl bg-white px-3 py-3"
                       >
-                        {letter}
-                      </button>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-semibold text-zinc-800">
+                            Questão {row.number}
+                          </span>
+                          <span className="text-xs text-zinc-500">
+                            Valor: {row.value}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-5 gap-2">
+                          {[1, 2, 3, 4, 5].map((option) => {
+                            const letter = letterForOption(option);
+                            const selected = row.correctOption === option;
+                            return (
+                              <button
+                                key={option}
+                                type="button"
+                                onClick={() =>
+                                  handleUpdateAnswer(
+                                    answerIndex,
+                                    "correctOption",
+                                    String(option)
+                                  )
+                                }
+                                className={`flex h-12 w-12 items-center justify-center rounded-full border text-sm font-semibold transition ${
+                                  selected
+                                    ? "border-yellow-400 bg-yellow-100 text-yellow-800"
+                                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50"
+                                }`}
+                              >
+                                {letter}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </Dialog>
 

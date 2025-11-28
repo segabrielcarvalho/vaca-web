@@ -11,17 +11,20 @@ export function CoursesHero({
 }: CoursesHeroProps) {
   return (
     <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-zinc-100">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <InfoCard
-          label="Cursos cadastrados"
-          value={totalCourses}
-          caption="na unidade selecionada"
-        />
-        <InfoCard
-          label="Status do fluxo"
-          value="Pronto para criar turmas"
-          caption="Configure cursos e avance para turmas"
-        />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-wide text-yellow-700">
+            Cursos
+          </p>
+          <h2 className="text-xl font-semibold text-zinc-900">
+            Cadastre cursos e coordenadores
+          </h2>
+          <p className="text-sm text-zinc-600">
+            Inclua um novo curso na escola e defina o coordenador responsável.
+          </p>
+        </div>
+
+        <CreateCourseDialog schoolId={schoolId} onCreated={onCreated} />
       </div>
     </div>
   );
@@ -50,3 +53,4 @@ function InfoCard({
     </div>
   );
 }
+import { CreateCourseDialog } from "./create-course-dialog";

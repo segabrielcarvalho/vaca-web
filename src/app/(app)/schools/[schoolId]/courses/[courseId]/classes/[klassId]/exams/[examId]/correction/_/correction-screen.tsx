@@ -53,6 +53,7 @@ export function CorrectionScreen({ examId, params }: CorrectionScreenProps) {
 
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [showCheck, setShowCheck] = useState(false);
+  const [showErrorMark, setShowErrorMark] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [isCapturing, setIsCapturing] = useState(false);
   const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
@@ -98,7 +99,8 @@ export function CorrectionScreen({ examId, params }: CorrectionScreenProps) {
         setTimeout(() => setShowCheck(false), 1000);
       }
       if (payload.status === "ERROR") {
-        error({ message: "Erro na correção." });
+        setShowErrorMark(true);
+        setTimeout(() => setShowErrorMark(false), 1000);
       }
     },
   });
@@ -193,7 +195,6 @@ export function CorrectionScreen({ examId, params }: CorrectionScreenProps) {
         playsInline
         muted
         autoPlay
-        onClick={() => void handleCaptureAndSend()}
       />
 
       <div className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-black/60 via-black/25 to-transparent px-4 pb-6 pt-4 text-white">
@@ -239,6 +240,13 @@ export function CorrectionScreen({ examId, params }: CorrectionScreenProps) {
           </div>
         </div>
       )}
+      {showErrorMark && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/60 text-4xl font-bold text-rose-600 shadow-lg backdrop-blur-sm">
+            ✕
+          </div>
+        </div>
+      )}
 
       {cameraError && (
         <div className="pointer-events-none absolute bottom-24 left-1/2 w-[90%] -translate-x-1/2 text-center text-xs text-rose-300">
@@ -255,7 +263,9 @@ export function CorrectionScreen({ examId, params }: CorrectionScreenProps) {
         >
           <Camera className="h-8 w-8" />
         </button>
-        <p className="text-xs text-white/80">Toque para capturar e enviar</p>
+        <p className="text-xs text-white/80">
+          Use o botão para capturar e enviar
+        </p>
       </div>
     </div>
   );

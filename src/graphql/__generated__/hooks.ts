@@ -563,6 +563,7 @@ export type Query = {
   listExams: ExamListObject;
   listKlasses: KlassListObject;
   listSchools: SchoolListObject;
+  listStudents: Array<StudentObject>;
   listUsers: UserListObject;
   me: UserObject;
 };
@@ -627,6 +628,11 @@ export type QueryListSchoolsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ListSchoolsInput>;
+};
+
+
+export type QueryListStudentsArgs = {
+  klassId: Scalars['ID']['input'];
 };
 
 
@@ -1000,6 +1006,29 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserObject', id: string, email: string, name?: string | null, role: RoleEnum, avatarUrl: string } };
+
+export type ListStudentsQueryVariables = Exact<{
+  klassId: Scalars['ID']['input'];
+}>;
+
+
+export type ListStudentsQuery = { __typename?: 'Query', listStudents: Array<{ __typename?: 'StudentObject', id: string, registrationNumber: string, createdAt: any, User?: { __typename?: 'UserObject', name?: string | null, email: string } | null }> };
+
+export type CreateStudentsMutationVariables = Exact<{
+  data: Array<CreateStudentInput> | CreateStudentInput;
+  klassId?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CreateStudentsMutation = { __typename?: 'Mutation', createStudents: Array<{ __typename?: 'StudentObject', id: string, registrationNumber: string, createdAt: any, User?: { __typename?: 'UserObject', name?: string | null, email: string } | null }> };
+
+export type EnrollStudentsMutationVariables = Exact<{
+  klassId: Scalars['String']['input'];
+  students: Array<EnrollStudentInput> | EnrollStudentInput;
+}>;
+
+
+export type EnrollStudentsMutation = { __typename?: 'Mutation', enrollStudents: boolean };
 
 
 export const GetSchoolDocument = gql`
@@ -1542,3 +1571,66 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeSuspenseQueryHookResult = ReturnType<typeof useMeSuspenseQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const ListStudentsDocument = gql`
+    query ListStudents($klassId: ID!) {
+  listStudents(klassId: $klassId) {
+    id
+    registrationNumber
+    createdAt
+    User {
+      name
+      email
+    }
+  }
+}
+    `;
+export function useListStudentsQuery(baseOptions: Apollo.QueryHookOptions<ListStudentsQuery, ListStudentsQueryVariables> & ({ variables: ListStudentsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListStudentsQuery, ListStudentsQueryVariables>(ListStudentsDocument, options);
+      }
+export function useListStudentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListStudentsQuery, ListStudentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListStudentsQuery, ListStudentsQueryVariables>(ListStudentsDocument, options);
+        }
+export function useListStudentsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListStudentsQuery, ListStudentsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ListStudentsQuery, ListStudentsQueryVariables>(ListStudentsDocument, options);
+        }
+export type ListStudentsQueryHookResult = ReturnType<typeof useListStudentsQuery>;
+export type ListStudentsLazyQueryHookResult = ReturnType<typeof useListStudentsLazyQuery>;
+export type ListStudentsSuspenseQueryHookResult = ReturnType<typeof useListStudentsSuspenseQuery>;
+export type ListStudentsQueryResult = Apollo.QueryResult<ListStudentsQuery, ListStudentsQueryVariables>;
+export const CreateStudentsDocument = gql`
+    mutation CreateStudents($data: [CreateStudentInput!]!, $klassId: String) {
+  createStudents(data: $data, klassId: $klassId) {
+    id
+    registrationNumber
+    createdAt
+    User {
+      name
+      email
+    }
+  }
+}
+    `;
+export type CreateStudentsMutationFn = Apollo.MutationFunction<CreateStudentsMutation, CreateStudentsMutationVariables>;
+export function useCreateStudentsMutation(baseOptions?: Apollo.MutationHookOptions<CreateStudentsMutation, CreateStudentsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateStudentsMutation, CreateStudentsMutationVariables>(CreateStudentsDocument, options);
+      }
+export type CreateStudentsMutationHookResult = ReturnType<typeof useCreateStudentsMutation>;
+export type CreateStudentsMutationResult = Apollo.MutationResult<CreateStudentsMutation>;
+export type CreateStudentsMutationOptions = Apollo.BaseMutationOptions<CreateStudentsMutation, CreateStudentsMutationVariables>;
+export const EnrollStudentsDocument = gql`
+    mutation EnrollStudents($klassId: String!, $students: [EnrollStudentInput!]!) {
+  enrollStudents(klassId: $klassId, students: $students)
+}
+    `;
+export type EnrollStudentsMutationFn = Apollo.MutationFunction<EnrollStudentsMutation, EnrollStudentsMutationVariables>;
+export function useEnrollStudentsMutation(baseOptions?: Apollo.MutationHookOptions<EnrollStudentsMutation, EnrollStudentsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EnrollStudentsMutation, EnrollStudentsMutationVariables>(EnrollStudentsDocument, options);
+      }
+export type EnrollStudentsMutationHookResult = ReturnType<typeof useEnrollStudentsMutation>;
+export type EnrollStudentsMutationResult = Apollo.MutationResult<EnrollStudentsMutation>;
+export type EnrollStudentsMutationOptions = Apollo.BaseMutationOptions<EnrollStudentsMutation, EnrollStudentsMutationVariables>;

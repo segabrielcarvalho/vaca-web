@@ -2,18 +2,21 @@
 
 import { Avatar } from "@/components/avatar";
 import { Button } from "@/components/button";
-import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from "@headlessui/react";
+import { isPathActive } from "@/routes";
 import {
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  TransitionChild,
+} from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo, useState, type CSSProperties } from "react";
-import { isPathActive } from "@/routes";
-import { Logo } from "./logo";
 import type { NavigationItem } from "./application-layout";
+import { Divider } from "./divider";
+import { Logo } from "./logo";
 
 type StackedLayoutProps = {
   navItems: NavigationItem[];
@@ -116,10 +119,7 @@ export function StackedLayout({
   );
 
   return (
-    <div
-      className="min-h-svh bg-slate-50 text-zinc-900"
-      style={sidebarStyle}
-    >
+    <div className="min-h-svh bg-slate-50 text-zinc-900" style={sidebarStyle}>
       <Dialog
         open={sidebarOpen}
         onClose={setSidebarOpen}
@@ -160,9 +160,10 @@ export function StackedLayout({
 
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:flex-col">
         <div className="flex h-full flex-col gap-y-6 bg-slate-900 px-6 pb-6 pt-8 ring-1 ring-black/10 lg:w-[var(--sidebar-width)]">
-          <div className="flex h-12 items-center">
-            <Logo className="h-10 w-auto text-white" />
+          <div className="flex h-10 items-center justify-center">
+            <Logo className="h-16 w-auto text-white" />
           </div>
+          <Divider className="border-white/10" />
           <nav className="flex flex-1 flex-col">{renderNavList()}</nav>
         </div>
       </div>
